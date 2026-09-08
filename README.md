@@ -43,7 +43,7 @@ User Task) and approves the push:
 ## Roadmap / خارطة الطريق
 
 - [x] L1 — Information & Data Representation (interactive)
-- [ ] L2 — Computer Architecture · [ ] L3 — Algorithmization · [ ] L4 — Software Life Cycle
+- [x] L2 — Computer Architecture (interactive) · [ ] L3 — Algorithmization · [ ] L4 — Software Life Cycle
 - [ ] L5 — Information Security · [ ] L6 — Computer Networks
 - [ ] L7 — Intro to AI · [ ] L8 — Mathematics of ML · [ ] L9 — AI in Practice
 
