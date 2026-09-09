@@ -185,6 +185,48 @@
 </style>
 </head>
 <body>
+<!-- ==================== LOCK-GUARD START ==================== -->
+<!-- This lecture is LOCKED. To UNLOCK it later, delete this whole block (LOCK-GUARD START .. LOCK-GUARD END). -->
+<!-- NOTE: this is a client-side guard. It stops casual direct-URL access on GitHub Pages, but it is NOT a hard security boundary — the file is still served by the static host. The only way to make a locked lecture truly unreachable is to not publish its file. -->
+<script>
+(function () {
+  // Blocks the chapter when a locked lecture is opened directly by URL.
+  var notice =
+    '<div style="position:fixed;inset:0;z-index:2147483647;background:#faf7f2;color:#1d2430;' +
+    'display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;' +
+    'font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">' +
+      '<div style="max-width:520px">' +
+        '<div style="font-size:64px;line-height:1">&#128274;</div>' +
+        '<h1 style="font-size:1.6rem;margin:.6em 0 .3em">This lecture is locked</h1>' +
+        '<p style="font-size:1.05rem;color:#5c6675;margin:.2em 0 1.4em">Coming soon &mdash; this chapter is not available yet.</p>' +
+        '<a href="index.html" style="display:inline-block;background:#c8622a;color:#fff;' +
+        'text-decoration:none;padding:.7em 1.4em;border-radius:10px;font-weight:600">&larr; Back to contents</a>' +
+      '</div>' +
+    '</div>';
+  var overlay = document.createElement('div');
+  overlay.id = '__lock_guard__';
+  overlay.innerHTML = notice;
+  function show() {
+    document.title = 'Locked lecture — coming soon';
+    if (document.body) {
+      document.body.appendChild(overlay);
+      // Remove the real chapter content so it is not usable behind the notice.
+      var kids = [].slice.call(document.body.childNodes);
+      for (var i = 0; i < kids.length; i++) {
+        if (kids[i] !== overlay) { document.body.removeChild(kids[i]); }
+      }
+    }
+    if (document.documentElement) { document.documentElement.style.overflow = 'hidden'; }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', show);
+  } else {
+    show();
+  }
+})();
+</script>
+<!-- ==================== LOCK-GUARD END ==================== -->
+
 
 <header class="mast">
   <div class="kicker">Fundamentals of CS &amp; AI · Module 1 · Lecture 2</div>
