@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 1: Information, Data Representation, and Number Operations — student handout</title>
+<style>
+  :root{
+    --bg:#faf7f2; --panel:#ffffff; --ink:#1d2430; --muted:#5c6675;
+    --line:#e7e0d6; --accent:#c8622a; --accent-soft:#f6e4d6;
+    --blue:#2f6db3; --blue-soft:#e3eef9; --green:#2f8f5b; --green-soft:#e2f2e9;
+    --shadow:0 10px 30px rgba(40,30,20,.08), 0 2px 6px rgba(40,30,20,.05);
+    --radius:16px; --serif:"Iowan Old Style",Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Mono","Fira Code",Menlo,Consolas,monospace;
+    --zebra:#fbf8f3; --codebg:#f4efe7;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#15181d; --panel:#1e232b; --ink:#eef1f5; --muted:#9aa4b2;
+      --line:#2c333d; --accent:#e08a52; --accent-soft:#38271c;
+      --blue:#69a6e6; --blue-soft:#1c2a3a; --green:#6fce97; --green-soft:#172a20;
+      --shadow:0 10px 30px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.3);
+      --zebra:#232932; --codebg:#12161b;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;margin:0}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+
+  header.mast{
+    background:linear-gradient(135deg,var(--accent) 0%,#a84c1f 100%);
+    color:#fff;padding:54px 22px 46px;text-align:center;position:relative;overflow:hidden}
+  header.mast::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 20% 120%,rgba(255,255,255,.18),transparent 45%);pointer-events:none}
+  .mast .kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;opacity:.9}
+  .mast h1{font-family:var(--serif);font-size:clamp(1.5rem,4vw,2.3rem);margin:.15em 0 .2em;font-weight:600;letter-spacing:-.01em}
+  .mast .sub{opacity:.92;font-size:1.02rem;max-width:720px;margin:.3em auto 0}
+  .mast .portrait{width:84px;height:84px;border-radius:50%;object-fit:cover;
+    border:3px solid rgba(255,255,255,.85);box-shadow:0 4px 14px rgba(0,0,0,.25);
+    margin:20px auto 0;display:block;background:rgba(255,255,255,.15)}
+  .mast .byline{margin-top:12px;font-size:.9rem;opacity:.95}
+  .mast .byline a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+
+  .crumb{max-width:860px;margin:18px auto 0;padding:0 22px;display:flex;gap:18px;flex-wrap:wrap}
+  .crumb a{color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}
+  .crumb a:hover{text-decoration:underline}
+
+  .doc{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:30px clamp(20px,4vw,44px);margin-top:22px;
+    font-family:var(--serif);font-size:1.05rem}
+  .doc h2{font-family:var(--serif);font-size:1.5rem;margin:1.5em 0 .4em;font-weight:600;
+    line-height:1.25;border-bottom:2px solid var(--accent-soft);padding-bottom:.2em}
+  .doc h2:first-child{margin-top:0}
+  .doc h3{font-family:var(--serif);font-size:1.18rem;margin:1.3em 0 .35em;font-weight:600;color:var(--accent)}
+  .doc p{margin:.85em 0}
+  .doc strong{font-weight:700}
+  .doc em{font-style:italic;color:var(--muted)}
+  .doc ul,.doc ol{margin:.7em 0;padding-inline-start:1.6em}
+  .doc li{margin:.3em 0}
+  .doc code{font-family:var(--mono);font-size:.86em;background:var(--codebg);
+    border:1px solid var(--line);border-radius:5px;padding:.08em .38em}
+  .doc pre.code{font-family:var(--mono);font-size:.86rem;line-height:1.5;background:var(--codebg);
+    border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;
+    box-shadow:var(--shadow);margin:1em 0}
+  .doc pre.code code{background:none;border:0;padding:0;font-size:1em;white-space:pre}
+  .doc blockquote{margin:1em 0;padding:12px 18px;background:var(--blue-soft);
+    border-inline-start:4px solid var(--blue);border-radius:10px;
+    font-family:var(--mono);font-size:.95rem;font-style:normal;color:var(--ink)}
+  .doc hr{border:0;border-top:1px solid var(--line);margin:2em 0}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow);background:var(--panel);margin:1.1em 0}
+  .doc table{border-collapse:collapse;width:100%;font-size:.92rem;font-family:var(--sans)}
+  .doc thead th{background:var(--accent);color:#fff;text-align:start;
+    font-weight:600;padding:10px 12px;font-size:.85rem}
+  .doc tbody td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+  .doc tbody tr:nth-child(even){background:var(--zebra)}
+
+  .chapnav{display:flex;justify-content:space-between;gap:12px;margin-top:26px;flex-wrap:wrap}
+  .chapnav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.95rem;
+    border:1px solid var(--line);border-radius:10px;padding:10px 16px;transition:border-color .12s}
+  .chapnav a:hover{border-color:var(--accent)}
+
+  footer{max-width:860px;margin:44px auto 0;padding:0 22px;color:var(--muted);
+    font-size:.85rem;text-align:center;line-height:1.7}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "Lecture 1 \u2014 Information, Data Representation, and Number Operations (student handout)",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "CreativeWork",
+    "name": "Introduction to Computer Science and Artificial Intelligence"
+  },
+  "copyrightYear": 2026,
+  "copyrightHolder": {
+    "@type": "Person",
+    "name": "Dr. Ali Mahmoud Mansour",
+    "url": "https://sfedu.ru/s7/person/ru/mansur"
+  },
+  "creator": {
+    "@type": "Person",
+    "name": "Dr. Ali Mahmoud Mansour",
+    "url": "https://sfedu.ru/s7/person/ru/mansur"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Dr. Ali Mahmoud Mansour"
+  },
+  "contributor": {
+    "@type": "Person",
+    "name": "Claude (Anthropic)"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Dr. Ali Mahmoud Mansour"
+  },
+  "copyrightNotice": "\u00a9 2026 Dr. Ali Mahmoud Mansour. All rights reserved.",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "creditText": "Content and concept by Dr. Ali Mahmoud Mansour; co-created with Claude (Anthropic).",
+  "identifier": "OWNER=ALI-MAHMOUD-MANSOUR;CO-CREATOR=CLAUDE;YEAR=2026"
+}
+</script>
+</head>
+<body id="top">
+
+<header class="mast">
+  <div class="kicker">Lecture 1 · Student handout</div>
+  <h1>Lecture 1: Information, Data Representation, and Number Operations</h1>
+  <div class="sub">Fundamentals of Computer Science and Artificial Intelligence — Southern Federal University — Semester 1</div>
+  <img class="portrait" src="images/instructor.png" alt="Dr. Ali Mahmoud Mansour" onerror="this.style.display='none'">
+  <div class="byline">Dr. Ali Mahmoud Mansour · PhD in Artificial Intelligence and Machine Learning · <a href="https://sfedu.ru/s7/person/ru/mansur" target="_blank" rel="noopener">Personal page</a></div>
+</header>
+
+<div class="crumb"><a href="index.html">← Back to Contents</a><a href="lecture-01.html">▶ Interactive Lecture 1</a></div>
+
+<div class="wrap">
+  <article class="doc">
+<h2>Learning Objectives</h2>
+<p>By the end of this lecture you will be able to:</p>
+<ul><li>Explain what information is and describe its key properties</li><li>Convert numbers between decimal, binary, octal, and hexadecimal systems</li><li>Describe how integers (signed and unsigned) are stored in memory</li><li>Explain how real numbers are represented using floating-point encoding (IEEE 754)</li><li>Describe how characters and text are encoded (ASCII, Unicode)</li><li>Perform basic arithmetic in binary (addition, subtraction using two's complement)</li></ul>
+<hr>
+<h2>1. What Is Information?</h2>
+<p><strong>Information</strong> is data that reduces uncertainty for the recipient. It is meaningful, interpretable, and context-dependent.</p>
+<div class="tablewrap"><table><thead><tr><th>Concept</th><th>Definition</th></tr></thead><tbody><tr><td><strong>Data</strong></td><td>Raw, unprocessed facts (e.g., "101011")</td></tr><tr><td><strong>Information</strong></td><td>Data interpreted in context (e.g., "43 in decimal")</td></tr><tr><td><strong>Knowledge</strong></td><td>Accumulated, structured information enabling decisions</td></tr></tbody></table></div>
+<h3>Properties of Information</h3>
+<ul><li><strong>Accuracy</strong> — faithfully reflects the real world</li><li><strong>Completeness</strong> — sufficient to answer the question at hand</li><li><strong>Relevance</strong> — pertains to the task</li><li><strong>Timeliness</strong> — current at the moment of use</li><li><strong>Consistency</strong> — free of internal contradictions</li></ul>
+<h3>Measuring Information — Shannon's Bit</h3>
+<p>Claude Shannon (1948) defined the unit of information as the <strong>bit</strong> — the amount of information that halves the recipient's uncertainty. If an event has probability p, it carries <strong>−log₂(p)</strong> bits of information.</p>
+<p><em>Reading this concretely (so it is not just a formula):</em> the rarer an event, the more it "tells" you when it actually happens. A fair coin flip has two equally likely outcomes (p = ½), so learning the result gives <strong>−log₂(½) = 1 bit</strong>. Naming one card-suit out of four equally likely suits (p = ¼) gives <strong>−log₂(¼) = 2 bits</strong>, and picking one of eight equally likely outcomes gives <strong>3 bits</strong>. The pattern to remember: <strong>every time the number of equally likely possibilities doubles, you need one more bit to name the answer.</strong> This is exactly why <em>n</em> bits can label 2ⁿ different things.</p>
+<p>Practical units:</p>
+<div class="tablewrap"><table><thead><tr><th>Unit</th><th>Bits</th><th>Approximate size</th></tr></thead><tbody><tr><td>1 bit</td><td>1</td><td>One binary digit</td></tr><tr><td>1 byte</td><td>8</td><td>One character (ASCII)</td></tr><tr><td>1 KB</td><td>1,024 bytes</td><td>Short text file</td></tr><tr><td>1 MB</td><td>1,048,576 bytes</td><td>A digital photo</td></tr><tr><td>1 GB</td><td>2³⁰ bytes</td><td>~250,000 pages of text</td></tr><tr><td>1 TB</td><td>2⁴⁰ bytes</td><td>~200,000 hours of audio</td></tr></tbody></table></div>
+<hr>
+<h2>2. Positional Number Systems</h2>
+<p>A <strong>positional number system</strong> with base <em>b</em> represents a number as a sum of digit × base^position:</p>
+<blockquote>N = dₙ·bⁿ + dₙ₋₁·bⁿ⁻¹ + … + d₁·b¹ + d₀·b⁰</blockquote>
+<p><em>In plain words:</em> each digit is worth its face value <strong>times</strong> the base raised to the power of its position, where positions are counted from <strong>0</strong> at the rightmost digit and grow leftward. The decimal number 205 is nothing more than 2·10² + 0·10¹ + 5·10⁰ = 200 + 0 + 5 — you already use this rule every day without naming it. The same rule works in <strong>any</strong> base; only the base <em>b</em> changes.</p>
+<p><strong>Worked example — reading hexadecimal back to decimal.</strong> To find out what 0x2F is worth, expand it with base 16 (remember <code>F</code> means 15):</p>
+<pre class="code"><code>0x2F  =  2·16¹  +  F·16⁰
+      =  2·16   +  15·1
+      =  32     +  15
+      =  47₁₀</code></pre>
+<p>So the single rule above is what lets you move <em>between</em> any two bases: expand from the source base to get a plain decimal value, then (for the reverse direction) use the repeated-division method shown next.</p>
+<h3>Systems Used in Computing</h3>
+<div class="tablewrap"><table><thead><tr><th>System</th><th>Base</th><th>Digits</th><th>Prefix/Suffix</th></tr></thead><tbody><tr><td>Decimal</td><td>10</td><td>0–9</td><td>(none)</td></tr><tr><td>Binary</td><td>2</td><td>0, 1</td><td>0b / subscript₂</td></tr><tr><td>Octal</td><td>8</td><td>0–7</td><td>0o / subscript₈</td></tr><tr><td>Hexadecimal</td><td>16</td><td>0–9, A–F</td><td>0x / subscript₁₆</td></tr></tbody></table></div>
+<p><strong>Why binary?</strong> Electronic circuits have two stable states — ON (high voltage ≈ 1) and OFF (low voltage ≈ 0). Binary maps directly onto hardware.</p>
+<h3>Conversion: Decimal → Binary</h3>
+<p><strong>Method: repeated division by 2, read remainders bottom-to-top.</strong></p>
+<p>Example: 43 → binary</p>
+<pre class="code"><code>43 ÷ 2 = 21  remainder 1   ↑ LSB
+21 ÷ 2 = 10  remainder 1
+10 ÷ 2 =  5  remainder 0
+ 5 ÷ 2 =  2  remainder 1
+ 2 ÷ 2 =  1  remainder 0
+ 1 ÷ 2 =  0  remainder 1   ↑ MSB
+
+Result: 43₁₀ = 101011₂</code></pre>
+<p>Verify: 1·2⁵ + 0·2⁴ + 1·2³ + 0·2² + 1·2¹ + 1·2⁰ = 32 + 0 + 8 + 0 + 2 + 1 = 43 ✓</p>
+<h3>Conversion: Binary → Hexadecimal</h3>
+<p>Group binary digits into nibbles (4 bits) from the right, then map each nibble to a hex digit.</p>
+<pre class="code"><code>Binary:   1010  1111  0011
+Hex:        A     F     3     →  0xAF3</code></pre>
+<p>Hex-to-binary reversal: expand each hex digit to 4 bits.</p>
+<h3>Octal: Group into 3-bit blocks</h3>
+<pre class="code"><code>Binary:   101  011
+Octal:      5    3     →  53₈</code></pre>
+<hr>
+<h2>3. Representing Integers in Computers</h2>
+<p>All integers are stored in a fixed number of bits (8, 16, 32, or 64). The encoding scheme determines the range and the meaning of the leading bit.</p>
+<h3>3.1 Unsigned Integers</h3>
+<p>All bits represent magnitude. An <em>n</em>-bit unsigned integer stores values from <strong>0</strong> to <strong>2ⁿ − 1</strong>.</p>
+<div class="tablewrap"><table><thead><tr><th>Width</th><th>Range</th></tr></thead><tbody><tr><td>8 bits</td><td>0 … 255</td></tr><tr><td>16 bits</td><td>0 … 65,535</td></tr><tr><td>32 bits</td><td>0 … 4,294,967,295</td></tr></tbody></table></div>
+<h3>3.2 Sign-Magnitude</h3>
+<p>The <strong>most significant bit (MSB)</strong> is the sign (0 = positive, 1 = negative); the remaining bits hold the magnitude.</p>
+<ul><li>+43 in 8 bits: <code>0010 1011</code></li><li>−43 in 8 bits: <code>1010 1011</code></li></ul>
+<p>Drawbacks: two representations of zero (+0 and −0); arithmetic is more complex.</p>
+<h3>3.3 Two's Complement (Universal Standard)</h3>
+<p><strong>Every modern CPU uses two's complement for signed integers.</strong></p>
+<p>To negate a number:</p>
+<ol><li>Flip all bits (bitwise NOT → one's complement)</li><li>Add 1</li></ol>
+<p>Example: +43 in 8 bits = <code>0010 1011</code></p>
+<pre class="code"><code>Flip:   1101 0100
+Add 1:  1101 0101   →  This is −43 in two's complement</code></pre>
+<p><em>Why "flip the bits and add 1" works (the idea behind the recipe):</em> an <em>n</em>-bit register holds only 2ⁿ different patterns, so its arithmetic naturally "wraps around" like a car odometer rolling past its last number back to zero. We want −43 to be whatever pattern, added to +43, wraps the odometer exactly back to 0. Flipping every bit of 43 gives 255 − 43 = 212; adding 1 gives 213; and 43 + 213 = 256, which is one full wrap of an 8-bit register (2⁸ = 256) and therefore lands back at 0. That is precisely the behaviour a negative number should have — so "flip and add 1" is not a magic trick, it is the shortcut that produces that wrap-around value.</p>
+<p>Range for <em>n</em> bits: <strong>−2ⁿ⁻¹</strong> to <strong>2ⁿ⁻¹ − 1</strong></p>
+<div class="tablewrap"><table><thead><tr><th>Width</th><th>Range</th></tr></thead><tbody><tr><td>8 bits</td><td>−128 … +127</td></tr><tr><td>16 bits</td><td>−32,768 … +32,767</td></tr><tr><td>32 bits</td><td>−2,147,483,648 … +2,147,483,647</td></tr></tbody></table></div>
+<p><strong>Why two's complement is universal:</strong> addition and subtraction use the same hardware circuit regardless of sign; there is exactly one representation of zero.</p>
+<h3>3.4 Binary Addition</h3>
+<p>Rules: 0+0=0, 0+1=1, 1+0=1, 1+1=0 (carry 1)</p>
+<pre class="code"><code>  0010 1011   (+43)
++ 0001 1010   (+26)
+-----------
+  0100 0101   (+69)  ✓</code></pre>
+<p><strong>Subtraction via addition:</strong> A − B = A + (−B), where −B is the two's complement of B.</p>
+<pre class="code"><code>  0010 1011   (+43)
++ 1110 0110   (−26 in two's complement)
+-----------
+1 0001 0001   → drop carry → 0001 0001 = +17  ✓</code></pre>
+<p><em>Why we simply drop the leading carry:</em> the register is only 8 bits wide, so any 9th bit falls off the end and cannot be stored. That 9th bit stands for 2⁸ = 256 — one complete odometer wrap, which (as we saw just above) equals zero in this system. Discarding it is therefore not cheating; the fixed width of the register is doing the "modulo 256" arithmetic for us automatically, and the 8 bits that remain hold the correct answer, +17.</p>
+<hr>
+<h2>4. Representing Real Numbers — IEEE 754 Floating-Point</h2>
+<p>Real numbers in computers follow the <strong>IEEE 754</strong> standard (1985), which uses <strong>scientific notation in binary</strong>:</p>
+<blockquote>value = (−1)^S × 1.fraction × 2^(exponent − bias)</blockquote>
+<h3>32-Bit Single Precision (<code>float</code>)</h3>
+<div class="tablewrap"><table><thead><tr><th>Field</th><th>Bits</th><th>Purpose</th></tr></thead><tbody><tr><td>Sign (S)</td><td>1</td><td>0 = positive, 1 = negative</td></tr><tr><td>Exponent (E)</td><td>8</td><td>Biased by 127 (actual exp = E − 127)</td></tr><tr><td>Mantissa (M)</td><td>23</td><td>Fractional part of 1.M (leading 1 implicit)</td></tr></tbody></table></div>
+<p>Total: 32 bits. Range: ≈ ±1.18 × 10⁻³⁸ to ±3.4 × 10³⁸. Precision: ~7 decimal digits.</p>
+<h3>64-Bit Double Precision (<code>double</code>)</h3>
+<div class="tablewrap"><table><thead><tr><th>Field</th><th>Bits</th></tr></thead><tbody><tr><td>Sign</td><td>1</td></tr><tr><td>Exponent</td><td>11 (bias 1023)</td></tr><tr><td>Mantissa</td><td>52</td></tr></tbody></table></div>
+<p>Range: ≈ ±2.2 × 10⁻³⁰⁸ to ±1.8 × 10³⁰⁸. Precision: ~15–16 decimal digits.</p>
+<h3>Example: Encode 43.25 as IEEE 754 single precision</h3>
+<ol><li>Convert to binary: 43 = 101011₂, 0.25 = 0.01₂ → 43.25 = 101011.01₂</li><li>Normalize: 1.0101101 × 2⁵</li><li>Sign = 0 (positive)</li><li>Exponent = 5 + 127 = 132 = 10000100₂</li><li>Mantissa = 0101101 00000000000000000</li></ol>
+<p><strong>Result:</strong> <code>0 10000100 01011010000000000000000</code></p>
+<h3>Algorithm: Encoding a Decimal Number to IEEE 754 Single Precision</h3>
+<p>The eight steps below convert any decimal real number into its 32-bit IEEE 754 binary word.</p>
+<pre class="code"><code>INPUT   x — a decimal real number
+OUTPUT  32-bit string: [S][E₇E₆E₅E₄E₃E₂E₁E₀][M₂₂M₂₁…M₀]
+
+Step 1  Sign
+        x ≥ 0 → S = 0.    x &lt; 0 → S = 1; continue with x = |x|.
+
+Step 2  Integer part → binary
+        Divide x_int repeatedly by 2; collect remainders bottom-to-top.
+
+Step 3  Fractional part → binary
+        Multiply x_frac repeatedly by 2; collect the integer digits top-to-bottom.
+        Stop when x_frac = 0 or you reach 23 bits.
+
+Step 4  Combine
+        Integer bits  +  binary point  +  fractional bits → bbbb.bbb…
+
+Step 5  Normalise
+        Shift the binary point left or right until exactly one 1 stands to its left.
+        Write the result as  1.FRACTION × 2^n.
+        Shift left n places → n positive.   Shift right |n| places → n negative.
+
+Step 6  Biased exponent
+        E = n + 127.   Convert E to 8-bit binary.
+
+Step 7  Mantissa
+        Copy the 23 bits after the implicit "1." — pad with zeros on the right.
+
+Step 8  Assemble
+        [S][E₇E₆E₅E₄E₃E₂E₁E₀][M₂₂M₂₁…M₀]</code></pre>
+<h3>Detailed Worked Example: Encode −13.375</h3>
+<p><strong>Step 1 — Sign</strong></p>
+<p>x = −13.375 &lt; 0, so <strong>S = 1</strong>. Continue with |x| = 13.375.</p>
+<p><strong>Step 2 — Convert the integer part (13) to binary</strong></p>
+<div class="tablewrap"><table><thead><tr><th>Division</th><th>Quotient</th><th>Remainder</th></tr></thead><tbody><tr><td>13 ÷ 2</td><td>6</td><td><strong>1</strong> ← LSB</td></tr><tr><td>6 ÷ 2</td><td>3</td><td><strong>0</strong></td></tr><tr><td>3 ÷ 2</td><td>1</td><td><strong>1</strong></td></tr><tr><td>1 ÷ 2</td><td>0</td><td><strong>1</strong> ← MSB</td></tr></tbody></table></div>
+<p>Reading remainders bottom-to-top: <strong>13₁₀ = 1101₂</strong></p>
+<p><strong>Step 3 — Convert the fractional part (0.375) to binary</strong></p>
+<div class="tablewrap"><table><thead><tr><th>Operation</th><th>Integer digit collected</th><th>Remaining fraction</th></tr></thead><tbody><tr><td>0.375 × 2 = 0.750</td><td><strong>0</strong></td><td>0.750</td></tr><tr><td>0.750 × 2 = 1.500</td><td><strong>1</strong></td><td>0.500</td></tr><tr><td>0.500 × 2 = 1.000</td><td><strong>1</strong></td><td>0.000 → stop</td></tr></tbody></table></div>
+<p>Reading top-to-bottom: <strong>0.375₁₀ = 0.011₂</strong></p>
+<p><strong>Step 4 — Combine</strong></p>
+<p>13.375₁₀ = <strong>1101.011₂</strong></p>
+<p><strong>Step 5 — Normalise</strong></p>
+<p>Shift the binary point <strong>3 places to the left</strong> so exactly one 1 stands before it:</p>
+<pre class="code"><code>1101.011  →  1.101011 × 2³</code></pre>
+<p>Actual exponent: <strong>n = 3</strong></p>
+<p><strong>Step 6 — Biased exponent</strong></p>
+<p>E = 3 + 127 = <strong>130</strong></p>
+<div class="tablewrap"><table><thead><tr><th>Division</th><th>Quotient</th><th>Remainder</th></tr></thead><tbody><tr><td>130 ÷ 2</td><td>65</td><td><strong>0</strong> ← LSB</td></tr><tr><td>65 ÷ 2</td><td>32</td><td><strong>1</strong></td></tr><tr><td>32 ÷ 2</td><td>16</td><td><strong>0</strong></td></tr><tr><td>16 ÷ 2</td><td>8</td><td><strong>0</strong></td></tr><tr><td>8 ÷ 2</td><td>4</td><td><strong>0</strong></td></tr><tr><td>4 ÷ 2</td><td>2</td><td><strong>0</strong></td></tr><tr><td>2 ÷ 2</td><td>1</td><td><strong>0</strong></td></tr><tr><td>1 ÷ 2</td><td>0</td><td><strong>1</strong> ← MSB</td></tr></tbody></table></div>
+<p>Bottom-to-top: <strong>130₁₀ = 10000010₂</strong></p>
+<p><strong>Step 7 — Mantissa</strong></p>
+<p>Normalised significand: <strong>1.101011</strong> × 2³ Drop the implicit leading 1 and take 23 fractional bits:</p>
+<p><code>101011</code> → padded to 23 bits: <strong>10101100000000000000000</strong></p>
+<p><strong>Step 8 — Assemble</strong></p>
+<div class="tablewrap"><table><thead><tr><th>Field</th><th>Value</th><th>Bits</th></tr></thead><tbody><tr><td>Sign (S)</td><td>1 (negative)</td><td><code>1</code></td></tr><tr><td>Exponent (E)</td><td>130</td><td><code>10000010</code></td></tr><tr><td>Mantissa (M)</td><td>(bits after 1.)</td><td><code>10101100000000000000000</code></td></tr></tbody></table></div>
+<p><strong>32-bit result:</strong> <code>1 10000010 10101100000000000000000</code></p>
+<p><strong>Verification:</strong></p>
+<ul><li>Sign = 1 → negative ✓</li><li>Exponent: 10000010₂ = 130; actual = 130 − 127 = 3 ✓</li><li>Significand: 1.101011₂ = 1 + ½ + ⅛ + 1/32 + 1/64 = 1.671875; × 2³ = 13.375 ✓</li><li>With sign: <strong>−13.375</strong> ✓</li></ul>
+<h3>Common Pitfalls</h3>
+<ul><li><strong>Loss of precision:</strong> 0.1 has no exact binary representation — <code>0.1 + 0.2 ≠ 0.3</code> in floating-point arithmetic.</li><li><strong>Overflow:</strong> result exceeds maximum value → <code>Inf</code></li><li><strong>Underflow:</strong> result too small to represent → flushed to zero</li><li><strong>NaN (Not a Number):</strong> result of 0/0, √(−1), etc.</li></ul>
+<hr>
+<h2>5. Representing Symbolic Information</h2>
+<h3>5.0 Why We Need an Encoding Standard</h3>
+<p>A computer stores <strong>only numbers</strong> — ultimately, only bits. It has no native notion of the letter <em>A</em>, the digit <em>7</em>, or the symbol <em>؟</em>. To store text at all, we must agree on a <strong>mapping</strong>: which number stands for which character. That agreed-upon mapping is a <strong>character-encoding standard</strong> — essentially a shared lookup table that says "65 means A, 66 means B, …".</p>
+<p>**Why must it be a <em>standard</em> — a shared agreement — and not just each program's private choice?** Because text is written by one program and read by another, often on a different computer, in a different country, years later. The bits themselves carry no clue about which table produced them. If the writer used one table and the reader assumes another:</p>
+<ul><li>The writer stores <em>А</em> (Cyrillic A) as the number 192.</li><li>The reader looks up 192 in a <em>different</em> table and displays <em>À</em>, or <em>┐</em>, or a blank box.</li></ul>
+<p>The result is the familiar garbled text — <strong>"mojibake"</strong> (文字化け): the bytes are intact, but the reader is decoding them with the wrong table. A standard removes the ambiguity: if <em>everyone</em> agrees that 65 = A and that a given file is UTF-8, then the same bytes mean the same characters everywhere. <strong>A standard is not a technical detail — it is the agreement that makes text portable at all.</strong> This is exactly why the world converged first on ASCII, and then on Unicode / UTF-8.</p>
+<h3>5.1 ASCII (American Standard Code for Information Interchange, 1963)</h3>
+<p><strong>ASCII is the original character-encoding standard for English.</strong> Its name spells out its purpose: a <em>Standard Code</em> for <em>Information Interchange</em> — a table published by a standards body so that different American computers and teletypes could exchange text and agree on what each number meant.</p>
+<ul><li>7-bit encoding: 128 code points (0–127)</li><li>Code points 0–31: control characters (newline, tab, etc.)</li><li>Code points 32–127: printable characters (letters, digits, punctuation)</li></ul>
+<div class="tablewrap"><table><thead><tr><th>Character</th><th>Decimal</th><th>Binary</th></tr></thead><tbody><tr><td>'A'</td><td>65</td><td>0100 0001</td></tr><tr><td>'a'</td><td>97</td><td>0110 0001</td></tr><tr><td>'0'</td><td>48</td><td>0011 0000</td></tr><tr><td>Space</td><td>32</td><td>0010 0000</td></tr></tbody></table></div>
+<p>Note: uppercase and lowercase letters differ by exactly 1 bit (bit 5).</p>
+<p><strong>Worked example — encoding a word in ASCII.</strong> Each character becomes one byte by looking up its code point:</p>
+<div class="tablewrap"><table><thead><tr><th>Character</th><th><code>H</code></th><th><code>i</code></th><th><code>!</code></th></tr></thead><tbody><tr><td>Decimal</td><td>72</td><td>105</td><td>33</td></tr><tr><td>Binary (byte)</td><td>0100 1000</td><td>0110 1001</td><td>0010 0001</td></tr></tbody></table></div>
+<p>So the text <code>Hi!</code> is stored as the three bytes <code>01001000 01101001 00100001</code>.</p>
+<p><strong>The limitation.</strong> ASCII defines only 128 characters — enough for English letters, digits and punctuation, but with <strong>no</strong> Cyrillic, Arabic, Chinese, or even accented Latin letters (é, ñ, ü). Extended ASCII (8-bit, code points 128–255) tried to add national characters, but different countries filled the upper 128 slots with <strong>different</strong> tables ("code pages": Windows-1251 for Cyrillic, ISO-8859-6 for Arabic, …). The same byte 200 meant one letter in Moscow and another in Cairo — the very ambiguity a standard is supposed to remove. <strong>A single, universal table was needed. That table is Unicode.</strong></p>
+<h3>5.2 Unicode</h3>
+<p>Unicode assigns a unique <strong>code point</strong> (U+XXXX) to every character in every writing system: Latin, Cyrillic, Arabic, Chinese, emoji, etc. Unicode 15.1 (2023) covers 149,813 characters.</p>
+<h3>5.3 UTF-8 (Unicode Transformation Format, 8-bit)</h3>
+<p>Unicode says <em>which number</em> each character has; <strong>UTF-8 says how to store that number as bytes.</strong> The name means <strong>Unicode Transformation Format using 8-bit units</strong> — a <em>rule for transforming</em> a code point (U+XXXX) into a sequence of bytes. It is the dominant encoding on the web (over 98% of all web pages).</p>
+<p>UTF-8 is <strong>variable-width</strong>: a character takes 1 to 4 bytes depending on its code point. The leading bits of the first byte announce how many bytes follow, so a reader always knows where one character ends and the next begins:</p>
+<div class="tablewrap"><table><thead><tr><th>Code point range</th><th>Bytes</th><th>Bit pattern</th></tr></thead><tbody><tr><td>U+0000 – U+007F</td><td>1</td><td>0xxxxxxx</td></tr><tr><td>U+0080 – U+07FF</td><td>2</td><td>110xxxxx 10xxxxxx</td></tr><tr><td>U+0800 – U+FFFF</td><td>3</td><td>1110xxxx 10xxxxxx 10xxxxxx</td></tr><tr><td>U+10000 – U+10FFFF</td><td>4</td><td>11110xxx 10xxxxxx 10xxxxxx 10xxxxxx</td></tr></tbody></table></div>
+<p><strong>Worked example — encoding Cyrillic <code>А</code> (U+0410).</strong> The code point 0x0410 = 1040 falls in the 2-byte range (U+0080–U+07FF), so we use the pattern <code>110xxxxx 10xxxxxx</code>:</p>
+<ol><li>Code point in binary (11 bits): <code>100 0001 0000</code></li><li>Pour the bits into the <code>x</code> slots, left to right: <code>110</code><strong><code>00100</code></strong> <code>10</code><strong><code>010000</code></strong></li><li>Result: <strong><code>11010000 10010000</code></strong> = bytes <code>0xD0 0x90</code></li></ol>
+<p>So Cyrillic <code>А</code> takes <strong>two</strong> bytes in UTF-8, while Latin <code>A</code> (U+0041) takes just <strong>one</strong> (<code>01000001</code>). Arabic letters (U+0600–U+06FF) also fall in the 2-byte range.</p>
+<p><strong>Why UTF-8 won — the properties that made it the standard:</strong></p>
+<ul><li><strong>Backward-compatible with ASCII:</strong> every code point 0–127 is stored as the <em>same single byte</em> ASCII used. Every existing English text file is <em>already</em> valid UTF-8 — nothing had to be re-encoded.</li><li><strong>No wasted space for common text:</strong> English stays 1 byte per character; only non-Latin characters pay for extra bytes.</li><li><strong>Self-synchronizing:</strong> because continuation bytes always start with <code>10</code>, a program can find character boundaries even if it starts reading in the middle of a stream.</li><li><strong>Universal:</strong> one encoding covers <em>every</em> writing system, so the mojibake problem of competing code pages disappears — this is the whole payoff of Section 5.0.</li></ul>
+<h3>5.4 Other Encodings</h3>
+<div class="tablewrap"><table><thead><tr><th>Encoding</th><th>Description</th></tr></thead><tbody><tr><td>UTF-16</td><td>2 or 4 bytes per character; used internally by Windows, Java</td></tr><tr><td>UTF-32</td><td>Fixed 4 bytes per character; simple but space-inefficient</td></tr><tr><td>Windows-1251</td><td>8-bit encoding for Cyrillic; legacy, largely replaced by UTF-8</td></tr></tbody></table></div>
+<hr>
+<h2>6. Summary Table</h2>
+<div class="tablewrap"><table><thead><tr><th>Topic</th><th>Key fact</th></tr></thead><tbody><tr><td>Information unit</td><td>1 bit = one binary decision</td></tr><tr><td>Binary ↔ hex</td><td>4 bits = 1 hex digit</td></tr><tr><td>Unsigned 8-bit</td><td>0 – 255</td></tr><tr><td>Signed 8-bit (two's complement)</td><td>−128 – +127</td></tr><tr><td>float (32-bit IEEE 754)</td><td>~7 decimal digits precision</td></tr><tr><td>double (64-bit IEEE 754)</td><td>~15 decimal digits precision</td></tr><tr><td>ASCII</td><td>7-bit, 128 characters</td></tr><tr><td>UTF-8</td><td>1–4 bytes, backward-compatible with ASCII</td></tr></tbody></table></div>
+<hr>
+<h2>Practice Problems</h2>
+<ol><li>Convert 173 to binary, octal, and hexadecimal.</li><li>Convert 0b10110101 to decimal.</li><li>Represent −53 in 8-bit two's complement.</li><li>Compute 0b01001010 + 0b00110111 in binary. Check in decimal.</li><li>What is the ASCII code of 'Z'? Of 'z'? What is the difference?</li><li>How many bytes does the UTF-8 encoding of the character 'А' (Cyrillic А, U+0410) use?</li></ol>
+<hr>
+<h2>Key Terms</h2>
+<div class="tablewrap"><table><thead><tr><th>Term</th><th>Definition</th></tr></thead><tbody><tr><td>Bit</td><td>Smallest unit of information (0 or 1)</td></tr><tr><td>Byte</td><td>8 bits</td></tr><tr><td>Binary</td><td>Base-2 number system</td></tr><tr><td>Hexadecimal</td><td>Base-16 number system</td></tr><tr><td>Two's complement</td><td>Standard signed integer encoding</td></tr><tr><td>IEEE 754</td><td>Standard for floating-point representation</td></tr><tr><td>ASCII</td><td>7-bit character encoding for English</td></tr><tr><td>Unicode</td><td>Universal character set for all languages</td></tr><tr><td>UTF-8</td><td>Variable-width Unicode encoding (1–4 bytes)</td></tr><tr><td>Overflow</td><td>Result too large for the allocated bits</td></tr><tr><td>MSB</td><td>Most Significant Bit (leftmost)</td></tr><tr><td>LSB</td><td>Least Significant Bit (rightmost)</td></tr></tbody></table></div>
+<hr>
+<p><em>Next session (Practice 1.1): Representation of integer data in a computer — hands-on exercises.</em></p>
+  </article>
+
+  <nav class="chapnav">
+    <a href="index.html">← Contents</a>
+    <a href="lecture-01.html">Interactive Lecture 1 →</a>
+  </nav>
+</div>
+
+<footer>
+  Introduction to Computer Science and Artificial Intelligence · Lecture 1 handout<br>
+  &copy; 2026 Dr. Ali Mahmoud Mansour · All rights reserved. Content &amp; concept: Dr. Ali Mahmoud Mansour · Co-created with Claude (Anthropic).<span aria-hidden="true">⁠​‌​​‌‌‌‌​‌​‌​‌‌‌​‌​​‌‌‌​​‌​​​‌​‌​‌​‌​​‌​​​‌‌‌‌​‌​‌​​​​​‌​‌​​‌‌​​​‌​​‌​​‌​​‌​‌‌​‌​‌​​‌‌​‌​‌​​​​​‌​‌​​‌​​​​‌​​‌‌​‌​‌​​‌‌‌‌​‌​‌​‌​‌​‌​​​‌​​​​‌​‌‌​‌​‌​​‌‌​‌​‌​​​​​‌​‌​​‌‌‌​​‌​‌​​‌‌​‌​​‌‌‌‌​‌​‌​‌​‌​‌​‌​​‌​​​‌‌‌​‌‌​‌​​​​‌‌​‌​​‌‌‌‌​​‌​‌‌​‌​‌​​​​‌‌​‌​‌​​‌​​‌​​​‌​‌​‌​​​​​‌​‌​‌​‌​​​‌​​‌‌‌‌​‌​‌​​‌​​​‌‌‌‌​‌​‌​​​​‌‌​‌​​‌‌​​​‌​​​​​‌​‌​‌​‌​‌​‌​​​‌​​​‌​​​‌​‌​​‌‌‌​‌‌​‌​‌‌​​‌​‌​​​‌​‌​‌​​​​​‌​‌​‌​​‌​​​‌‌‌‌​‌​​‌‌​​‌​​​‌‌​​​​​​‌‌​​‌​​​‌‌​‌‌​⁠</span>
+</footer>
+
+</body>
+</html>

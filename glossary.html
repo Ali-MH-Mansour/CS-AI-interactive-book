@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Course Terms Glossary — Introduction to Computer Science and Artificial Intelligence</title>
+<style>
+  :root{
+    --bg:#faf7f2; --panel:#ffffff; --ink:#1d2430; --muted:#5c6675;
+    --line:#e7e0d6; --accent:#c8622a; --accent-soft:#f6e4d6;
+    --blue:#2f6db3; --blue-soft:#e3eef9; --green:#2f8f5b; --green-soft:#e2f2e9;
+    --shadow:0 10px 30px rgba(40,30,20,.08), 0 2px 6px rgba(40,30,20,.05);
+    --radius:16px; --serif:"Iowan Old Style",Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Mono","Fira Code",Menlo,Consolas,monospace;
+    --zebra:#fbf8f3;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#15181d; --panel:#1e232b; --ink:#eef1f5; --muted:#9aa4b2;
+      --line:#2c333d; --accent:#e08a52; --accent-soft:#38271c;
+      --blue:#69a6e6; --blue-soft:#1c2a3a; --green:#6fce97; --green-soft:#172a20;
+      --shadow:0 10px 30px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.3);
+      --zebra:#232932;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;margin:0}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px 90px}
+
+  header.mast{
+    background:linear-gradient(135deg,var(--accent) 0%,#a84c1f 100%);
+    color:#fff;padding:54px 22px 46px;text-align:center;position:relative;overflow:hidden}
+  header.mast::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 20% 120%,rgba(255,255,255,.18),transparent 45%);pointer-events:none}
+  .mast .kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;opacity:.9}
+  .mast h1{font-family:var(--serif);font-size:clamp(1.5rem,4vw,2.3rem);margin:.15em 0 .2em;font-weight:600;letter-spacing:-.01em}
+  .mast .sub{opacity:.92;font-size:1.02rem;max-width:720px;margin:.3em auto 0}
+  .mast .portrait{width:84px;height:84px;border-radius:50%;object-fit:cover;
+    border:3px solid rgba(255,255,255,.85);box-shadow:0 4px 14px rgba(0,0,0,.25);
+    margin:20px auto 0;display:block;background:rgba(255,255,255,.15)}
+  .mast .byline{margin-top:12px;font-size:.9rem;opacity:.95}
+  .mast .byline a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+
+  .crumb{max-width:1040px;margin:18px auto 0;padding:0 22px}
+  .crumb a{color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}
+  .crumb a:hover{text-decoration:underline}
+
+  .intro{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:24px clamp(18px,3.5vw,36px);margin-top:22px}
+  .intro h2{font-family:var(--serif);font-size:1.3rem;margin:.1em 0 .5em;font-weight:600}
+  .intro p{margin:.7em 0;font-size:1rem}
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .legend span{background:var(--accent-soft);color:var(--accent);border-radius:999px;
+    padding:4px 12px;font-size:.8rem;font-weight:600}
+
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:20px clamp(18px,3.5vw,32px);margin-top:22px}
+  .toc h2{font-family:var(--serif);font-size:1.2rem;margin:0 0 12px;font-weight:600}
+  .toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  a.jump{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;
+    border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.95rem;
+    transition:transform .12s,border-color .12s}
+  a.jump:hover{transform:translateY(-2px);border-color:var(--accent)}
+  a.jump .jn{font-family:var(--mono);font-weight:700;font-size:.75rem;color:var(--accent);
+    background:var(--accent-soft);border-radius:6px;padding:3px 7px;flex:none}
+
+  .lecblock{margin-top:44px}
+  .lech{font-family:var(--serif);font-size:1.32rem;font-weight:600;margin:0 0 2px;
+    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .lecnum{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);font-weight:700}
+  .lecar{color:var(--muted);font-size:1rem;margin:0 0 14px}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);background:var(--panel)}
+  table{border-collapse:collapse;width:100%;min-width:820px;font-size:.9rem}
+  thead th{position:sticky;top:0;background:var(--accent);color:#fff;text-align:start;
+    font-weight:600;padding:10px 12px;font-size:.82rem;white-space:nowrap;z-index:1}
+  tbody td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--zebra)}
+  td.term{font-weight:600;font-family:var(--serif)}
+  td.ar{font-size:1.02rem}
+  td.sec{color:var(--muted);font-size:.82rem;white-space:nowrap}
+
+  .backtop{display:inline-block;margin-top:10px;color:var(--accent);text-decoration:none;
+    font-size:.82rem;font-weight:600}
+  .backtop:hover{text-decoration:underline}
+
+  footer{max-width:1040px;margin:44px auto 0;padding:0 22px;color:var(--muted);
+    font-size:.85rem;text-align:center;line-height:1.7}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "Course Terms Glossary — Introduction to Computer Science and Artificial Intelligence (\u041e\u0441\u043d\u043e\u0432\u044b \u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u043d\u044b\u0445 \u043d\u0430\u0443\u043a \u0438 \u0438\u0441\u043a\u0443\u0441\u0441\u0442\u0432\u0435\u043d\u043d\u043e\u0433\u043e \u0438\u043d\u0442\u0435\u043b\u043b\u0435\u043a\u0442\u0430)",
+  "inLanguage": ["en","ru","ar","pt","es","fr"],
+  "isPartOf": { "@type": "CreativeWork", "name": "Introduction to Computer Science and Artificial Intelligence" },
+  "copyrightYear": 2026,
+  "copyrightHolder": { "@type": "Person", "name": "Dr. Ali Mahmoud Mansour", "url": "https://sfedu.ru/s7/person/ru/mansur" },
+  "creator":         { "@type": "Person", "name": "Dr. Ali Mahmoud Mansour", "url": "https://sfedu.ru/s7/person/ru/mansur" },
+  "author":          { "@type": "Person", "name": "Dr. Ali Mahmoud Mansour" },
+  "contributor":     { "@type": "Person", "name": "Claude (Anthropic)" },
+  "publisher":       { "@type": "Person", "name": "Dr. Ali Mahmoud Mansour" },
+  "copyrightNotice": "\u00a9 2026 Dr. Ali Mahmoud Mansour. All rights reserved.",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "creditText": "Content and concept by Dr. Ali Mahmoud Mansour; co-created with Claude (Anthropic).",
+  "identifier": "OWNER=ALI-MAHMOUD-MANSOUR;CO-CREATOR=CLAUDE;YEAR=2026"
+}
+</script>
+</head>
+<body id="top">
+
+<header class="mast">
+  <div class="kicker">Multilingual study aid</div>
+  <h1>Course Terms Glossary</h1>
+  <div class="sub">Every technical term introduced in the course, with its translation into Russian, Arabic, Portuguese, Spanish and French — grouped by lecture, for students to follow the terminology in their own language.</div>
+  <img class="portrait" src="images/instructor.png" alt="Dr. Ali Mahmoud Mansour" onerror="this.style.display='none'">
+  <div class="byline">Dr. Ali Mahmoud Mansour · PhD in Artificial Intelligence and Machine Learning · <a href="https://sfedu.ru/s7/person/ru/mansur" target="_blank" rel="noopener">Personal page</a></div>
+</header>
+
+<div class="crumb"><a href="index.html">← Back to Contents</a></div>
+
+<div class="wrap">
+
+  <section class="intro">
+    <h2>About this glossary</h2>
+    <p>This glossary collects the English technical terms from each lecture and gives each one in five more languages, so you can follow the vocabulary of the course whichever language you think in. Terms are grouped by the lecture where they appear, and a term that recurs in a later lecture is listed again there. The last column tells you where in the lecture each term is used.</p>
+    <p>The page works offline once it has opened — nothing is loaded from the internet. Use the contents below to jump straight to a lecture.</p>
+    <div class="legend"><span>EN English</span><span>RU Русский</span><span>AR العربية</span><span>PT Português</span><span>ES Español</span><span>FR Français</span></div>
+  </section>
+
+  <nav class="toc">
+    <h2>Contents</h2>
+    <div class="toc-grid">
+      <a class="jump" href="#lec1"><span class="jn">L1</span>Information, Data Representation, and Number Operations</a>
+      <a class="jump" href="#lec2"><span class="jn">L2</span>Computer Architecture and System Software</a>
+      <a class="jump" href="#lec3"><span class="jn">L3</span>Algorithmization and Foundations of Programming</a>
+      <a class="jump" href="#lec4"><span class="jn">L4</span>The Software Life Cycle, Code Translation, Testing and Development Methodologies</a>
+      <a class="jump" href="#lec5"><span class="jn">L5</span>Information Security Fundamentals</a>
+      <a class="jump" href="#lec6"><span class="jn">L6</span>Computer Networks</a>
+      <a class="jump" href="#lec7"><span class="jn">L7</span>Introduction to Artificial Intelligence</a>
+      <a class="jump" href="#lec8"><span class="jn">L8</span>The Mathematics of Machine Learning</a>
+    </div>
+  </nav>
+
+  <section class="lecblock" id="lec1">
+    <h2 class="lech"><span class="lecnum">Lecture 1</span>Information, Data Representation, and Number Operations</h2>
+    <p class="lecar" lang="ar" dir="rtl">المحاضرة 1 — المعلومات وتمثيل البيانات والعمليات العددية</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>English</th><th>Русский (ru)</th><th>العربية (ar)</th><th>Português (pt)</th><th>Español (es)</th><th>Français (fr)</th><th>Section / where it appears</th></tr></thead>
+        <tbody>
+          <tr><td class="term">Information</td><td>Информация</td><td lang="ar" dir="rtl" class="ar">معلومات</td><td>Informação</td><td>Información</td><td>Information</td><td class="sec">§1 What Is Information? · Key Terms</td></tr>
+          <tr><td class="term">Data</td><td>Данные</td><td lang="ar" dir="rtl" class="ar">بيانات</td><td>Dados</td><td>Datos</td><td>Données</td><td class="sec">§1 What Is Information?</td></tr>
+          <tr><td class="term">Knowledge</td><td>Знание</td><td lang="ar" dir="rtl" class="ar">معرفة</td><td>Conhecimento</td><td>Conocimiento</td><td>Connaissance</td><td class="sec">§1 What Is Information?</td></tr>
+          <tr><td class="term">Bit</td><td>Бит</td><td lang="ar" dir="rtl" class="ar">بِت</td><td>Bit</td><td>Bit</td><td>Bit</td><td class="sec">§1 Shannon's Bit · Key Terms</td></tr>
+          <tr><td class="term">Byte</td><td>Байт</td><td lang="ar" dir="rtl" class="ar">بايت</td><td>Byte</td><td>Byte</td><td>Octet</td><td class="sec">§1 Practical units · Key Terms</td></tr>
+          <tr><td class="term">Binary (base-2)</td><td>Двоичная система</td><td lang="ar" dir="rtl" class="ar">نظام ثنائي</td><td>Binário</td><td>Binario</td><td>Binaire</td><td class="sec">§2 Positional Number Systems · Key Terms</td></tr>
+          <tr><td class="term">Decimal</td><td>Десятичная система</td><td lang="ar" dir="rtl" class="ar">نظام عشري</td><td>Decimal</td><td>Decimal</td><td>Décimal</td><td class="sec">§2 Positional Number Systems</td></tr>
+          <tr><td class="term">Octal</td><td>Восьмеричная система</td><td lang="ar" dir="rtl" class="ar">نظام ثماني</td><td>Octal</td><td>Octal</td><td>Octal</td><td class="sec">§2 Positional Number Systems</td></tr>
+          <tr><td class="term">Hexadecimal</td><td>Шестнадцатеричная система</td><td lang="ar" dir="rtl" class="ar">نظام ست عشري</td><td>Hexadecimal</td><td>Hexadecimal</td><td>Hexadécimal</td><td class="sec">§2 · Key Terms</td></tr>
+          <tr><td class="term">Positional number system</td><td>Позиционная система счисления</td><td lang="ar" dir="rtl" class="ar">نظام عددي موضعي</td><td>Sistema de numeração posicional</td><td>Sistema de numeración posicional</td><td>Système de numération positionnel</td><td class="sec">§2 Positional Number Systems</td></tr>
+          <tr><td class="term">Nibble</td><td>Полубайт (ниббл)</td><td lang="ar" dir="rtl" class="ar">نِبل (نصف بايت)</td><td>Nibble</td><td>Nibble</td><td>Quartet</td><td class="sec">§2 Binary → Hexadecimal</td></tr>
+          <tr><td class="term">Unsigned integer</td><td>Беззнаковое целое</td><td lang="ar" dir="rtl" class="ar">عدد صحيح بلا إشارة</td><td>Inteiro sem sinal</td><td>Entero sin signo</td><td>Entier non signé</td><td class="sec">§3.1 Unsigned Integers</td></tr>
+          <tr><td class="term">Sign-magnitude</td><td>Прямой код (знак-величина)</td><td lang="ar" dir="rtl" class="ar">الإشارة والمقدار</td><td>Sinal-magnitude</td><td>Signo-magnitud</td><td>Signe-magnitude</td><td class="sec">§3.2 Sign-Magnitude</td></tr>
+          <tr><td class="term">Most Significant Bit (MSB)</td><td>Старший бит (MSB)</td><td lang="ar" dir="rtl" class="ar">البِت الأكثر أهمية</td><td>Bit mais significativo</td><td>Bit más significativo</td><td>Bit de poids fort</td><td class="sec">§3.2 · Key Terms</td></tr>
+          <tr><td class="term">Least Significant Bit (LSB)</td><td>Младший бит (LSB)</td><td lang="ar" dir="rtl" class="ar">البِت الأقل أهمية</td><td>Bit menos significativo</td><td>Bit menos significativo</td><td>Bit de poids faible</td><td class="sec">Key Terms</td></tr>
+          <tr><td class="term">Two's complement</td><td>Дополнительный код</td><td lang="ar" dir="rtl" class="ar">المتمِّم الثنائي (متمِّم الاثنين)</td><td>Complemento de dois</td><td>Complemento a dos</td><td>Complément à deux</td><td class="sec">§3.3 · Key Terms</td></tr>
+          <tr><td class="term">One's complement</td><td>Обратный код</td><td lang="ar" dir="rtl" class="ar">المتمِّم الأحادي (متمِّم الواحد)</td><td>Complemento de um</td><td>Complemento a uno</td><td>Complément à un</td><td class="sec">§3.3 Two's Complement (Flip = one's complement)</td></tr>
+          <tr><td class="term">Binary addition</td><td>Двоичное сложение</td><td lang="ar" dir="rtl" class="ar">الجمع الثنائي</td><td>Adição binária</td><td>Suma binaria</td><td>Addition binaire</td><td class="sec">§3.4 Binary Addition</td></tr>
+          <tr><td class="term">Carry</td><td>Перенос</td><td lang="ar" dir="rtl" class="ar">الحمل (الترحيل)</td><td>Vai-um (carry)</td><td>Acarreo</td><td>Retenue</td><td class="sec">§3.4 Binary Addition</td></tr>
+          <tr><td class="term">IEEE 754</td><td>IEEE 754</td><td lang="ar" dir="rtl" class="ar">IEEE 754</td><td>IEEE 754</td><td>IEEE 754</td><td>IEEE 754</td><td class="sec">§4 · Key Terms</td></tr>
+          <tr><td class="term">Floating-point</td><td>Число с плавающей точкой</td><td lang="ar" dir="rtl" class="ar">الفاصلة العائمة</td><td>Ponto flutuante</td><td>Punto flotante</td><td>Virgule flottante</td><td class="sec">§4 IEEE 754 Floating-Point</td></tr>
+          <tr><td class="term">Mantissa</td><td>Мантисса</td><td lang="ar" dir="rtl" class="ar">المانتيسا (الجزء الكسري)</td><td>Mantissa</td><td>Mantisa</td><td>Mantisse</td><td class="sec">§4 32-Bit Single Precision</td></tr>
+          <tr><td class="term">Exponent</td><td>Экспонента (порядок)</td><td lang="ar" dir="rtl" class="ar">الأُس</td><td>Expoente</td><td>Exponente</td><td>Exposant</td><td class="sec">§4 32-Bit Single Precision</td></tr>
+          <tr><td class="term">Bias</td><td>Смещение</td><td lang="ar" dir="rtl" class="ar">الانحياز</td><td>Viés (bias)</td><td>Sesgo</td><td>Biais</td><td class="sec">§4 Exponent biased by 127</td></tr>
+          <tr><td class="term">Single precision (float)</td><td>Одинарная точность</td><td lang="ar" dir="rtl" class="ar">الدقة الأحادية</td><td>Precisão simples</td><td>Precisión simple</td><td>Simple précision</td><td class="sec">§4 32-Bit Single Precision</td></tr>
+          <tr><td class="term">Double precision (double)</td><td>Двойная точность</td><td lang="ar" dir="rtl" class="ar">الدقة المزدوجة</td><td>Precisão dupla</td><td>Precisión doble</td><td>Double précision</td><td class="sec">§4 64-Bit Double Precision</td></tr>
+          <tr><td class="term">Normalization</td><td>Нормализация</td><td lang="ar" dir="rtl" class="ar">التسوية (التطبيع)</td><td>Normalização</td><td>Normalización</td><td>Normalisation</td><td class="sec">§4 Encoding algorithm — Step 5</td></tr>
+          <tr><td class="term">Overflow</td><td>Переполнение</td><td lang="ar" dir="rtl" class="ar">تجاوز السعة (الفيضان)</td><td>Estouro (overflow)</td><td>Desbordamiento</td><td>Débordement</td><td class="sec">§4 Common Pitfalls · Key Terms</td></tr>
+          <tr><td class="term">Underflow</td><td>Потеря значимости</td><td lang="ar" dir="rtl" class="ar">نقص السعة</td><td>Subfluxo (underflow)</td><td>Subdesbordamiento</td><td>Soupassement</td><td class="sec">§4 Common Pitfalls</td></tr>
+          <tr><td class="term">NaN (Not a Number)</td><td>Не число (NaN)</td><td lang="ar" dir="rtl" class="ar">ليس رقمًا (NaN)</td><td>Não é um número (NaN)</td><td>No es un número (NaN)</td><td>Pas un nombre (NaN)</td><td class="sec">§4 Common Pitfalls</td></tr>
+          <tr><td class="term">Character encoding</td><td>Кодировка символов</td><td lang="ar" dir="rtl" class="ar">ترميز المحارف</td><td>Codificação de caracteres</td><td>Codificación de caracteres</td><td>Codage de caractères</td><td class="sec">§5 Symbolic Information</td></tr>
+          <tr><td class="term">ASCII</td><td>ASCII</td><td lang="ar" dir="rtl" class="ar">ASCII</td><td>ASCII</td><td>ASCII</td><td>ASCII</td><td class="sec">§5.1 · Key Terms</td></tr>
+          <tr><td class="term">Unicode</td><td>Юникод</td><td lang="ar" dir="rtl" class="ar">يونيكود</td><td>Unicode</td><td>Unicode</td><td>Unicode</td><td class="sec">§5.2 · Key Terms</td></tr>
+          <tr><td class="term">Code point</td><td>Кодовая точка</td><td lang="ar" dir="rtl" class="ar">نقطة الترميز</td><td>Ponto de código</td><td>Punto de código</td><td>Point de code</td><td class="sec">§5.2 Unicode</td></tr>
+          <tr><td class="term">UTF-8</td><td>UTF-8</td><td lang="ar" dir="rtl" class="ar">UTF-8</td><td>UTF-8</td><td>UTF-8</td><td>UTF-8</td><td class="sec">§5.3 · Key Terms</td></tr>
+          <tr><td class="term">UTF-16</td><td>UTF-16</td><td lang="ar" dir="rtl" class="ar">UTF-16</td><td>UTF-16</td><td>UTF-16</td><td>UTF-16</td><td class="sec">§5.4 Other Encodings</td></tr>
+          <tr><td class="term">UTF-32</td><td>UTF-32</td><td lang="ar" dir="rtl" class="ar">UTF-32</td><td>UTF-32</td><td>UTF-32</td><td>UTF-32</td><td class="sec">§5.4 Other Encodings</td></tr>
+          <tr><td class="term">Mojibake</td><td>Кракозябры (mojibake)</td><td lang="ar" dir="rtl" class="ar">نص مشوَّه (موجيباكي)</td><td>Mojibake</td><td>Mojibake</td><td>Mojibake</td><td class="sec">§5.0 Why We Need a Standard</td></tr>
+          <tr><td class="term">Windows-1251</td><td>Windows-1251</td><td lang="ar" dir="rtl" class="ar">Windows-1251</td><td>Windows-1251</td><td>Windows-1251</td><td>Windows-1251</td><td class="sec">§5.4 Other Encodings</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <a class="backtop" href="#top">↑ Back to top</a>
+  </section>
+
+  <section class="lecblock" id="lec2">
+    <h2 class="lech"><span class="lecnum">Lecture 2</span>Computer Architecture and System Software</h2>
+    <p class="lecar" lang="ar" dir="rtl">المحاضرة 2 — بنية الحاسوب وبرمجيات النظام</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>English</th><th>Русский (ru)</th><th>العربية (ar)</th><th>Português (pt)</th><th>Español (es)</th><th>Français (fr)</th><th>Section / where it appears</th></tr></thead>
+        <tbody>
+          <tr><td class="term">Von Neumann architecture</td><td>Архитектура фон Неймана</td><td lang="ar" dir="rtl" class="ar">معمارية فون نيومان</td><td>Arquitetura de Von Neumann</td><td>Arquitectura de Von Neumann</td><td>Architecture de von Neumann</td><td class="sec">§1 · Key Terms</td></tr>
+          <tr><td class="term">Stored-program computer</td><td>Компьютер с хранимой программой</td><td lang="ar" dir="rtl" class="ar">حاسوب مخزَّن البرنامج</td><td>Computador de programa armazenado</td><td>Computadora de programa almacenado</td><td>Ordinateur à programme enregistré</td><td class="sec">§1 Von Neumann Model</td></tr>
+          <tr><td class="term">CPU (Central Processing Unit)</td><td>Центральный процессор (ЦП)</td><td lang="ar" dir="rtl" class="ar">وحدة المعالجة المركزية</td><td>Unidade central de processamento (CPU)</td><td>Unidad central de procesamiento (CPU)</td><td>Unité centrale de traitement (UCT)</td><td class="sec">§1 Main Components</td></tr>
+          <tr><td class="term">Memory (RAM)</td><td>Оперативная память (ОЗУ)</td><td lang="ar" dir="rtl" class="ar">الذاكرة (ذاكرة الوصول العشوائي)</td><td>Memória (RAM)</td><td>Memoria (RAM)</td><td>Mémoire (RAM)</td><td class="sec">§1 Main Components</td></tr>
+          <tr><td class="term">Storage (HDD/SSD)</td><td>Накопитель (HDD/SSD)</td><td lang="ar" dir="rtl" class="ar">التخزين (قرص صلب / SSD)</td><td>Armazenamento (HDD/SSD)</td><td>Almacenamiento (HDD/SSD)</td><td>Stockage (HDD/SSD)</td><td class="sec">§1 Main Components</td></tr>
+          <tr><td class="term">System bus</td><td>Системная шина</td><td lang="ar" dir="rtl" class="ar">ناقل النظام</td><td>Barramento do sistema</td><td>Bus del sistema</td><td>Bus système</td><td class="sec">§1 The System Bus</td></tr>
+          <tr><td class="term">Data bus</td><td>Шина данных</td><td lang="ar" dir="rtl" class="ar">ناقل البيانات</td><td>Barramento de dados</td><td>Bus de datos</td><td>Bus de données</td><td class="sec">§1 The System Bus</td></tr>
+          <tr><td class="term">Address bus</td><td>Шина адреса</td><td lang="ar" dir="rtl" class="ar">ناقل العناوين</td><td>Barramento de endereços</td><td>Bus de direcciones</td><td>Bus d'adresses</td><td class="sec">§1 The System Bus</td></tr>
+          <tr><td class="term">Control bus</td><td>Шина управления</td><td lang="ar" dir="rtl" class="ar">ناقل التحكم</td><td>Barramento de controle</td><td>Bus de control</td><td>Bus de commande</td><td class="sec">§1 The System Bus</td></tr>
+          <tr><td class="term">ALU (Arithmetic–Logic Unit)</td><td>Арифметико-логическое устройство (АЛУ)</td><td lang="ar" dir="rtl" class="ar">وحدة الحساب والمنطق</td><td>Unidade lógica e aritmética (ULA)</td><td>Unidad aritmético-lógica (ALU)</td><td>Unité arithmétique et logique (UAL)</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Control Unit (CU)</td><td>Устройство управления (УУ)</td><td lang="ar" dir="rtl" class="ar">وحدة التحكم</td><td>Unidade de controle</td><td>Unidad de control</td><td>Unité de commande</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Register</td><td>Регистр</td><td lang="ar" dir="rtl" class="ar">سِجل (مُسجِّل)</td><td>Registrador</td><td>Registro</td><td>Registre</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Program Counter (PC)</td><td>Счётчик команд</td><td lang="ar" dir="rtl" class="ar">عدّاد البرنامج</td><td>Contador de programa</td><td>Contador de programa</td><td>Compteur ordinal</td><td class="sec">§2.1 Key registers</td></tr>
+          <tr><td class="term">Instruction Register (IR)</td><td>Регистр команд</td><td lang="ar" dir="rtl" class="ar">سِجل التعليمة</td><td>Registrador de instrução</td><td>Registro de instrucción</td><td>Registre d'instruction</td><td class="sec">§2.1 Key registers</td></tr>
+          <tr><td class="term">Accumulator (ACC)</td><td>Аккумулятор</td><td lang="ar" dir="rtl" class="ar">المُراكِم</td><td>Acumulador</td><td>Acumulador</td><td>Accumulateur</td><td class="sec">§2.1 Key registers</td></tr>
+          <tr><td class="term">Fetch–decode–execute cycle</td><td>Цикл выборки–декодирования–исполнения</td><td lang="ar" dir="rtl" class="ar">دورة الجلب والفكّ والتنفيذ</td><td>Ciclo buscar–decodificar–executar</td><td>Ciclo captar–decodificar–ejecutar</td><td>Cycle chercher–décoder–exécuter</td><td class="sec">§2.2 · Key Terms</td></tr>
+          <tr><td class="term">Clock speed</td><td>Тактовая частота</td><td lang="ar" dir="rtl" class="ar">سرعة الساعة (التردّد)</td><td>Velocidade de clock</td><td>Velocidad de reloj</td><td>Fréquence d'horloge</td><td class="sec">§2.3 Clock Speed</td></tr>
+          <tr><td class="term">Pipelining</td><td>Конвейеризация</td><td lang="ar" dir="rtl" class="ar">المعالجة الأنبوبية (خط الأنابيب)</td><td>Pipelining</td><td>Segmentación (pipelining)</td><td>Pipeline</td><td class="sec">§2.3 Clock Speed and Performance</td></tr>
+          <tr><td class="term">Superscalar execution</td><td>Суперскалярное исполнение</td><td lang="ar" dir="rtl" class="ar">التنفيذ الفائق العدد</td><td>Execução superescalar</td><td>Ejecución superescalar</td><td>Exécution superscalaire</td><td class="sec">§2.3 Clock Speed and Performance</td></tr>
+          <tr><td class="term">Core</td><td>Ядро (процессора)</td><td lang="ar" dir="rtl" class="ar">نواة (المعالج)</td><td>Núcleo</td><td>Núcleo</td><td>Cœur</td><td class="sec">§2.3 Multiple cores</td></tr>
+          <tr><td class="term">Memory hierarchy</td><td>Иерархия памяти</td><td lang="ar" dir="rtl" class="ar">التسلسل الهرمي للذاكرة</td><td>Hierarquia de memória</td><td>Jerarquía de memoria</td><td>Hiérarchie mémoire</td><td class="sec">§3 Memory Hierarchy</td></tr>
+          <tr><td class="term">Cache</td><td>Кэш</td><td lang="ar" dir="rtl" class="ar">الذاكرة المخبأية (الكاش)</td><td>Cache</td><td>Caché</td><td>Cache</td><td class="sec">§3 Cache Memory · Key Terms</td></tr>
+          <tr><td class="term">Cache hit / miss</td><td>Попадание / промах кэша</td><td lang="ar" dir="rtl" class="ar">إصابة / إخفاق الكاش</td><td>Acerto / falha de cache</td><td>Acierto / fallo de caché</td><td>Succès / défaut de cache</td><td class="sec">§3 · Key Terms</td></tr>
+          <tr><td class="term">Principle of locality</td><td>Принцип локальности</td><td lang="ar" dir="rtl" class="ar">مبدأ المحلية (القُرب)</td><td>Princípio da localidade</td><td>Principio de localidad</td><td>Principe de localité</td><td class="sec">§3 Cache Memory</td></tr>
+          <tr><td class="term">System software</td><td>Системное программное обеспечение</td><td lang="ar" dir="rtl" class="ar">برمجيات النظام</td><td>Software de sistema</td><td>Software de sistema</td><td>Logiciel système</td><td class="sec">§4 System Software</td></tr>
+          <tr><td class="term">Operating System (OS)</td><td>Операционная система (ОС)</td><td lang="ar" dir="rtl" class="ar">نظام التشغيل</td><td>Sistema operacional</td><td>Sistema operativo</td><td>Système d'exploitation</td><td class="sec">§4.1 The Operating System</td></tr>
+          <tr><td class="term">Kernel</td><td>Ядро (ОС)</td><td lang="ar" dir="rtl" class="ar">النواة</td><td>Núcleo (kernel)</td><td>Núcleo (kernel)</td><td>Noyau</td><td class="sec">§4.2 · Key Terms</td></tr>
+          <tr><td class="term">System call</td><td>Системный вызов</td><td lang="ar" dir="rtl" class="ar">استدعاء النظام</td><td>Chamada de sistema</td><td>Llamada al sistema</td><td>Appel système</td><td class="sec">§4.2 · Key Terms</td></tr>
+          <tr><td class="term">File system</td><td>Файловая система</td><td lang="ar" dir="rtl" class="ar">نظام الملفات</td><td>Sistema de arquivos</td><td>Sistema de archivos</td><td>Système de fichiers</td><td class="sec">§4.3 File Systems</td></tr>
+          <tr><td class="term">Cloud computing</td><td>Облачные вычисления</td><td lang="ar" dir="rtl" class="ar">الحوسبة السحابية</td><td>Computação em nuvem</td><td>Computación en la nube</td><td>Informatique en nuage</td><td class="sec">§5 Cloud Computing</td></tr>
+          <tr><td class="term">IaaS / PaaS / SaaS</td><td>IaaS / PaaS / SaaS</td><td lang="ar" dir="rtl" class="ar">البنية / المنصة / البرمجيات كخدمة</td><td>IaaS / PaaS / SaaS</td><td>IaaS / PaaS / SaaS</td><td>IaaS / PaaS / SaaS</td><td class="sec">§5.1 · Key Terms</td></tr>
+          <tr><td class="term">Virtualisation</td><td>Виртуализация</td><td lang="ar" dir="rtl" class="ar">المحاكاة الافتراضية (الأَفْتَرة)</td><td>Virtualização</td><td>Virtualización</td><td>Virtualisation</td><td class="sec">§5.3 · Key Terms</td></tr>
+          <tr><td class="term">Virtual machine (VM)</td><td>Виртуальная машина</td><td lang="ar" dir="rtl" class="ar">الآلة الافتراضية</td><td>Máquina virtual</td><td>Máquina virtual</td><td>Machine virtuelle</td><td class="sec">§5.3 Virtualisation</td></tr>
+          <tr><td class="term">Container</td><td>Контейнер</td><td lang="ar" dir="rtl" class="ar">الحاوية</td><td>Contêiner</td><td>Contenedor</td><td>Conteneur</td><td class="sec">§5.3 Containers (Docker)</td></tr>
+          <tr><td class="term">GPU</td><td>Графический процессор (GPU)</td><td lang="ar" dir="rtl" class="ar">وحدة معالجة الرسوميات</td><td>Unidade de processamento gráfico (GPU)</td><td>Unidad de procesamiento gráfico (GPU)</td><td>Processeur graphique (GPU)</td><td class="sec">§6 · Key Terms</td></tr>
+          <tr><td class="term">Thread</td><td>Поток</td><td lang="ar" dir="rtl" class="ar">الخيط (المسار)</td><td>Thread (linha de execução)</td><td>Hilo</td><td>Fil (thread)</td><td class="sec">§6.3 · Key Terms</td></tr>
+          <tr><td class="term">Process</td><td>Процесс</td><td lang="ar" dir="rtl" class="ar">العملية</td><td>Processo</td><td>Proceso</td><td>Processus</td><td class="sec">§6.3 Parallel Computing Concepts</td></tr>
+          <tr><td class="term">Parallelism</td><td>Параллелизм</td><td lang="ar" dir="rtl" class="ar">التوازي</td><td>Paralelismo</td><td>Paralelismo</td><td>Parallélisme</td><td class="sec">§6.3 Parallel Computing Concepts</td></tr>
+          <tr><td class="term">Concurrency</td><td>Конкурентность</td><td lang="ar" dir="rtl" class="ar">التزامن</td><td>Concorrência</td><td>Concurrencia</td><td>Concurrence</td><td class="sec">§6.3 Parallel Computing Concepts</td></tr>
+          <tr><td class="term">SIMD</td><td>SIMD</td><td lang="ar" dir="rtl" class="ar">SIMD (تعليمة واحدة، بيانات متعددة)</td><td>SIMD</td><td>SIMD</td><td>SIMD</td><td class="sec">§6.3 · Key Terms</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <a class="backtop" href="#top">↑ Back to top</a>
+  </section>
+
+  <section class="lecblock" id="lec3">
+    <h2 class="lech"><span class="lecnum">Lecture 3</span>Algorithmization and Foundations of Programming</h2>
+    <p class="lecar" lang="ar" dir="rtl">المحاضرة 3 — الخوارزميات وأساسيات البرمجة</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>English</th><th>Русский (ru)</th><th>العربية (ar)</th><th>Português (pt)</th><th>Español (es)</th><th>Français (fr)</th><th>Section / where it appears</th></tr></thead>
+        <tbody>
+          <tr><td class="term">Algorithm</td><td>Алгоритм</td><td lang="ar" dir="rtl" class="ar">خوارزمية</td><td>Algoritmo</td><td>Algoritmo</td><td>Algorithme</td><td class="sec">§1 · Key Terms</td></tr>
+          <tr><td class="term">Finiteness</td><td>Конечность</td><td lang="ar" dir="rtl" class="ar">المحدودية (الانتهائية)</td><td>Finitude</td><td>Finitud</td><td>Finitude</td><td class="sec">§1.1 Essential Properties</td></tr>
+          <tr><td class="term">Definiteness</td><td>Определённость</td><td lang="ar" dir="rtl" class="ar">التحديد (عدم الغموض)</td><td>Definição (não-ambiguidade)</td><td>Definición (no ambigüedad)</td><td>Définitude</td><td class="sec">§1.1 Essential Properties</td></tr>
+          <tr><td class="term">Effectiveness</td><td>Результативность</td><td lang="ar" dir="rtl" class="ar">الفعالية</td><td>Efetividade</td><td>Efectividad</td><td>Effectivité</td><td class="sec">§1.1 Essential Properties</td></tr>
+          <tr><td class="term">Program</td><td>Программа</td><td lang="ar" dir="rtl" class="ar">برنامج</td><td>Programa</td><td>Programa</td><td>Programme</td><td class="sec">§1.2 Algorithm vs Program vs Process</td></tr>
+          <tr><td class="term">Process</td><td>Процесс</td><td lang="ar" dir="rtl" class="ar">العملية</td><td>Processo</td><td>Proceso</td><td>Processus</td><td class="sec">§1.2 Algorithm vs Program vs Process</td></tr>
+          <tr><td class="term">Flowchart</td><td>Блок-схема</td><td lang="ar" dir="rtl" class="ar">مخطط انسيابي (تدفّقي)</td><td>Fluxograma</td><td>Diagrama de flujo</td><td>Organigramme</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Pseudocode</td><td>Псевдокод</td><td lang="ar" dir="rtl" class="ar">الشيفرة الوصفية (البسيطة)</td><td>Pseudocódigo</td><td>Pseudocódigo</td><td>Pseudo-code</td><td class="sec">§2.2 · Key Terms</td></tr>
+          <tr><td class="term">Sequence</td><td>Следование</td><td lang="ar" dir="rtl" class="ar">التسلسل</td><td>Sequência</td><td>Secuencia</td><td>Séquence</td><td class="sec">§3.1 · Key Terms</td></tr>
+          <tr><td class="term">Selection (branching)</td><td>Ветвление</td><td lang="ar" dir="rtl" class="ar">الاختيار (التفرّع)</td><td>Seleção (ramificação)</td><td>Selección (bifurcación)</td><td>Sélection (branchement)</td><td class="sec">§3.2 · Key Terms</td></tr>
+          <tr><td class="term">Iteration (loop)</td><td>Цикл (итерация)</td><td lang="ar" dir="rtl" class="ar">التكرار (الحلقة)</td><td>Iteração (laço)</td><td>Iteración (bucle)</td><td>Itération (boucle)</td><td class="sec">§3.3 · Key Terms</td></tr>
+          <tr><td class="term">Short-circuit evaluation</td><td>Сокращённое вычисление</td><td lang="ar" dir="rtl" class="ar">التقييم القصير (المختصر)</td><td>Avaliação de curto-circuito</td><td>Evaluación de cortocircuito</td><td>Évaluation en court-circuit</td><td class="sec">§3.2 Selection</td></tr>
+          <tr><td class="term">Nested loops</td><td>Вложенные циклы</td><td lang="ar" dir="rtl" class="ar">الحلقات المتداخلة</td><td>Laços aninhados</td><td>Bucles anidados</td><td>Boucles imbriquées</td><td class="sec">§3.3 Iteration</td></tr>
+          <tr><td class="term">Time complexity</td><td>Временная сложность</td><td lang="ar" dir="rtl" class="ar">التعقيد الزمني</td><td>Complexidade de tempo</td><td>Complejidad temporal</td><td>Complexité temporelle</td><td class="sec">§4.1 · Key Terms</td></tr>
+          <tr><td class="term">Space complexity</td><td>Пространственная сложность</td><td lang="ar" dir="rtl" class="ar">التعقيد المكاني (الذاكري)</td><td>Complexidade de espaço</td><td>Complejidad espacial</td><td>Complexité spatiale</td><td class="sec">§4.2 · Key Terms</td></tr>
+          <tr><td class="term">Big-O notation</td><td>O-нотация (Big-O)</td><td lang="ar" dir="rtl" class="ar">ترميز Big-O (الحد الأعلى)</td><td>Notação Big-O</td><td>Notación Big-O</td><td>Notation grand-O</td><td class="sec">§4.1 · Key Terms</td></tr>
+          <tr><td class="term">Linear search</td><td>Линейный поиск</td><td lang="ar" dir="rtl" class="ar">البحث الخطي</td><td>Busca linear</td><td>Búsqueda lineal</td><td>Recherche linéaire</td><td class="sec">§4.3 Linear vs Binary Search</td></tr>
+          <tr><td class="term">Binary search</td><td>Двоичный поиск</td><td lang="ar" dir="rtl" class="ar">البحث الثنائي</td><td>Busca binária</td><td>Búsqueda binaria</td><td>Recherche binaire</td><td class="sec">§4.3 · Summary</td></tr>
+          <tr><td class="term">IDE (Integrated Development Environment)</td><td>Интегрированная среда разработки</td><td lang="ar" dir="rtl" class="ar">بيئة تطوير متكاملة</td><td>Ambiente de desenvolvimento integrado (IDE)</td><td>Entorno de desarrollo integrado (IDE)</td><td>Environnement de développement intégré (EDI)</td><td class="sec">§5.2 · Key Terms</td></tr>
+          <tr><td class="term">Source code</td><td>Исходный код</td><td lang="ar" dir="rtl" class="ar">الشيفرة المصدرية</td><td>Código-fonte</td><td>Código fuente</td><td>Code source</td><td class="sec">§5.1 From Source Code to Program</td></tr>
+          <tr><td class="term">Compiler</td><td>Компилятор</td><td lang="ar" dir="rtl" class="ar">المُصرِّف (المترجم)</td><td>Compilador</td><td>Compilador</td><td>Compilateur</td><td class="sec">§5.1 · Key Terms</td></tr>
+          <tr><td class="term">Interpreter</td><td>Интерпретатор</td><td lang="ar" dir="rtl" class="ar">المُفسِّر</td><td>Interpretador</td><td>Intérprete</td><td>Interpréteur</td><td class="sec">§5.1 · Key Terms</td></tr>
+          <tr><td class="term">Bytecode + VM</td><td>Байт-код + ВМ</td><td lang="ar" dir="rtl" class="ar">الشيفرة الوسيطة + الآلة الافتراضية</td><td>Bytecode + VM</td><td>Bytecode + MV</td><td>Bytecode + MV</td><td class="sec">§5.1 From Source Code to Program</td></tr>
+          <tr><td class="term">Debugger</td><td>Отладчик</td><td lang="ar" dir="rtl" class="ar">المنقِّح (مصحِّح الأخطاء)</td><td>Depurador</td><td>Depurador</td><td>Débogueur</td><td class="sec">§5.1 · Key Terms</td></tr>
+          <tr><td class="term">Version control</td><td>Система контроля версий</td><td lang="ar" dir="rtl" class="ar">التحكم بالإصدارات</td><td>Controle de versão</td><td>Control de versiones</td><td>Gestion de versions</td><td class="sec">§5.4 Why Version Control</td></tr>
+          <tr><td class="term">Git</td><td>Git</td><td lang="ar" dir="rtl" class="ar">Git</td><td>Git</td><td>Git</td><td>Git</td><td class="sec">§5.4 Why Version Control</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <a class="backtop" href="#top">↑ Back to top</a>
+  </section>
+
+  <section class="lecblock" id="lec4">
+    <h2 class="lech"><span class="lecnum">Lecture 4</span>The Software Life Cycle, Code Translation, Testing and Development Methodologies</h2>
+    <p class="lecar" lang="ar" dir="rtl">المحاضرة 4 — دورة حياة البرمجيات وترجمة الشيفرة والاختبار ومنهجيات التطوير</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>English</th><th>Русский (ru)</th><th>العربية (ar)</th><th>Português (pt)</th><th>Español (es)</th><th>Français (fr)</th><th>Section / where it appears</th></tr></thead>
+        <tbody>
+          <tr><td class="term">Software Development Life Cycle (SDLC)</td><td>Жизненный цикл разработки ПО</td><td lang="ar" dir="rtl" class="ar">دورة حياة تطوير البرمجيات</td><td>Ciclo de vida de desenvolvimento de software</td><td>Ciclo de vida del desarrollo de software</td><td>Cycle de vie du développement logiciel</td><td class="sec">§1 · Key Terms</td></tr>
+          <tr><td class="term">Requirements analysis</td><td>Анализ требований</td><td lang="ar" dir="rtl" class="ar">تحليل المتطلبات</td><td>Análise de requisitos</td><td>Análisis de requisitos</td><td>Analyse des besoins</td><td class="sec">§1.1 · Key Terms</td></tr>
+          <tr><td class="term">Design</td><td>Проектирование</td><td lang="ar" dir="rtl" class="ar">التصميم</td><td>Projeto (design)</td><td>Diseño</td><td>Conception</td><td class="sec">§1.1 The Six Classic Phases</td></tr>
+          <tr><td class="term">Implementation (coding)</td><td>Реализация (кодирование)</td><td lang="ar" dir="rtl" class="ar">التنفيذ (البرمجة)</td><td>Implementação (codificação)</td><td>Implementación (codificación)</td><td>Implémentation (codage)</td><td class="sec">§1.1 The Six Classic Phases</td></tr>
+          <tr><td class="term">Deployment</td><td>Развёртывание</td><td lang="ar" dir="rtl" class="ar">النشر (الطرح)</td><td>Implantação</td><td>Despliegue</td><td>Déploiement</td><td class="sec">§1.1 The Six Classic Phases</td></tr>
+          <tr><td class="term">Maintenance</td><td>Сопровождение</td><td lang="ar" dir="rtl" class="ar">الصيانة</td><td>Manutenção</td><td>Mantenimiento</td><td>Maintenance</td><td class="sec">§1.1 · Key Terms</td></tr>
+          <tr><td class="term">Machine code</td><td>Машинный код</td><td lang="ar" dir="rtl" class="ar">الشيفرة الآلية</td><td>Código de máquina</td><td>Código de máquina</td><td>Code machine</td><td class="sec">§2 From Source Code to a Running Program</td></tr>
+          <tr><td class="term">Source code</td><td>Исходный код</td><td lang="ar" dir="rtl" class="ar">الشيفرة المصدرية</td><td>Código-fonte</td><td>Código fuente</td><td>Code source</td><td class="sec">§2 From Source Code to a Running Program</td></tr>
+          <tr><td class="term">Compilation</td><td>Компиляция</td><td lang="ar" dir="rtl" class="ar">التصريف (الترجمة)</td><td>Compilação</td><td>Compilación</td><td>Compilation</td><td class="sec">§2.1 Compilation</td></tr>
+          <tr><td class="term">Compiler</td><td>Компилятор</td><td lang="ar" dir="rtl" class="ar">المُصرِّف</td><td>Compilador</td><td>Compilador</td><td>Compilateur</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Interpretation</td><td>Интерпретация</td><td lang="ar" dir="rtl" class="ar">التفسير</td><td>Interpretação</td><td>Interpretación</td><td>Interprétation</td><td class="sec">§2.2 Interpretation</td></tr>
+          <tr><td class="term">Interpreter</td><td>Интерпретатор</td><td lang="ar" dir="rtl" class="ar">المُفسِّر</td><td>Interpretador</td><td>Intérprete</td><td>Interpréteur</td><td class="sec">§2.2 · Key Terms</td></tr>
+          <tr><td class="term">Bytecode</td><td>Байт-код</td><td lang="ar" dir="rtl" class="ar">الشيفرة الوسيطة (البايت كود)</td><td>Bytecode</td><td>Bytecode</td><td>Bytecode</td><td class="sec">§2.3 · Key Terms</td></tr>
+          <tr><td class="term">Virtual machine (VM)</td><td>Виртуальная машина</td><td lang="ar" dir="rtl" class="ar">الآلة الافتراضية</td><td>Máquina virtual</td><td>Máquina virtual</td><td>Machine virtuelle</td><td class="sec">§2.3 · Key Terms</td></tr>
+          <tr><td class="term">JIT compilation</td><td>JIT-компиляция</td><td lang="ar" dir="rtl" class="ar">التصريف عند الطلب (JIT)</td><td>Compilação JIT</td><td>Compilación JIT</td><td>Compilation à la volée (JIT)</td><td class="sec">§2.3 Bytecode + VM</td></tr>
+          <tr><td class="term">Build pipeline</td><td>Конвейер сборки</td><td lang="ar" dir="rtl" class="ar">خط بناء البرنامج</td><td>Pipeline de build</td><td>Cadena de construcción</td><td>Chaîne de construction</td><td class="sec">§2.4 The Full Build Pipeline</td></tr>
+          <tr><td class="term">Preprocessing</td><td>Предобработка</td><td lang="ar" dir="rtl" class="ar">المعالجة المسبقة</td><td>Pré-processamento</td><td>Preprocesamiento</td><td>Prétraitement</td><td class="sec">§2.4 The Full Build Pipeline</td></tr>
+          <tr><td class="term">Assembly</td><td>Ассемблирование</td><td lang="ar" dir="rtl" class="ar">التجميع</td><td>Montagem (assembly)</td><td>Ensamblado</td><td>Assemblage</td><td class="sec">§2.4 The Full Build Pipeline</td></tr>
+          <tr><td class="term">Linking</td><td>Компоновка (линковка)</td><td lang="ar" dir="rtl" class="ar">الربط</td><td>Ligação (linking)</td><td>Enlazado</td><td>Édition de liens</td><td class="sec">§2.4 · Key Terms</td></tr>
+          <tr><td class="term">Loading</td><td>Загрузка</td><td lang="ar" dir="rtl" class="ar">التحميل</td><td>Carregamento</td><td>Carga</td><td>Chargement</td><td class="sec">§2.4 The Full Build Pipeline</td></tr>
+          <tr><td class="term">Testing</td><td>Тестирование</td><td lang="ar" dir="rtl" class="ar">الاختبار</td><td>Teste</td><td>Prueba (testing)</td><td>Test</td><td class="sec">§3 · Key Terms</td></tr>
+          <tr><td class="term">Debugging</td><td>Отладка</td><td lang="ar" dir="rtl" class="ar">تنقيح الأخطاء (التصحيح)</td><td>Depuração</td><td>Depuración</td><td>Débogage</td><td class="sec">§3 · Key Terms</td></tr>
+          <tr><td class="term">Unit testing</td><td>Модульное тестирование</td><td lang="ar" dir="rtl" class="ar">اختبار الوحدة</td><td>Teste unitário</td><td>Prueba unitaria</td><td>Test unitaire</td><td class="sec">§3.1 · Key Terms</td></tr>
+          <tr><td class="term">Integration testing</td><td>Интеграционное тестирование</td><td lang="ar" dir="rtl" class="ar">اختبار التكامل</td><td>Teste de integração</td><td>Prueba de integración</td><td>Test d'intégration</td><td class="sec">§3.1 Levels of Testing</td></tr>
+          <tr><td class="term">System testing</td><td>Системное тестирование</td><td lang="ar" dir="rtl" class="ar">اختبار النظام</td><td>Teste de sistema</td><td>Prueba de sistema</td><td>Test système</td><td class="sec">§3.1 Levels of Testing</td></tr>
+          <tr><td class="term">Acceptance testing</td><td>Приёмочное тестирование</td><td lang="ar" dir="rtl" class="ar">اختبار القبول</td><td>Teste de aceitação</td><td>Prueba de aceptación</td><td>Test d'acceptation</td><td class="sec">§3.1 Levels of Testing</td></tr>
+          <tr><td class="term">Black-box / white-box testing</td><td>Чёрный / белый ящик</td><td lang="ar" dir="rtl" class="ar">الصندوق الأسود / الأبيض</td><td>Caixa-preta / caixa-branca</td><td>Caja negra / caja blanca</td><td>Boîte noire / boîte blanche</td><td class="sec">§3.2 Kinds of Tests</td></tr>
+          <tr><td class="term">Regression testing</td><td>Регрессионное тестирование</td><td lang="ar" dir="rtl" class="ar">اختبار الانحدار (التراجع)</td><td>Teste de regressão</td><td>Prueba de regresión</td><td>Test de régression</td><td class="sec">§3.2 · Key Terms</td></tr>
+          <tr><td class="term">Syntax error</td><td>Синтаксическая ошибка</td><td lang="ar" dir="rtl" class="ar">خطأ نحوي (صياغي)</td><td>Erro de sintaxe</td><td>Error de sintaxis</td><td>Erreur de syntaxe</td><td class="sec">§3.3 · Key Terms</td></tr>
+          <tr><td class="term">Runtime error</td><td>Ошибка времени выполнения</td><td lang="ar" dir="rtl" class="ar">خطأ زمن التشغيل</td><td>Erro de execução</td><td>Error de ejecución</td><td>Erreur d'exécution</td><td class="sec">§3.3 Kinds of Errors</td></tr>
+          <tr><td class="term">Logic error</td><td>Логическая ошибка</td><td lang="ar" dir="rtl" class="ar">خطأ منطقي</td><td>Erro de lógica</td><td>Error de lógica</td><td>Erreur de logique</td><td class="sec">§3.3 Kinds of Errors</td></tr>
+          <tr><td class="term">Breakpoint</td><td>Точка останова</td><td lang="ar" dir="rtl" class="ar">نقطة توقّف</td><td>Ponto de interrupção</td><td>Punto de interrupción</td><td>Point d'arrêt</td><td class="sec">§3.4 Systematic Debugging</td></tr>
+          <tr><td class="term">Methodology</td><td>Методология</td><td lang="ar" dir="rtl" class="ar">المنهجية</td><td>Metodologia</td><td>Metodología</td><td>Méthodologie</td><td class="sec">§4 Development Methodologies</td></tr>
+          <tr><td class="term">Waterfall</td><td>Каскадная модель (водопад)</td><td lang="ar" dir="rtl" class="ar">النموذج الشلّالي</td><td>Cascata (waterfall)</td><td>Cascada</td><td>Cascade</td><td class="sec">§4.1 · Key Terms</td></tr>
+          <tr><td class="term">Iterative / Incremental</td><td>Итеративная / инкрементная</td><td lang="ar" dir="rtl" class="ar">التكراري / التزايدي</td><td>Iterativo / Incremental</td><td>Iterativo / Incremental</td><td>Itératif / Incrémental</td><td class="sec">§4.2 Iterative and Incremental</td></tr>
+          <tr><td class="term">Agile</td><td>Гибкая методология (Agile)</td><td lang="ar" dir="rtl" class="ar">الرشيقة (أجايل)</td><td>Ágil (Agile)</td><td>Ágil (Agile)</td><td>Agile</td><td class="sec">§4.3 · Key Terms</td></tr>
+          <tr><td class="term">Scrum</td><td>Scrum</td><td lang="ar" dir="rtl" class="ar">سكرم (Scrum)</td><td>Scrum</td><td>Scrum</td><td>Scrum</td><td class="sec">§4.3 Agile</td></tr>
+          <tr><td class="term">Kanban</td><td>Канбан</td><td lang="ar" dir="rtl" class="ar">كانبان</td><td>Kanban</td><td>Kanban</td><td>Kanban</td><td class="sec">§4.3 Agile</td></tr>
+          <tr><td class="term">Sprint</td><td>Спринт</td><td lang="ar" dir="rtl" class="ar">سبرنت (سباق قصير)</td><td>Sprint</td><td>Sprint</td><td>Sprint</td><td class="sec">§4.3 Agile — Scrum</td></tr>
+          <tr><td class="term">DevOps</td><td>DevOps</td><td lang="ar" dir="rtl" class="ar">ديف أوبس (DevOps)</td><td>DevOps</td><td>DevOps</td><td>DevOps</td><td class="sec">§4.4 · Key Terms</td></tr>
+          <tr><td class="term">Continuous Integration (CI)</td><td>Непрерывная интеграция</td><td lang="ar" dir="rtl" class="ar">التكامل المستمر</td><td>Integração contínua (CI)</td><td>Integración continua (CI)</td><td>Intégration continue (CI)</td><td class="sec">§4.4 DevOps</td></tr>
+          <tr><td class="term">Continuous Delivery/Deployment (CD)</td><td>Непрерывная поставка / развёртывание</td><td lang="ar" dir="rtl" class="ar">التسليم / النشر المستمر</td><td>Entrega / implantação contínua (CD)</td><td>Entrega / despliegue continuo (CD)</td><td>Livraison / déploiement continu (CD)</td><td class="sec">§4.4 DevOps</td></tr>
+          <tr><td class="term">Version control (VCS)</td><td>Система контроля версий</td><td lang="ar" dir="rtl" class="ar">نظام التحكم بالإصدارات</td><td>Controle de versão (VCS)</td><td>Control de versiones (VCS)</td><td>Système de gestion de versions (VCS)</td><td class="sec">§5 · Key Terms</td></tr>
+          <tr><td class="term">Git</td><td>Git</td><td lang="ar" dir="rtl" class="ar">Git</td><td>Git</td><td>Git</td><td>Git</td><td class="sec">§5 · Key Terms</td></tr>
+          <tr><td class="term">Branch</td><td>Ветка</td><td lang="ar" dir="rtl" class="ar">الفرع (التفريع)</td><td>Ramo (branch)</td><td>Rama</td><td>Branche</td><td class="sec">§5.3 · Key Terms</td></tr>
+          <tr><td class="term">Merge</td><td>Слияние</td><td lang="ar" dir="rtl" class="ar">الدمج</td><td>Mesclagem (merge)</td><td>Fusión (merge)</td><td>Fusion</td><td class="sec">§5.3 · Key Terms</td></tr>
+          <tr><td class="term">Commit</td><td>Коммит (фиксация)</td><td lang="ar" dir="rtl" class="ar">الإيداع (commit)</td><td>Commit</td><td>Commit</td><td>Commit (validation)</td><td class="sec">§5.2 · Key Terms</td></tr>
+          <tr><td class="term">Merge conflict</td><td>Конфликт слияния</td><td lang="ar" dir="rtl" class="ar">تعارض الدمج</td><td>Conflito de merge</td><td>Conflicto de fusión</td><td>Conflit de fusion</td><td class="sec">§5.3 Branching and Merging</td></tr>
+          <tr><td class="term">Remote repository</td><td>Удалённый репозиторий</td><td lang="ar" dir="rtl" class="ar">المستودع البعيد</td><td>Repositório remoto</td><td>Repositorio remoto</td><td>Dépôt distant</td><td class="sec">§5.3 Branching and Merging</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <a class="backtop" href="#top">↑ Back to top</a>
+  </section>
+
+  <section class="lecblock" id="lec5">
+    <h2 class="lech"><span class="lecnum">Lecture 5</span>Information Security Fundamentals</h2>
+    <p class="lecar" lang="ar" dir="rtl">المحاضرة 5 — أساسيات أمن المعلومات</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>English</th><th>Русский (ru)</th><th>العربية (ar)</th><th>Português (pt)</th><th>Español (es)</th><th>Français (fr)</th><th>Section / where it appears</th></tr></thead>
+        <tbody>
+          <tr><td class="term">Information security</td><td>Информационная безопасность</td><td lang="ar" dir="rtl" class="ar">أمن المعلومات</td><td>Segurança da informação</td><td>Seguridad de la información</td><td>Sécurité de l'information</td><td class="sec">§1 · Key Terms</td></tr>
+          <tr><td class="term">CIA triad</td><td>Триада CIA (КЦД)</td><td lang="ar" dir="rtl" class="ar">ثالوث CIA (السرية والسلامة والتوافر)</td><td>Tríade CIA</td><td>Tríada CIA</td><td>Triade CIA (DIC)</td><td class="sec">§1 · Key Terms</td></tr>
+          <tr><td class="term">Confidentiality</td><td>Конфиденциальность</td><td lang="ar" dir="rtl" class="ar">السرية</td><td>Confidencialidade</td><td>Confidencialidad</td><td>Confidentialité</td><td class="sec">§1 The CIA Triad</td></tr>
+          <tr><td class="term">Integrity</td><td>Целостность</td><td lang="ar" dir="rtl" class="ar">السلامة (التكاملية)</td><td>Integridade</td><td>Integridad</td><td>Intégrité</td><td class="sec">§1 The CIA Triad</td></tr>
+          <tr><td class="term">Availability</td><td>Доступность</td><td lang="ar" dir="rtl" class="ar">التوافر (الإتاحة)</td><td>Disponibilidade</td><td>Disponibilidad</td><td>Disponibilité</td><td class="sec">§1 The CIA Triad</td></tr>
+          <tr><td class="term">Authentication</td><td>Аутентификация</td><td lang="ar" dir="rtl" class="ar">التحقق من الهوية (المصادقة)</td><td>Autenticação</td><td>Autenticación</td><td>Authentification</td><td class="sec">§1 · §4 · Key Terms</td></tr>
+          <tr><td class="term">Authorisation</td><td>Авторизация</td><td lang="ar" dir="rtl" class="ar">التخويل (الصلاحيات)</td><td>Autorização</td><td>Autorización</td><td>Autorisation</td><td class="sec">§1 · §4</td></tr>
+          <tr><td class="term">Non-repudiation</td><td>Неотказуемость</td><td lang="ar" dir="rtl" class="ar">عدم الإنكار</td><td>Não-repúdio</td><td>No repudio</td><td>Non-répudiation</td><td class="sec">§1 · §3.4</td></tr>
+          <tr><td class="term">Threat</td><td>Угроза</td><td lang="ar" dir="rtl" class="ar">التهديد</td><td>Ameaça</td><td>Amenaza</td><td>Menace</td><td class="sec">§2 · Key Terms</td></tr>
+          <tr><td class="term">Vulnerability</td><td>Уязвимость</td><td lang="ar" dir="rtl" class="ar">الثغرة (نقطة الضعف)</td><td>Vulnerabilidade</td><td>Vulnerabilidad</td><td>Vulnérabilité</td><td class="sec">§2 · Key Terms</td></tr>
+          <tr><td class="term">Attack</td><td>Атака</td><td lang="ar" dir="rtl" class="ar">الهجوم</td><td>Ataque</td><td>Ataque</td><td>Attaque</td><td class="sec">§2 Threats and Attacks</td></tr>
+          <tr><td class="term">Threat actor</td><td>Источник угрозы</td><td lang="ar" dir="rtl" class="ar">مصدر التهديد (المهاجم)</td><td>Agente de ameaça</td><td>Actor de amenaza</td><td>Acteur malveillant</td><td class="sec">§2 · Key Terms</td></tr>
+          <tr><td class="term">Malware</td><td>Вредоносное ПО</td><td lang="ar" dir="rtl" class="ar">البرمجيات الخبيثة</td><td>Malware (software malicioso)</td><td>Malware (software malicioso)</td><td>Logiciel malveillant</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Virus</td><td>Вирус</td><td lang="ar" dir="rtl" class="ar">فيروس</td><td>Vírus</td><td>Virus</td><td>Virus</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Worm</td><td>Червь</td><td lang="ar" dir="rtl" class="ar">دودة</td><td>Verme (worm)</td><td>Gusano</td><td>Ver</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Trojan horse</td><td>Троянский конь</td><td lang="ar" dir="rtl" class="ar">حصان طروادة</td><td>Cavalo de Troia</td><td>Caballo de Troya</td><td>Cheval de Troie</td><td class="sec">§2.1 Malware</td></tr>
+          <tr><td class="term">Ransomware</td><td>Программа-вымогатель</td><td lang="ar" dir="rtl" class="ar">برمجية الفدية</td><td>Ransomware</td><td>Ransomware (secuestro)</td><td>Rançongiciel</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Spyware</td><td>Шпионское ПО</td><td lang="ar" dir="rtl" class="ar">برمجية التجسس</td><td>Spyware (espião)</td><td>Software espía</td><td>Logiciel espion</td><td class="sec">§2.1 Malware</td></tr>
+          <tr><td class="term">Rootkit</td><td>Руткит</td><td lang="ar" dir="rtl" class="ar">الجذور الخفية (روتكيت)</td><td>Rootkit</td><td>Rootkit</td><td>Rootkit</td><td class="sec">§2.1 Malware</td></tr>
+          <tr><td class="term">Social engineering</td><td>Социальная инженерия</td><td lang="ar" dir="rtl" class="ar">الهندسة الاجتماعية</td><td>Engenharia social</td><td>Ingeniería social</td><td>Ingénierie sociale</td><td class="sec">§2.2 · Key Terms</td></tr>
+          <tr><td class="term">Phishing</td><td>Фишинг</td><td lang="ar" dir="rtl" class="ar">التصيّد الاحتيالي</td><td>Phishing</td><td>Phishing (suplantación)</td><td>Hameçonnage</td><td class="sec">§2.2 · Key Terms</td></tr>
+          <tr><td class="term">Spear phishing</td><td>Целевой фишинг</td><td lang="ar" dir="rtl" class="ar">التصيّد الموجَّه</td><td>Spear phishing</td><td>Spear phishing</td><td>Harponnage</td><td class="sec">§2.2 Social Engineering</td></tr>
+          <tr><td class="term">Pharming</td><td>Фарминг</td><td lang="ar" dir="rtl" class="ar">التزوير الموجِّه (فارمينغ)</td><td>Pharming</td><td>Pharming</td><td>Dévoiement (pharming)</td><td class="sec">§2.2 Social Engineering</td></tr>
+          <tr><td class="term">Pretexting</td><td>Претекстинг</td><td lang="ar" dir="rtl" class="ar">التذرّع (اختلاق ذريعة)</td><td>Pretexting</td><td>Pretexting</td><td>Prétexte (pretexting)</td><td class="sec">§2.2 Social Engineering</td></tr>
+          <tr><td class="term">Baiting</td><td>Приманка (бейтинг)</td><td lang="ar" dir="rtl" class="ar">الإغراء (الطُّعم)</td><td>Baiting (isca)</td><td>Cebo (baiting)</td><td>Appâtage</td><td class="sec">§2.2 Social Engineering</td></tr>
+          <tr><td class="term">Denial of Service (DoS)</td><td>Отказ в обслуживании</td><td lang="ar" dir="rtl" class="ar">حجب الخدمة</td><td>Negação de serviço (DoS)</td><td>Denegación de servicio (DoS)</td><td>Déni de service (DoS)</td><td class="sec">§2.3 · Key Terms</td></tr>
+          <tr><td class="term">DDoS</td><td>Распределённый отказ в обслуживании</td><td lang="ar" dir="rtl" class="ar">حجب الخدمة الموزَّع</td><td>DDoS (distribuído)</td><td>DDoS (distribuido)</td><td>DDoS (distribué)</td><td class="sec">§2.3 · Key Terms</td></tr>
+          <tr><td class="term">Botnet</td><td>Ботнет</td><td lang="ar" dir="rtl" class="ar">شبكة الروبوتات (بوت نت)</td><td>Botnet</td><td>Botnet (red de bots)</td><td>Réseau de zombies (botnet)</td><td class="sec">§2.3 Denial of Service</td></tr>
+          <tr><td class="term">SQL injection</td><td>SQL-инъекция</td><td lang="ar" dir="rtl" class="ar">حقن SQL</td><td>Injeção de SQL</td><td>Inyección SQL</td><td>Injection SQL</td><td class="sec">§2.4 · Key Terms</td></tr>
+          <tr><td class="term">Cross-Site Scripting (XSS)</td><td>Межсайтовый скриптинг</td><td lang="ar" dir="rtl" class="ar">البرمجة النصية عبر المواقع</td><td>Cross-Site Scripting (XSS)</td><td>Secuencias entre sitios (XSS)</td><td>Script intersite (XSS)</td><td class="sec">§2.4 · Key Terms</td></tr>
+          <tr><td class="term">Cross-Site Request Forgery (CSRF)</td><td>Межсайтовая подделка запроса</td><td lang="ar" dir="rtl" class="ar">تزوير الطلب عبر المواقع</td><td>Falsificação de requisição (CSRF)</td><td>Falsificación de petición (CSRF)</td><td>Falsification de requête (CSRF)</td><td class="sec">§2.4 · Key Terms</td></tr>
+          <tr><td class="term">Parameterised queries</td><td>Параметризованные запросы</td><td lang="ar" dir="rtl" class="ar">الاستعلامات ذات المعاملات</td><td>Consultas parametrizadas</td><td>Consultas parametrizadas</td><td>Requêtes paramétrées</td><td class="sec">§2.4 Common Web Attacks</td></tr>
+          <tr><td class="term">Cryptography</td><td>Криптография</td><td lang="ar" dir="rtl" class="ar">التعمية (التشفير)</td><td>Criptografia</td><td>Criptografía</td><td>Cryptographie</td><td class="sec">§3 · Key Terms</td></tr>
+          <tr><td class="term">Encryption</td><td>Шифрование</td><td lang="ar" dir="rtl" class="ar">التشفير</td><td>Cifragem (encriptação)</td><td>Cifrado</td><td>Chiffrement</td><td class="sec">§3 Cryptography</td></tr>
+          <tr><td class="term">Decryption</td><td>Расшифрование</td><td lang="ar" dir="rtl" class="ar">فك التشفير</td><td>Decifragem</td><td>Descifrado</td><td>Déchiffrement</td><td class="sec">§3 Cryptography</td></tr>
+          <tr><td class="term">Plaintext</td><td>Открытый текст</td><td lang="ar" dir="rtl" class="ar">النص الصريح (الواضح)</td><td>Texto claro</td><td>Texto plano</td><td>Texte en clair</td><td class="sec">§3 · Key Terms</td></tr>
+          <tr><td class="term">Ciphertext</td><td>Шифртекст</td><td lang="ar" dir="rtl" class="ar">النص المشفَّر</td><td>Texto cifrado</td><td>Texto cifrado</td><td>Texte chiffré</td><td class="sec">§3 · Key Terms</td></tr>
+          <tr><td class="term">Key (cryptographic)</td><td>Ключ</td><td lang="ar" dir="rtl" class="ar">المفتاح</td><td>Chave</td><td>Clave</td><td>Clé</td><td class="sec">§3 Cryptography</td></tr>
+          <tr><td class="term">Kerckhoffs's principle</td><td>Принцип Керкгоффса</td><td lang="ar" dir="rtl" class="ar">مبدأ كيركهوف</td><td>Princípio de Kerckhoffs</td><td>Principio de Kerckhoffs</td><td>Principe de Kerckhoffs</td><td class="sec">§3 Cryptography</td></tr>
+          <tr><td class="term">Symmetric encryption</td><td>Симметричное шифрование</td><td lang="ar" dir="rtl" class="ar">التشفير المتماثل</td><td>Criptografia simétrica</td><td>Cifrado simétrico</td><td>Chiffrement symétrique</td><td class="sec">§3.1 · Key Terms</td></tr>
+          <tr><td class="term">AES</td><td>AES</td><td lang="ar" dir="rtl" class="ar">AES</td><td>AES</td><td>AES</td><td>AES</td><td class="sec">§3.1 Symmetric Encryption</td></tr>
+          <tr><td class="term">Asymmetric (public-key) encryption</td><td>Асимметричное шифрование</td><td lang="ar" dir="rtl" class="ar">التشفير غير المتماثل (المفتاح العام)</td><td>Criptografia assimétrica</td><td>Cifrado asimétrico</td><td>Chiffrement asymétrique</td><td class="sec">§3.2 · Key Terms</td></tr>
+          <tr><td class="term">Public key</td><td>Открытый ключ</td><td lang="ar" dir="rtl" class="ar">المفتاح العام</td><td>Chave pública</td><td>Clave pública</td><td>Clé publique</td><td class="sec">§3.2 Asymmetric Encryption</td></tr>
+          <tr><td class="term">Private key</td><td>Закрытый ключ</td><td lang="ar" dir="rtl" class="ar">المفتاح الخاص</td><td>Chave privada</td><td>Clave privada</td><td>Clé privée</td><td class="sec">§3.2 Asymmetric Encryption</td></tr>
+          <tr><td class="term">Key pair</td><td>Пара ключей</td><td lang="ar" dir="rtl" class="ar">زوج المفاتيح</td><td>Par de chaves</td><td>Par de claves</td><td>Paire de clés</td><td class="sec">§3.2 Asymmetric Encryption</td></tr>
+          <tr><td class="term">RSA</td><td>RSA</td><td lang="ar" dir="rtl" class="ar">RSA</td><td>RSA</td><td>RSA</td><td>RSA</td><td class="sec">§3.2 Asymmetric Encryption</td></tr>
+          <tr><td class="term">ECC (Elliptic-Curve Cryptography)</td><td>Криптография на эллиптических кривых (ECC)</td><td lang="ar" dir="rtl" class="ar">تعمية المنحنيات الإهليلجية (ECC)</td><td>Criptografia de curvas elípticas (ECC)</td><td>Criptografía de curva elíptica (ECC)</td><td>Cryptographie sur courbes elliptiques (ECC)</td><td class="sec">§3.2 Asymmetric Encryption</td></tr>
+          <tr><td class="term">Hybrid encryption</td><td>Гибридное шифрование</td><td lang="ar" dir="rtl" class="ar">التشفير الهجين</td><td>Criptografia híbrida</td><td>Cifrado híbrido</td><td>Chiffrement hybride</td><td class="sec">§3.2 Asymmetric Encryption</td></tr>
+          <tr><td class="term">Hash function</td><td>Хеш-функция</td><td lang="ar" dir="rtl" class="ar">دالة التجزئة</td><td>Função de hash</td><td>Función hash</td><td>Fonction de hachage</td><td class="sec">§3.3 · Key Terms</td></tr>
+          <tr><td class="term">Digest</td><td>Дайджест (хеш)</td><td lang="ar" dir="rtl" class="ar">البصمة (المُلخَّص)</td><td>Resumo (digest)</td><td>Resumen (digest)</td><td>Empreinte (condensé)</td><td class="sec">§3.3 Hash Functions</td></tr>
+          <tr><td class="term">Avalanche effect</td><td>Лавинный эффект</td><td lang="ar" dir="rtl" class="ar">تأثير الانهيار</td><td>Efeito avalanche</td><td>Efecto avalancha</td><td>Effet d'avalanche</td><td class="sec">§3.3 Hash Functions</td></tr>
+          <tr><td class="term">SHA-256</td><td>SHA-256</td><td lang="ar" dir="rtl" class="ar">SHA-256</td><td>SHA-256</td><td>SHA-256</td><td>SHA-256</td><td class="sec">§3.3 Hash Functions</td></tr>
+          <tr><td class="term">Salt</td><td>Соль</td><td lang="ar" dir="rtl" class="ar">الملح (القيمة العشوائية)</td><td>Sal (salt)</td><td>Sal (salt)</td><td>Sel (salt)</td><td class="sec">§3.3 · Key Terms</td></tr>
+          <tr><td class="term">Digital signature</td><td>Цифровая подпись</td><td lang="ar" dir="rtl" class="ar">التوقيع الرقمي</td><td>Assinatura digital</td><td>Firma digital</td><td>Signature numérique</td><td class="sec">§3.4 · Key Terms</td></tr>
+          <tr><td class="term">Certificate Authority (CA)</td><td>Центр сертификации</td><td lang="ar" dir="rtl" class="ar">سلطة إصدار الشهادات</td><td>Autoridade certificadora (CA)</td><td>Autoridad de certificación (CA)</td><td>Autorité de certification (CA)</td><td class="sec">§3.4 · Key Terms</td></tr>
+          <tr><td class="term">Digital certificate</td><td>Цифровой сертификат</td><td lang="ar" dir="rtl" class="ar">الشهادة الرقمية</td><td>Certificado digital</td><td>Certificado digital</td><td>Certificat numérique</td><td class="sec">§3.4 Digital Signatures</td></tr>
+          <tr><td class="term">Two-factor authentication (2FA/MFA)</td><td>Двухфакторная аутентификация</td><td lang="ar" dir="rtl" class="ar">المصادقة الثنائية (متعددة العوامل)</td><td>Autenticação de dois fatores (2FA)</td><td>Autenticación de dos factores (2FA)</td><td>Authentification à deux facteurs (2FA)</td><td class="sec">§4 · Key Terms</td></tr>
+          <tr><td class="term">Password manager</td><td>Менеджер паролей</td><td lang="ar" dir="rtl" class="ar">مدير كلمات المرور</td><td>Gerenciador de senhas</td><td>Gestor de contraseñas</td><td>Gestionnaire de mots de passe</td><td class="sec">§4 Authentication</td></tr>
+          <tr><td class="term">Access control</td><td>Управление доступом</td><td lang="ar" dir="rtl" class="ar">التحكم بالوصول</td><td>Controle de acesso</td><td>Control de acceso</td><td>Contrôle d'accès</td><td class="sec">§4 Authentication</td></tr>
+          <tr><td class="term">Principle of least privilege</td><td>Принцип наименьших привилегий</td><td lang="ar" dir="rtl" class="ar">مبدأ الحد الأدنى من الصلاحيات</td><td>Princípio do menor privilégio</td><td>Principio de mínimo privilegio</td><td>Principe du moindre privilège</td><td class="sec">§4 · Key Terms</td></tr>
+          <tr><td class="term">Defence in depth</td><td>Эшелонированная защита</td><td lang="ar" dir="rtl" class="ar">الدفاع المتعمّق (بالطبقات)</td><td>Defesa em profundidade</td><td>Defensa en profundidad</td><td>Défense en profondeur</td><td class="sec">§5 · Key Terms</td></tr>
+          <tr><td class="term">Firewall</td><td>Межсетевой экран (файрвол)</td><td lang="ar" dir="rtl" class="ar">الجدار الناري</td><td>Firewall (barreira de proteção)</td><td>Cortafuegos (firewall)</td><td>Pare-feu</td><td class="sec">§5.1 · Key Terms</td></tr>
+          <tr><td class="term">VPN (Virtual Private Network)</td><td>Виртуальная частная сеть (VPN)</td><td lang="ar" dir="rtl" class="ar">الشبكة الخاصة الافتراضية</td><td>Rede privada virtual (VPN)</td><td>Red privada virtual (VPN)</td><td>Réseau privé virtuel (VPN)</td><td class="sec">§5.2 · Key Terms</td></tr>
+          <tr><td class="term">HTTPS</td><td>HTTPS</td><td lang="ar" dir="rtl" class="ar">HTTPS</td><td>HTTPS</td><td>HTTPS</td><td>HTTPS</td><td class="sec">§5.3 · Key Terms</td></tr>
+          <tr><td class="term">TLS (Transport Layer Security)</td><td>TLS</td><td lang="ar" dir="rtl" class="ar">TLS</td><td>TLS</td><td>TLS</td><td>TLS</td><td class="sec">§5.3 · Key Terms</td></tr>
+          <tr><td class="term">3-2-1 backup rule</td><td>Правило резервного копирования 3-2-1</td><td lang="ar" dir="rtl" class="ar">قاعدة النسخ الاحتياطي 3-2-1</td><td>Regra de backup 3-2-1</td><td>Regla de copia de seguridad 3-2-1</td><td>Règle de sauvegarde 3-2-1</td><td class="sec">§5.4 Everyday Hygiene</td></tr>
+          <tr><td class="term">Physical security</td><td>Физическая безопасность</td><td lang="ar" dir="rtl" class="ar">الأمن المادي</td><td>Segurança física</td><td>Seguridad física</td><td>Sécurité physique</td><td class="sec">§6 Physical and Organisational Security</td></tr>
+          <tr><td class="term">Organisational security</td><td>Организационная безопасность</td><td lang="ar" dir="rtl" class="ar">الأمن التنظيمي</td><td>Segurança organizacional</td><td>Seguridad organizativa</td><td>Sécurité organisationnelle</td><td class="sec">§6 Physical and Organisational Security</td></tr>
+          <tr><td class="term">ISO/IEC 27001</td><td>ISO/IEC 27001</td><td lang="ar" dir="rtl" class="ar">ISO/IEC 27001</td><td>ISO/IEC 27001</td><td>ISO/IEC 27001</td><td>ISO/IEC 27001</td><td class="sec">§6 Physical and Organisational Security</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <a class="backtop" href="#top">↑ Back to top</a>
+  </section>
+
+  <section class="lecblock" id="lec6">
+    <h2 class="lech"><span class="lecnum">Lecture 6</span>Computer Networks</h2>
+    <p class="lecar" lang="ar" dir="rtl">المحاضرة 6 — الشبكات الحاسوبية</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>English</th><th>Русский (ru)</th><th>العربية (ar)</th><th>Português (pt)</th><th>Español (es)</th><th>Français (fr)</th><th>Section / where it appears</th></tr></thead>
+        <tbody>
+          <tr><td class="term">Computer network</td><td>Компьютерная сеть</td><td lang="ar" dir="rtl" class="ar">الشبكة الحاسوبية</td><td>Rede de computadores</td><td>Red de computadoras</td><td>Réseau informatique</td><td class="sec">§1 · Key Terms</td></tr>
+          <tr><td class="term">Node / Host</td><td>Узел / хост</td><td lang="ar" dir="rtl" class="ar">العقدة / المضيف</td><td>Nó / Host</td><td>Nodo / Host</td><td>Nœud / Hôte</td><td class="sec">§1 · Key Terms</td></tr>
+          <tr><td class="term">Internet</td><td>Интернет</td><td lang="ar" dir="rtl" class="ar">الإنترنت</td><td>Internet</td><td>Internet</td><td>Internet</td><td class="sec">§1 · Key Terms</td></tr>
+          <tr><td class="term">Resource sharing</td><td>Совместное использование ресурсов</td><td lang="ar" dir="rtl" class="ar">مشاركة الموارد</td><td>Compartilhamento de recursos</td><td>Compartición de recursos</td><td>Partage de ressources</td><td class="sec">§1 What a Network Is</td></tr>
+          <tr><td class="term">PAN (Personal Area Network)</td><td>Персональная сеть (PAN)</td><td lang="ar" dir="rtl" class="ar">الشبكة الشخصية</td><td>Rede pessoal (PAN)</td><td>Red de área personal (PAN)</td><td>Réseau personnel (PAN)</td><td class="sec">§1.1 Classifying by Scale</td></tr>
+          <tr><td class="term">LAN (Local Area Network)</td><td>Локальная сеть (LAN)</td><td lang="ar" dir="rtl" class="ar">الشبكة المحلية</td><td>Rede local (LAN)</td><td>Red de área local (LAN)</td><td>Réseau local (LAN)</td><td class="sec">§1.1 · Key Terms</td></tr>
+          <tr><td class="term">MAN (Metropolitan Area Network)</td><td>Городская сеть (MAN)</td><td lang="ar" dir="rtl" class="ar">شبكة المدينة</td><td>Rede metropolitana (MAN)</td><td>Red de área metropolitana (MAN)</td><td>Réseau métropolitain (MAN)</td><td class="sec">§1.1 · Key Terms</td></tr>
+          <tr><td class="term">WAN (Wide Area Network)</td><td>Глобальная сеть (WAN)</td><td lang="ar" dir="rtl" class="ar">الشبكة الواسعة</td><td>Rede de longa distância (WAN)</td><td>Red de área amplia (WAN)</td><td>Réseau étendu (WAN)</td><td class="sec">§1.1 · Key Terms</td></tr>
+          <tr><td class="term">Ethernet</td><td>Ethernet</td><td lang="ar" dir="rtl" class="ar">إيثرنت</td><td>Ethernet</td><td>Ethernet</td><td>Ethernet</td><td class="sec">§1.1 Classifying by Scale</td></tr>
+          <tr><td class="term">Wi-Fi</td><td>Wi-Fi</td><td lang="ar" dir="rtl" class="ar">واي فاي</td><td>Wi-Fi</td><td>Wi-Fi</td><td>Wi-Fi</td><td class="sec">§1.1 Classifying by Scale</td></tr>
+          <tr><td class="term">Topology</td><td>Топология</td><td lang="ar" dir="rtl" class="ar">البنية الشكلية (الطوبولوجيا)</td><td>Topologia</td><td>Topología</td><td>Topologie</td><td class="sec">§1.2 · Key Terms</td></tr>
+          <tr><td class="term">Bus topology</td><td>Шинная топология</td><td lang="ar" dir="rtl" class="ar">البنية الناقلية (الحافلة)</td><td>Topologia em barramento</td><td>Topología en bus</td><td>Topologie en bus</td><td class="sec">§1.2 Network Topologies</td></tr>
+          <tr><td class="term">Star topology</td><td>Звёздная топология</td><td lang="ar" dir="rtl" class="ar">البنية النجمية</td><td>Topologia em estrela</td><td>Topología en estrella</td><td>Topologie en étoile</td><td class="sec">§1.2 Network Topologies</td></tr>
+          <tr><td class="term">Ring topology</td><td>Кольцевая топология</td><td lang="ar" dir="rtl" class="ar">البنية الحلقية</td><td>Topologia em anel</td><td>Topología en anillo</td><td>Topologie en anneau</td><td class="sec">§1.2 Network Topologies</td></tr>
+          <tr><td class="term">Mesh topology</td><td>Ячеистая топология</td><td lang="ar" dir="rtl" class="ar">البنية المتشابكة (الشبكية)</td><td>Topologia em malha</td><td>Topología en malla</td><td>Topologie maillée</td><td class="sec">§1.2 Network Topologies</td></tr>
+          <tr><td class="term">Layered model</td><td>Многоуровневая модель</td><td lang="ar" dir="rtl" class="ar">النموذج الطبقي</td><td>Modelo em camadas</td><td>Modelo en capas</td><td>Modèle en couches</td><td class="sec">§2 Layered Models</td></tr>
+          <tr><td class="term">Encapsulation</td><td>Инкапсуляция</td><td lang="ar" dir="rtl" class="ar">التغليف</td><td>Encapsulamento</td><td>Encapsulamiento</td><td>Encapsulation</td><td class="sec">§2 · Key Terms</td></tr>
+          <tr><td class="term">OSI model</td><td>Модель OSI</td><td lang="ar" dir="rtl" class="ar">نموذج OSI</td><td>Modelo OSI</td><td>Modelo OSI</td><td>Modèle OSI</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Application layer</td><td>Прикладной уровень</td><td lang="ar" dir="rtl" class="ar">طبقة التطبيقات</td><td>Camada de aplicação</td><td>Capa de aplicación</td><td>Couche application</td><td class="sec">§2.1 The OSI Model</td></tr>
+          <tr><td class="term">Presentation layer</td><td>Уровень представления</td><td lang="ar" dir="rtl" class="ar">طبقة العرض (التقديم)</td><td>Camada de apresentação</td><td>Capa de presentación</td><td>Couche présentation</td><td class="sec">§2.1 The OSI Model</td></tr>
+          <tr><td class="term">Session layer</td><td>Сеансовый уровень</td><td lang="ar" dir="rtl" class="ar">طبقة الجلسة</td><td>Camada de sessão</td><td>Capa de sesión</td><td>Couche session</td><td class="sec">§2.1 The OSI Model</td></tr>
+          <tr><td class="term">Transport layer</td><td>Транспортный уровень</td><td lang="ar" dir="rtl" class="ar">طبقة النقل</td><td>Camada de transporte</td><td>Capa de transporte</td><td>Couche transport</td><td class="sec">§2.1 The OSI Model</td></tr>
+          <tr><td class="term">Network layer</td><td>Сетевой уровень</td><td lang="ar" dir="rtl" class="ar">طبقة الشبكة</td><td>Camada de rede</td><td>Capa de red</td><td>Couche réseau</td><td class="sec">§2.1 The OSI Model</td></tr>
+          <tr><td class="term">Data Link layer</td><td>Канальный уровень</td><td lang="ar" dir="rtl" class="ar">طبقة ربط البيانات</td><td>Camada de enlace</td><td>Capa de enlace</td><td>Couche liaison de données</td><td class="sec">§2.1 The OSI Model</td></tr>
+          <tr><td class="term">Physical layer</td><td>Физический уровень</td><td lang="ar" dir="rtl" class="ar">الطبقة المادية</td><td>Camada física</td><td>Capa física</td><td>Couche physique</td><td class="sec">§2.1 The OSI Model</td></tr>
+          <tr><td class="term">TCP/IP model</td><td>Модель TCP/IP</td><td lang="ar" dir="rtl" class="ar">نموذج TCP/IP</td><td>Modelo TCP/IP</td><td>Modelo TCP/IP</td><td>Modèle TCP/IP</td><td class="sec">§2.2 · Key Terms</td></tr>
+          <tr><td class="term">Protocol</td><td>Протокол</td><td lang="ar" dir="rtl" class="ar">البروتوكول</td><td>Protocolo</td><td>Protocolo</td><td>Protocole</td><td class="sec">§3 · Key Terms</td></tr>
+          <tr><td class="term">IP (Internet Protocol)</td><td>IP (интернет-протокол)</td><td lang="ar" dir="rtl" class="ar">بروتوكول الإنترنت (IP)</td><td>IP (protocolo de Internet)</td><td>IP (protocolo de Internet)</td><td>IP (protocole Internet)</td><td class="sec">§3.1 · Key Terms</td></tr>
+          <tr><td class="term">Packet</td><td>Пакет</td><td lang="ar" dir="rtl" class="ar">الحزمة</td><td>Pacote</td><td>Paquete</td><td>Paquet</td><td class="sec">§3.1 · Key Terms</td></tr>
+          <tr><td class="term">Connectionless / best-effort</td><td>Без установления соединения / «по возможности»</td><td lang="ar" dir="rtl" class="ar">بلا اتصال / أفضل جهد ممكن</td><td>Sem conexão / melhor esforço</td><td>Sin conexión / mejor esfuerzo</td><td>Sans connexion / au mieux</td><td class="sec">§3.1 IP</td></tr>
+          <tr><td class="term">TCP (Transmission Control Protocol)</td><td>TCP</td><td lang="ar" dir="rtl" class="ar">بروتوكول التحكم بالنقل (TCP)</td><td>TCP</td><td>TCP</td><td>TCP</td><td class="sec">§3.2 · Key Terms</td></tr>
+          <tr><td class="term">UDP (User Datagram Protocol)</td><td>UDP</td><td lang="ar" dir="rtl" class="ar">بروتوكول مخطط بيانات المستخدم (UDP)</td><td>UDP</td><td>UDP</td><td>UDP</td><td class="sec">§3.2 · Key Terms</td></tr>
+          <tr><td class="term">Port</td><td>Порт</td><td lang="ar" dir="rtl" class="ar">المنفذ</td><td>Porta</td><td>Puerto</td><td>Port</td><td class="sec">§3.2 · Key Terms</td></tr>
+          <tr><td class="term">Three-way handshake</td><td>Трёхстороннее рукопожатие</td><td lang="ar" dir="rtl" class="ar">المصافحة الثلاثية</td><td>Handshake de três vias</td><td>Saludo de tres vías</td><td>Poignée de main en trois temps</td><td class="sec">§3.2 · Key Terms</td></tr>
+          <tr><td class="term">DNS (Domain Name System)</td><td>DNS (система доменных имён)</td><td lang="ar" dir="rtl" class="ar">نظام أسماء النطاقات (DNS)</td><td>DNS (sistema de nomes de domínio)</td><td>DNS (sistema de nombres de dominio)</td><td>DNS (système de noms de domaine)</td><td class="sec">§3.3 · Key Terms</td></tr>
+          <tr><td class="term">HTTP</td><td>HTTP</td><td lang="ar" dir="rtl" class="ar">HTTP</td><td>HTTP</td><td>HTTP</td><td>HTTP</td><td class="sec">§3.4 · Key Terms</td></tr>
+          <tr><td class="term">HTTPS</td><td>HTTPS</td><td lang="ar" dir="rtl" class="ar">HTTPS</td><td>HTTPS</td><td>HTTPS</td><td>HTTPS</td><td class="sec">§3.4 · Key Terms</td></tr>
+          <tr><td class="term">Stateless</td><td>Без сохранения состояния</td><td lang="ar" dir="rtl" class="ar">عديم الحالة</td><td>Sem estado (stateless)</td><td>Sin estado</td><td>Sans état</td><td class="sec">§3.4 HTTP and HTTPS</td></tr>
+          <tr><td class="term">Cookie</td><td>Кука (cookie)</td><td lang="ar" dir="rtl" class="ar">ملف تعريف الارتباط (كوكي)</td><td>Cookie</td><td>Cookie</td><td>Témoin (cookie)</td><td class="sec">§3.4 HTTP and HTTPS</td></tr>
+          <tr><td class="term">MAC address</td><td>MAC-адрес</td><td lang="ar" dir="rtl" class="ar">عنوان MAC</td><td>Endereço MAC</td><td>Dirección MAC</td><td>Adresse MAC</td><td class="sec">§4.1 · Key Terms</td></tr>
+          <tr><td class="term">IP address</td><td>IP-адрес</td><td lang="ar" dir="rtl" class="ar">عنوان IP</td><td>Endereço IP</td><td>Dirección IP</td><td>Adresse IP</td><td class="sec">§4.2 · Key Terms</td></tr>
+          <tr><td class="term">IPv4</td><td>IPv4</td><td lang="ar" dir="rtl" class="ar">IPv4</td><td>IPv4</td><td>IPv4</td><td>IPv4</td><td class="sec">§4.2 · Key Terms</td></tr>
+          <tr><td class="term">IPv6</td><td>IPv6</td><td lang="ar" dir="rtl" class="ar">IPv6</td><td>IPv6</td><td>IPv6</td><td>IPv6</td><td class="sec">§4.2 · Key Terms</td></tr>
+          <tr><td class="term">Subnet mask</td><td>Маска подсети</td><td lang="ar" dir="rtl" class="ar">قناع الشبكة الفرعية</td><td>Máscara de sub-rede</td><td>Máscara de subred</td><td>Masque de sous-réseau</td><td class="sec">§4.2 · Key Terms</td></tr>
+          <tr><td class="term">NAT (Network Address Translation)</td><td>NAT (трансляция сетевых адресов)</td><td lang="ar" dir="rtl" class="ar">ترجمة عناوين الشبكة (NAT)</td><td>NAT (tradução de endereços)</td><td>NAT (traducción de direcciones)</td><td>NAT (traduction d'adresses)</td><td class="sec">§4.3 · Key Terms</td></tr>
+          <tr><td class="term">Public vs private address</td><td>Публичный / частный адрес</td><td lang="ar" dir="rtl" class="ar">العنوان العام / الخاص</td><td>Endereço público / privado</td><td>Dirección pública / privada</td><td>Adresse publique / privée</td><td class="sec">§4.3 Public vs Private</td></tr>
+          <tr><td class="term">Packet switching</td><td>Коммутация пакетов</td><td lang="ar" dir="rtl" class="ar">تبديل الحزم</td><td>Comutação de pacotes</td><td>Conmutación de paquetes</td><td>Commutation de paquets</td><td class="sec">§5.1 · Key Terms</td></tr>
+          <tr><td class="term">Hub</td><td>Концентратор (хаб)</td><td lang="ar" dir="rtl" class="ar">المُوزِّع (الهَب)</td><td>Hub (concentrador)</td><td>Concentrador (hub)</td><td>Concentrateur (hub)</td><td class="sec">§5.2 · Key Terms</td></tr>
+          <tr><td class="term">Switch</td><td>Коммутатор</td><td lang="ar" dir="rtl" class="ar">المبدّل (السويتش)</td><td>Switch (comutador)</td><td>Conmutador (switch)</td><td>Commutateur</td><td class="sec">§5.2 · Key Terms</td></tr>
+          <tr><td class="term">Router</td><td>Маршрутизатор</td><td lang="ar" dir="rtl" class="ar">الموجِّه (الراوتر)</td><td>Roteador</td><td>Enrutador (router)</td><td>Routeur</td><td class="sec">§5.2 · Key Terms</td></tr>
+          <tr><td class="term">Gateway</td><td>Шлюз</td><td lang="ar" dir="rtl" class="ar">البوّابة</td><td>Gateway (porta de saída)</td><td>Pasarela (gateway)</td><td>Passerelle</td><td class="sec">§5.2 The Devices That Connect Networks</td></tr>
+          <tr><td class="term">Routing</td><td>Маршрутизация</td><td lang="ar" dir="rtl" class="ar">التوجيه</td><td>Roteamento</td><td>Enrutamiento</td><td>Routage</td><td class="sec">§5.3 · Key Terms</td></tr>
+          <tr><td class="term">Routing table</td><td>Таблица маршрутизации</td><td lang="ar" dir="rtl" class="ar">جدول التوجيه</td><td>Tabela de roteamento</td><td>Tabla de enrutamiento</td><td>Table de routage</td><td class="sec">§5.3 · Key Terms</td></tr>
+          <tr><td class="term">ping / traceroute</td><td>ping / traceroute</td><td lang="ar" dir="rtl" class="ar">ping / traceroute</td><td>ping / traceroute</td><td>ping / traceroute</td><td>ping / traceroute</td><td class="sec">§5.3 · Key Terms</td></tr>
+          <tr><td class="term">Web stack</td><td>Веб-стек</td><td lang="ar" dir="rtl" class="ar">حزمة الويب (طبقات الويب)</td><td>Pilha web</td><td>Pila web</td><td>Pile web</td><td class="sec">§6 The Web Stack in Action</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <a class="backtop" href="#top">↑ Back to top</a>
+  </section>
+
+  <section class="lecblock" id="lec7">
+    <h2 class="lech"><span class="lecnum">Lecture 7</span>Introduction to Artificial Intelligence</h2>
+    <p class="lecar" lang="ar" dir="rtl">المحاضرة 7 — مقدمة في الذكاء الاصطناعي</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>English</th><th>Русский (ru)</th><th>العربية (ar)</th><th>Português (pt)</th><th>Español (es)</th><th>Français (fr)</th><th>Section / where it appears</th></tr></thead>
+        <tbody>
+          <tr><td class="term">Artificial Intelligence (AI)</td><td>Искусственный интеллект (ИИ)</td><td lang="ar" dir="rtl" class="ar">الذكاء الاصطناعي</td><td>Inteligência artificial (IA)</td><td>Inteligencia artificial (IA)</td><td>Intelligence artificielle (IA)</td><td class="sec">§1 · Key Terms</td></tr>
+          <tr><td class="term">Turing Test</td><td>Тест Тьюринга</td><td lang="ar" dir="rtl" class="ar">اختبار تورينغ</td><td>Teste de Turing</td><td>Prueba de Turing</td><td>Test de Turing</td><td class="sec">§1 · Key Terms</td></tr>
+          <tr><td class="term">Machine Learning (ML)</td><td>Машинное обучение</td><td lang="ar" dir="rtl" class="ar">تعلّم الآلة</td><td>Aprendizado de máquina (ML)</td><td>Aprendizaje automático (ML)</td><td>Apprentissage automatique (ML)</td><td class="sec">§1.1 · Key Terms</td></tr>
+          <tr><td class="term">Deep Learning (DL)</td><td>Глубокое обучение</td><td lang="ar" dir="rtl" class="ar">التعلّم العميق</td><td>Aprendizado profundo (DL)</td><td>Aprendizaje profundo (DL)</td><td>Apprentissage profond (DL)</td><td class="sec">§1.1 · Key Terms</td></tr>
+          <tr><td class="term">Symbolic (rule-based) AI</td><td>Символьный ИИ</td><td lang="ar" dir="rtl" class="ar">الذكاء الرمزي (القائم على القواعد)</td><td>IA simbólica (baseada em regras)</td><td>IA simbólica (basada en reglas)</td><td>IA symbolique (à base de règles)</td><td class="sec">§1.2 · Key Terms</td></tr>
+          <tr><td class="term">Expert system</td><td>Экспертная система</td><td lang="ar" dir="rtl" class="ar">النظام الخبير</td><td>Sistema especialista</td><td>Sistema experto</td><td>Système expert</td><td class="sec">§1.2 Rules vs Learning</td></tr>
+          <tr><td class="term">Narrow (weak) AI</td><td>Узкий (слабый) ИИ</td><td lang="ar" dir="rtl" class="ar">الذكاء الضيّق (الضعيف)</td><td>IA restrita (fraca)</td><td>IA estrecha (débil)</td><td>IA étroite (faible)</td><td class="sec">§1.3 · Key Terms</td></tr>
+          <tr><td class="term">General (strong) AI</td><td>Общий (сильный) ИИ</td><td lang="ar" dir="rtl" class="ar">الذكاء العام (القوي)</td><td>IA geral (forte)</td><td>IA general (fuerte)</td><td>IA générale (forte)</td><td class="sec">§1.3 · Key Terms</td></tr>
+          <tr><td class="term">Model</td><td>Модель</td><td lang="ar" dir="rtl" class="ar">النموذج</td><td>Modelo</td><td>Modelo</td><td>Modèle</td><td class="sec">§2 · Key Terms</td></tr>
+          <tr><td class="term">Training</td><td>Обучение (тренировка)</td><td lang="ar" dir="rtl" class="ar">التدريب</td><td>Treinamento</td><td>Entrenamiento</td><td>Entraînement</td><td class="sec">§2 · Key Terms</td></tr>
+          <tr><td class="term">Inference</td><td>Вывод (инференс)</td><td lang="ar" dir="rtl" class="ar">الاستدلال</td><td>Inferência</td><td>Inferencia</td><td>Inférence</td><td class="sec">§2 · Key Terms</td></tr>
+          <tr><td class="term">Supervised learning</td><td>Обучение с учителем</td><td lang="ar" dir="rtl" class="ar">التعلّم المُوجَّه (بإشراف)</td><td>Aprendizado supervisionado</td><td>Aprendizaje supervisado</td><td>Apprentissage supervisé</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Unsupervised learning</td><td>Обучение без учителя</td><td lang="ar" dir="rtl" class="ar">التعلّم غير المُوجَّه</td><td>Aprendizado não supervisionado</td><td>Aprendizaje no supervisado</td><td>Apprentissage non supervisé</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Reinforcement learning</td><td>Обучение с подкреплением</td><td lang="ar" dir="rtl" class="ar">التعلّم المعزَّز</td><td>Aprendizado por reforço</td><td>Aprendizaje por refuerzo</td><td>Apprentissage par renforcement</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Feature</td><td>Признак</td><td lang="ar" dir="rtl" class="ar">السمة (الميزة)</td><td>Atributo (feature)</td><td>Característica (feature)</td><td>Caractéristique (feature)</td><td class="sec">§2.2 · Key Terms</td></tr>
+          <tr><td class="term">Label</td><td>Метка</td><td lang="ar" dir="rtl" class="ar">التسمية (الوسم)</td><td>Rótulo</td><td>Etiqueta</td><td>Étiquette</td><td class="sec">§2.2 · Key Terms</td></tr>
+          <tr><td class="term">Generalisation</td><td>Обобщение</td><td lang="ar" dir="rtl" class="ar">التعميم</td><td>Generalização</td><td>Generalización</td><td>Généralisation</td><td class="sec">§2.2 · Key Terms</td></tr>
+          <tr><td class="term">Overfitting</td><td>Переобучение</td><td lang="ar" dir="rtl" class="ar">فرط التخصيص (الحفظ الزائد)</td><td>Sobreajuste (overfitting)</td><td>Sobreajuste</td><td>Surapprentissage</td><td class="sec">§2.2 · Key Terms</td></tr>
+          <tr><td class="term">Artificial neuron (perceptron)</td><td>Искусственный нейрон (перцептрон)</td><td lang="ar" dir="rtl" class="ar">العصبون الاصطناعي (البيرسبترون)</td><td>Neurônio artificial (perceptron)</td><td>Neurona artificial (perceptrón)</td><td>Neurone artificiel (perceptron)</td><td class="sec">§3 · Key Terms</td></tr>
+          <tr><td class="term">Input (x)</td><td>Вход (x)</td><td lang="ar" dir="rtl" class="ar">المُدخَل (x)</td><td>Entrada (x)</td><td>Entrada (x)</td><td>Entrée (x)</td><td class="sec">§3.1 The Model of a Single Neuron</td></tr>
+          <tr><td class="term">Weight</td><td>Вес</td><td lang="ar" dir="rtl" class="ar">الوزن</td><td>Peso</td><td>Peso</td><td>Poids</td><td class="sec">§3.1 · Key Terms</td></tr>
+          <tr><td class="term">Bias</td><td>Смещение</td><td lang="ar" dir="rtl" class="ar">الانحياز</td><td>Viés (bias)</td><td>Sesgo</td><td>Biais</td><td class="sec">§3.1 · Key Terms</td></tr>
+          <tr><td class="term">Weighted sum (z)</td><td>Взвешенная сумма (z)</td><td lang="ar" dir="rtl" class="ar">المجموع المرجَّح (z)</td><td>Soma ponderada (z)</td><td>Suma ponderada (z)</td><td>Somme pondérée (z)</td><td class="sec">§3.1 · Key Terms</td></tr>
+          <tr><td class="term">Activation function</td><td>Функция активации</td><td lang="ar" dir="rtl" class="ar">دالة التفعيل</td><td>Função de ativação</td><td>Función de activación</td><td>Fonction d'activation</td><td class="sec">§3.2 · Key Terms</td></tr>
+          <tr><td class="term">Step function</td><td>Пороговая функция</td><td lang="ar" dir="rtl" class="ar">دالة العتبة (الخطوة)</td><td>Função degrau</td><td>Función escalón</td><td>Fonction échelon</td><td class="sec">§3.2 Activation Functions</td></tr>
+          <tr><td class="term">Sigmoid</td><td>Сигмоида</td><td lang="ar" dir="rtl" class="ar">الدالة السينية (سيغمويد)</td><td>Sigmoide</td><td>Sigmoide</td><td>Sigmoïde</td><td class="sec">§3.2 Activation Functions</td></tr>
+          <tr><td class="term">ReLU</td><td>ReLU</td><td lang="ar" dir="rtl" class="ar">ReLU</td><td>ReLU</td><td>ReLU</td><td>ReLU</td><td class="sec">§3.2 Activation Functions</td></tr>
+          <tr><td class="term">Non-linearity</td><td>Нелинейность</td><td lang="ar" dir="rtl" class="ar">اللاخطية</td><td>Não-linearidade</td><td>No linealidad</td><td>Non-linéarité</td><td class="sec">§3.2 Activation Functions</td></tr>
+          <tr><td class="term">Neural network</td><td>Нейронная сеть</td><td lang="ar" dir="rtl" class="ar">الشبكة العصبية</td><td>Rede neural</td><td>Red neuronal</td><td>Réseau de neurones</td><td class="sec">§4 · Key Terms</td></tr>
+          <tr><td class="term">Input layer</td><td>Входной слой</td><td lang="ar" dir="rtl" class="ar">طبقة الإدخال</td><td>Camada de entrada</td><td>Capa de entrada</td><td>Couche d'entrée</td><td class="sec">§4.1 · Key Terms</td></tr>
+          <tr><td class="term">Hidden layer</td><td>Скрытый слой</td><td lang="ar" dir="rtl" class="ar">الطبقة المخفية</td><td>Camada oculta</td><td>Capa oculta</td><td>Couche cachée</td><td class="sec">§4.1 · Key Terms</td></tr>
+          <tr><td class="term">Output layer</td><td>Выходной слой</td><td lang="ar" dir="rtl" class="ar">طبقة الإخراج</td><td>Camada de saída</td><td>Capa de salida</td><td>Couche de sortie</td><td class="sec">§4.1 · Key Terms</td></tr>
+          <tr><td class="term">Deep neural network</td><td>Глубокая нейронная сеть</td><td lang="ar" dir="rtl" class="ar">الشبكة العصبية العميقة</td><td>Rede neural profunda</td><td>Red neuronal profunda</td><td>Réseau de neurones profond</td><td class="sec">§4.1 · Key Terms</td></tr>
+          <tr><td class="term">Forward pass</td><td>Прямой проход</td><td lang="ar" dir="rtl" class="ar">التمرير الأمامي</td><td>Passagem direta (forward)</td><td>Paso hacia adelante</td><td>Passe avant</td><td class="sec">§4.2 · Key Terms</td></tr>
+          <tr><td class="term">Loss (error/cost)</td><td>Потеря (ошибка)</td><td lang="ar" dir="rtl" class="ar">الخسارة (الخطأ)</td><td>Perda (erro)</td><td>Pérdida (error)</td><td>Perte (erreur)</td><td class="sec">§5.1 · Key Terms</td></tr>
+          <tr><td class="term">Gradient descent</td><td>Градиентный спуск</td><td lang="ar" dir="rtl" class="ar">النزول الاشتقاقي (التدرّجي)</td><td>Descida de gradiente</td><td>Descenso de gradiente</td><td>Descente de gradient</td><td class="sec">§5.2 · Key Terms</td></tr>
+          <tr><td class="term">Learning rate</td><td>Скорость обучения</td><td lang="ar" dir="rtl" class="ar">معدّل التعلّم</td><td>Taxa de aprendizado</td><td>Tasa de aprendizaje</td><td>Taux d'apprentissage</td><td class="sec">§5.2 Gradient Descent</td></tr>
+          <tr><td class="term">Backpropagation</td><td>Обратное распространение ошибки</td><td lang="ar" dir="rtl" class="ar">الانتشار العكسي</td><td>Retropropagação</td><td>Retropropagación</td><td>Rétropropagation</td><td class="sec">§5.3 · Key Terms</td></tr>
+          <tr><td class="term">Epoch</td><td>Эпоха</td><td lang="ar" dir="rtl" class="ar">الحقبة (الدورة الكاملة)</td><td>Época (epoch)</td><td>Época (epoch)</td><td>Époque (epoch)</td><td class="sec">§5.4 · Key Terms</td></tr>
+          <tr><td class="term">Natural Language Processing (NLP)</td><td>Обработка естественного языка (NLP)</td><td lang="ar" dir="rtl" class="ar">معالجة اللغة الطبيعية</td><td>Processamento de linguagem natural (PLN)</td><td>Procesamiento de lenguaje natural (PLN)</td><td>Traitement du langage naturel (TALN)</td><td class="sec">§6.1 Where AI Is Used</td></tr>
+          <tr><td class="term">Computer Vision</td><td>Компьютерное зрение</td><td lang="ar" dir="rtl" class="ar">الرؤية الحاسوبية</td><td>Visão computacional</td><td>Visión por computador</td><td>Vision par ordinateur</td><td class="sec">§6.1 Where AI Is Used</td></tr>
+          <tr><td class="term">Recommendation</td><td>Рекомендательная система</td><td lang="ar" dir="rtl" class="ar">التوصية</td><td>Recomendação</td><td>Recomendación</td><td>Recommandation</td><td class="sec">§6.1 Where AI Is Used</td></tr>
+          <tr><td class="term">Robotics</td><td>Робототехника</td><td lang="ar" dir="rtl" class="ar">الروبوتات (علم الروبوت)</td><td>Robótica</td><td>Robótica</td><td>Robotique</td><td class="sec">§6.1 Where AI Is Used</td></tr>
+          <tr><td class="term">Data bias</td><td>Смещение (предвзятость) данных</td><td lang="ar" dir="rtl" class="ar">تحيّز البيانات</td><td>Viés de dados</td><td>Sesgo de datos</td><td>Biais des données</td><td class="sec">§6.2 Limits and Risks</td></tr>
+          <tr><td class="term">Hallucination</td><td>Галлюцинация (модели)</td><td lang="ar" dir="rtl" class="ar">الهلوسة</td><td>Alucinação</td><td>Alucinación</td><td>Hallucination</td><td class="sec">§6.2 Limits and Risks</td></tr>
+          <tr><td class="term">Black box</td><td>Чёрный ящик</td><td lang="ar" dir="rtl" class="ar">الصندوق الأسود</td><td>Caixa-preta</td><td>Caja negra</td><td>Boîte noire</td><td class="sec">§6.2 Limits and Risks</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <a class="backtop" href="#top">↑ Back to top</a>
+  </section>
+
+  <section class="lecblock" id="lec8">
+    <h2 class="lech"><span class="lecnum">Lecture 8</span>The Mathematics of Machine Learning</h2>
+    <p class="lecar" lang="ar" dir="rtl">المحاضرة 8 — رياضيات تعلّم الآلة</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>English</th><th>Русский (ru)</th><th>العربية (ar)</th><th>Português (pt)</th><th>Español (es)</th><th>Français (fr)</th><th>Section / where it appears</th></tr></thead>
+        <tbody>
+          <tr><td class="term">Optimisation</td><td>Оптимизация</td><td lang="ar" dir="rtl" class="ar">الأمثَلة (التحسين)</td><td>Otimização</td><td>Optimización</td><td>Optimisation</td><td class="sec">§1 · Key Terms</td></tr>
+          <tr><td class="term">Model</td><td>Модель</td><td lang="ar" dir="rtl" class="ar">النموذج</td><td>Modelo</td><td>Modelo</td><td>Modèle</td><td class="sec">§1 Learning as Optimisation</td></tr>
+          <tr><td class="term">Loss function</td><td>Функция потерь</td><td lang="ar" dir="rtl" class="ar">دالة الخسارة</td><td>Função de perda</td><td>Función de pérdida</td><td>Fonction de perte</td><td class="sec">§1 · §2 · Key Terms</td></tr>
+          <tr><td class="term">Optimiser</td><td>Оптимизатор</td><td lang="ar" dir="rtl" class="ar">المُحسِّن (المُؤَمثِل)</td><td>Otimizador</td><td>Optimizador</td><td>Optimiseur</td><td class="sec">§1 Learning as Optimisation</td></tr>
+          <tr><td class="term">Prediction (ŷ)</td><td>Предсказание (ŷ)</td><td lang="ar" dir="rtl" class="ar">التنبّؤ (ŷ)</td><td>Predição (ŷ)</td><td>Predicción (ŷ)</td><td>Prédiction (ŷ)</td><td class="sec">§1.1 · Key Terms</td></tr>
+          <tr><td class="term">Weight (w)</td><td>Вес (w)</td><td lang="ar" dir="rtl" class="ar">الوزن (w)</td><td>Peso (w)</td><td>Peso (w)</td><td>Poids (w)</td><td class="sec">§1.1 Notation</td></tr>
+          <tr><td class="term">Bias (b)</td><td>Смещение (b)</td><td lang="ar" dir="rtl" class="ar">الانحياز (b)</td><td>Viés (b)</td><td>Sesgo (b)</td><td>Biais (b)</td><td class="sec">§1.1 Notation</td></tr>
+          <tr><td class="term">Mean Squared Error (MSE)</td><td>Среднеквадратичная ошибка (MSE)</td><td lang="ar" dir="rtl" class="ar">متوسط مربّع الخطأ (MSE)</td><td>Erro quadrático médio (MSE)</td><td>Error cuadrático medio (MSE)</td><td>Erreur quadratique moyenne (MSE)</td><td class="sec">§2.1 · Key Terms</td></tr>
+          <tr><td class="term">Regression</td><td>Регрессия</td><td lang="ar" dir="rtl" class="ar">الانحدار</td><td>Regressão</td><td>Regresión</td><td>Régression</td><td class="sec">§2.1 Mean Squared Error</td></tr>
+          <tr><td class="term">Cross-entropy (log loss)</td><td>Перекрёстная энтропия (log loss)</td><td lang="ar" dir="rtl" class="ar">الإنتروبيا المتقاطعة</td><td>Entropia cruzada (log loss)</td><td>Entropía cruzada (log loss)</td><td>Entropie croisée (log loss)</td><td class="sec">§2.2 · Key Terms</td></tr>
+          <tr><td class="term">Classification</td><td>Классификация</td><td lang="ar" dir="rtl" class="ar">التصنيف</td><td>Classificação</td><td>Clasificación</td><td>Classification</td><td class="sec">§2.2 Cross-Entropy</td></tr>
+          <tr><td class="term">Probability</td><td>Вероятность</td><td lang="ar" dir="rtl" class="ar">الاحتمال</td><td>Probabilidade</td><td>Probabilidad</td><td>Probabilité</td><td class="sec">§2.2 Cross-Entropy</td></tr>
+          <tr><td class="term">Loss surface</td><td>Поверхность потерь</td><td lang="ar" dir="rtl" class="ar">سطح الخسارة</td><td>Superfície de perda</td><td>Superficie de pérdida</td><td>Surface de perte</td><td class="sec">§2.3 · Key Terms</td></tr>
+          <tr><td class="term">Gradient (∇L)</td><td>Градиент (∇L)</td><td lang="ar" dir="rtl" class="ar">التدرّج (المشتقّة المتّجهة) (∇L)</td><td>Gradiente (∇L)</td><td>Gradiente (∇L)</td><td>Gradient (∇L)</td><td class="sec">§3 · Key Terms</td></tr>
+          <tr><td class="term">Partial derivative (∂L/∂w)</td><td>Частная производная (∂L/∂w)</td><td lang="ar" dir="rtl" class="ar">المشتقّة الجزئية (∂L/∂w)</td><td>Derivada parcial (∂L/∂w)</td><td>Derivada parcial (∂L/∂w)</td><td>Dérivée partielle (∂L/∂w)</td><td class="sec">§3.1 · Key Terms</td></tr>
+          <tr><td class="term">Slope</td><td>Наклон (крутизна)</td><td lang="ar" dir="rtl" class="ar">الميل</td><td>Inclinação</td><td>Pendiente</td><td>Pente</td><td class="sec">§3.1 Slope of One Weight</td></tr>
+          <tr><td class="term">Gradient vector</td><td>Вектор градиента</td><td lang="ar" dir="rtl" class="ar">متّجه التدرّج</td><td>Vetor gradiente</td><td>Vector gradiente</td><td>Vecteur gradient</td><td class="sec">§3.2 The Gradient Vector</td></tr>
+          <tr><td class="term">Negative gradient</td><td>Антиградиент (отрицательный градиент)</td><td lang="ar" dir="rtl" class="ar">التدرّج السالب</td><td>Gradiente negativo</td><td>Gradiente negativo</td><td>Gradient négatif</td><td class="sec">§3.2 · Key Terms</td></tr>
+          <tr><td class="term">Chain rule</td><td>Цепное правило (правило цепочки)</td><td lang="ar" dir="rtl" class="ar">قاعدة السلسلة</td><td>Regra da cadeia</td><td>Regla de la cadena</td><td>Règle de dérivation en chaîne</td><td class="sec">§3.3 Where the Gradient Comes From</td></tr>
+          <tr><td class="term">Backpropagation</td><td>Обратное распространение</td><td lang="ar" dir="rtl" class="ar">الانتشار العكسي</td><td>Retropropagação</td><td>Retropropagación</td><td>Rétropropagation</td><td class="sec">§3.3 · Key Terms</td></tr>
+          <tr><td class="term">Gradient descent</td><td>Градиентный спуск</td><td lang="ar" dir="rtl" class="ar">النزول التدرّجي</td><td>Descida de gradiente</td><td>Descenso de gradiente</td><td>Descente de gradient</td><td class="sec">§4 · Key Terms</td></tr>
+          <tr><td class="term">Update rule</td><td>Правило обновления</td><td lang="ar" dir="rtl" class="ar">قاعدة التحديث</td><td>Regra de atualização</td><td>Regla de actualización</td><td>Règle de mise à jour</td><td class="sec">§4 · Key Terms</td></tr>
+          <tr><td class="term">Learning rate (η)</td><td>Скорость обучения (η)</td><td lang="ar" dir="rtl" class="ar">معدّل التعلّم (η)</td><td>Taxa de aprendizado (η)</td><td>Tasa de aprendizaje (η)</td><td>Taux d'apprentissage (η)</td><td class="sec">§4.1 · Key Terms</td></tr>
+          <tr><td class="term">Forward pass</td><td>Прямой проход</td><td lang="ar" dir="rtl" class="ar">التمرير الأمامي</td><td>Passagem direta</td><td>Paso hacia adelante</td><td>Passe avant</td><td class="sec">§5 · Key Terms</td></tr>
+          <tr><td class="term">Iteration</td><td>Итерация</td><td lang="ar" dir="rtl" class="ar">التكرار (خطوة تحديث)</td><td>Iteração</td><td>Iteración</td><td>Itération</td><td class="sec">§6.1 · Key Terms</td></tr>
+          <tr><td class="term">Epoch</td><td>Эпоха</td><td lang="ar" dir="rtl" class="ar">الحقبة (الدورة الكاملة)</td><td>Época</td><td>Época</td><td>Époque</td><td class="sec">§6.1 · Key Terms</td></tr>
+          <tr><td class="term">Batch gradient descent</td><td>Пакетный градиентный спуск</td><td lang="ar" dir="rtl" class="ar">النزول التدرّجي الدفعي (الكامل)</td><td>Descida de gradiente em lote</td><td>Descenso de gradiente por lotes</td><td>Descente de gradient par lots</td><td class="sec">§6.2 · Key Terms</td></tr>
+          <tr><td class="term">Stochastic gradient descent (SGD)</td><td>Стохастический градиентный спуск (SGD)</td><td lang="ar" dir="rtl" class="ar">النزول التدرّجي العشوائي (SGD)</td><td>Gradiente descendente estocástico (SGD)</td><td>Gradiente descendente estocástico (SGD)</td><td>Descente de gradient stochastique (SGD)</td><td class="sec">§6.2 · Key Terms</td></tr>
+          <tr><td class="term">Mini-batch gradient descent</td><td>Мини-пакетный градиентный спуск</td><td lang="ar" dir="rtl" class="ar">النزول التدرّجي بالدُّفعات الصغيرة</td><td>Descida em mini-lotes</td><td>Descenso por mini-lotes</td><td>Descente par mini-lots</td><td class="sec">§6.2 · Key Terms</td></tr>
+          <tr><td class="term">Convergence</td><td>Сходимость</td><td lang="ar" dir="rtl" class="ar">التقارب</td><td>Convergência</td><td>Convergencia</td><td>Convergence</td><td class="sec">§6.3 · Key Terms</td></tr>
+          <tr><td class="term">Validation set</td><td>Проверочная (валидационная) выборка</td><td lang="ar" dir="rtl" class="ar">مجموعة التحقّق</td><td>Conjunto de validação</td><td>Conjunto de validación</td><td>Ensemble de validation</td><td class="sec">§6.3 · Key Terms</td></tr>
+          <tr><td class="term">Early stopping</td><td>Ранняя остановка</td><td lang="ar" dir="rtl" class="ar">الإيقاف المبكر</td><td>Parada antecipada</td><td>Parada temprana</td><td>Arrêt précoce</td><td class="sec">§6.3 · Key Terms</td></tr>
+          <tr><td class="term">Overfitting</td><td>Переобучение</td><td lang="ar" dir="rtl" class="ar">فرط التخصيص (الحفظ الزائد)</td><td>Sobreajuste</td><td>Sobreajuste</td><td>Surapprentissage</td><td class="sec">§6.4 · Key Terms</td></tr>
+          <tr><td class="term">Regularisation</td><td>Регуляризация</td><td lang="ar" dir="rtl" class="ar">التنظيم (التسوية)</td><td>Regularização</td><td>Regularización</td><td>Régularisation</td><td class="sec">§6.4 · Key Terms</td></tr>
+          <tr><td class="term">Dropout</td><td>Прореживание (dropout)</td><td lang="ar" dir="rtl" class="ar">الإسقاط العشوائي (دروب-أوت)</td><td>Dropout</td><td>Dropout</td><td>Abandon (dropout)</td><td class="sec">§6.4 The Central Danger</td></tr>
+          <tr><td class="term">Training curve</td><td>Кривая обучения</td><td lang="ar" dir="rtl" class="ar">منحنى التدريب</td><td>Curva de treinamento</td><td>Curva de entrenamiento</td><td>Courbe d'entraînement</td><td class="sec">§7 · Key Terms</td></tr>
+          <tr><td class="term">Underfitting</td><td>Недообучение</td><td lang="ar" dir="rtl" class="ar">نقص التخصيص (القصور)</td><td>Subajuste (underfitting)</td><td>Subajuste</td><td>Sous-apprentissage</td><td class="sec">§7 Reading a Training Curve</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <a class="backtop" href="#top">↑ Back to top</a>
+  </section>
+
+</div>
+
+<footer>
+  Course Terms Glossary · Introduction to Computer Science and Artificial Intelligence · Interactive book<br>
+  © 2026 Dr. Ali Mahmoud Mansour · All rights reserved. Content &amp; concept: Dr. Ali Mahmoud Mansour · Co-created with Claude (Anthropic).<span aria-hidden="true">⁠​‌​​‌‌‌‌​‌​‌​‌‌‌​‌​​‌‌‌​​‌​​​‌​‌​‌​‌​​‌​​​‌‌‌‌​‌​‌​​​​​‌​‌​​‌‌​​​‌​​‌​​‌​​‌​‌‌​‌​‌​​‌‌​‌​‌​​​​​‌​‌​​‌​​​​‌​​‌‌​‌​‌​​‌‌‌‌​‌​‌​‌​‌​‌​​​‌​​​​‌​‌‌​‌​‌​​‌‌​‌​‌​​​​​‌​‌​​‌‌‌​​‌​‌​​‌‌​‌​​‌‌‌‌​‌​‌​‌​‌​‌​‌​​‌​​​‌‌‌​‌‌​‌​​​​‌‌​‌​​‌‌‌‌​​‌​‌‌​‌​‌​​​​‌‌​‌​‌​​‌​​‌​​​‌​‌​‌​​​​​‌​‌​‌​‌​​​‌​​‌‌‌‌​‌​‌​​‌​​​‌‌‌‌​‌​‌​​​​‌‌​‌​​‌‌​​​‌​​​​​‌​‌​‌​‌​‌​‌​​​‌​​​‌​​​‌​‌​​‌‌‌​‌‌​‌​‌‌​​‌​‌​​​‌​‌​‌​​​​​‌​‌​‌​​‌​​​‌‌‌‌​‌​​‌‌​​‌​​​‌‌​​​​​​‌‌​​‌​​​‌‌​‌‌​⁠</span>
+</footer>
+
+</body>
+</html>
