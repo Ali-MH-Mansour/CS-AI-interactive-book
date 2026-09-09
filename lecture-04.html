@@ -1,0 +1,500 @@
+<!doctype html>
+<!--
+  Origin: cs-ai-course (activity 260831-001), execution serial 018, chunk C02.
+  Deliverable: interactive-book Lecture 4 chapter (B08 book rollout, L4).
+  Version: 1.0 · 2026-09-09.
+  Source content: Output/lecture-04-en.md + Output/lecture-04-ar.md
+    (SDLC · compilation/interpretation/bytecode+VM · testing & debugging · Waterfall/Iterative/Agile/DevOps · Git).
+  Structural template: lecture-03.html / lecture-02.html / lecture-01.html. Self-contained, no external dependencies.
+-->
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 4 · Software Life Cycle — Interactive Book</title>
+<style>
+  :root{
+    --bg:#faf7f2; --panel:#ffffff; --ink:#1d2430; --muted:#5c6675;
+    --line:#e7e0d6; --accent:#c8622a; --accent-soft:#f6e4d6;
+    --blue:#2f6db3; --blue-soft:#e3eef9; --green:#2f8f5b; --green-soft:#e2f2e9;
+    --amber:#b8890f; --amber-soft:#f7edcf; --red:#c0392b; --red-soft:#f7dfdc;
+    --shadow:0 10px 30px rgba(40,30,20,.08), 0 2px 6px rgba(40,30,20,.05);
+    --radius:16px; --serif:"Iowan Old Style",Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Mono","Fira Code",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#15181d; --panel:#1e232b; --ink:#eef1f5; --muted:#9aa4b2;
+      --line:#2c333d; --accent:#e08a52; --accent-soft:#38271c;
+      --blue:#69a6e6; --blue-soft:#1c2a3a; --green:#6fce97; --green-soft:#172a20;
+      --amber:#d8ab3a; --amber-soft:#2c2411; --red:#e07568; --red-soft:#33201d;
+      --shadow:0 10px 30px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.3);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;margin:0}
+  .wrap{max-width:820px;margin:0 auto;padding:0 22px 90px}
+
+  header.mast{
+    background:linear-gradient(135deg,var(--accent) 0%,#a84c1f 100%);
+    color:#fff;padding:46px 22px 40px;text-align:center;position:relative;overflow:hidden}
+  header.mast::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 20% 120%,rgba(255,255,255,.18),transparent 45%);pointer-events:none}
+  .mast .kicker{text-transform:uppercase;letter-spacing:.22em;font-size:.68rem;opacity:.8;font-weight:600}
+  .mast h1{font-family:var(--serif);font-size:clamp(1.5rem,4.5vw,2.4rem);margin:.1em 0 .15em;font-weight:600;letter-spacing:-.01em}
+  .mast .sub{opacity:.92;font-size:1rem;max-width:640px;margin:.2em auto 0}
+
+  .langbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:9px 0}
+  .langbar .inner{max-width:820px;margin:0 auto;padding:0 22px;display:flex;gap:10px;align-items:center;justify-content:space-between}
+  .langbar .home{font-size:.82rem;color:var(--muted);font-weight:600;text-decoration:none}
+  .langbar .home:hover{color:var(--accent)}
+  .seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.82rem;font-weight:600;
+    padding:5px 15px;border-radius:999px;cursor:pointer;transition:.2s}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+
+  section.chapter{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:34px clamp(20px,4vw,44px);margin-top:26px}
+  .chapter > h2{font-family:var(--serif);font-size:1.5rem;margin:.1em 0 .1em;font-weight:600}
+  .chapter > .lead{color:var(--muted);margin:.2em 0 1.4em;font-size:1.02rem}
+  p{margin:.9em 0}
+  .prose{font-family:var(--serif);font-size:1.08rem}
+  [dir="rtl"] .prose,[dir="rtl"] .chapter>.lead,[dir="rtl"] .chapter>h2{font-family:"Geeza Pro","Al Bayan",var(--sans)}
+  .mono{font-family:var(--mono)}
+
+  .demo{border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden;background:var(--bg)}
+  .demo .dhead{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .demo .dhead .dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+  .demo .dhead h4{margin:0;font-size:.92rem;font-weight:700;letter-spacing:.01em}
+  .demo .dhead .tag{margin-inline-start:auto;font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;
+    color:var(--muted);border:1px solid var(--line);padding:3px 8px;border-radius:999px}
+  .demo .stage{padding:22px 16px;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .demo .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:0 16px 16px}
+  button.ctrl{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-weight:600;
+    font-size:.84rem;padding:7px 14px;border-radius:10px;cursor:pointer;transition:.15s;display:inline-flex;gap:6px;align-items:center}
+  button.ctrl:hover{border-color:var(--accent);color:var(--accent)}
+  button.ctrl.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  button.ctrl.primary:hover{filter:brightness(1.05);color:#fff}
+  button.ctrl:disabled{opacity:.4;cursor:default;border-color:var(--line);color:var(--muted)}
+  .caption{font-size:.9rem;color:var(--muted);min-height:1.4em;text-align:center;transition:.2s;padding:0 12px}
+
+  /* §1 SDLC phase walkthrough */
+  .sdlc{display:flex;flex-direction:column;gap:16px;width:100%;align-items:center}
+  .phases{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+  .ph{display:flex;flex-direction:column;align-items:center;gap:4px;transition:.25s}
+  .ph .pnum{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    border:1.5px solid var(--line);background:var(--panel);font-family:var(--mono);font-weight:800;font-size:.9rem;transition:.25s}
+  .ph .pname{font-size:.66rem;color:var(--muted);max-width:74px;text-align:center;line-height:1.2}
+  .ph.done .pnum{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+  .ph.active .pnum{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);
+    box-shadow:0 0 0 4px var(--accent-soft);transform:translateY(-2px)}
+  .ph.active .pname{color:var(--accent);font-weight:700}
+  .parrow{align-self:center;color:var(--muted);font-family:var(--mono);font-size:.8rem;margin-top:8px}
+  [dir="rtl"] .parrow{transform:scaleX(-1)}
+  .ph-detail{border:1.5px solid var(--blue);border-radius:12px;padding:12px 16px;background:var(--blue-soft);
+    width:100%;max-width:520px;font-size:.9rem}
+  .ph-detail .qrow{display:flex;gap:8px;margin:3px 0}
+  .ph-detail .qrow .lab{color:var(--blue);font-weight:700;min-width:78px}
+  .costbar{display:flex;align-items:center;gap:10px;width:100%;max-width:520px;font-size:.82rem;color:var(--muted)}
+  .costbar .track{flex:1;height:12px;border-radius:999px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
+  .costbar .fill{height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--amber) 55%,var(--red));transition:width .35s}
+  .costbar b{color:var(--ink);font-family:var(--mono)}
+
+  /* §2 compile pipeline */
+  .pipe{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:stretch;width:100%}
+  .pstage{display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;
+    border:1.5px solid var(--line);border-radius:11px;background:var(--panel);padding:10px 12px;min-width:104px;transition:.25s}
+  .pstage .picon{font-size:1.1rem}
+  .pstage .ptt{font-size:.74rem;font-weight:700;text-align:center;line-height:1.15}
+  .pstage .pfile{font-family:var(--mono);font-size:.66rem;color:var(--muted)}
+  .pstage.tool{background:var(--amber-soft);border-color:var(--amber)}
+  .pstage.done{border-color:var(--green);background:var(--green-soft)}
+  .pstage.active{border-color:var(--accent);background:var(--accent-soft);
+    box-shadow:0 0 0 4px var(--accent-soft);transform:translateY(-3px)}
+  .pstage.active .ptt{color:var(--accent)}
+  .parr{align-self:center;color:var(--muted);font-family:var(--mono);font-weight:700;font-size:.95rem}
+  [dir="rtl"] .parr{transform:scaleX(-1)}
+  .artifact{font-family:var(--mono);font-size:.86rem;font-weight:700;color:var(--accent);
+    border:1px solid var(--accent);background:var(--accent-soft);border-radius:8px;padding:5px 12px;margin-top:4px;transition:.2s}
+
+  .note{background:var(--blue-soft);border-inline-start:4px solid var(--blue);border-radius:10px;
+    padding:12px 16px;margin:20px 0;font-size:.94rem}
+  .note b{color:var(--blue)}
+  .note.green{background:var(--green-soft);border-color:var(--green)}
+  .note.green b{color:var(--green)}
+  .note.amber{background:var(--amber-soft);border-color:var(--amber)}
+  .note.amber b{color:var(--amber)}
+  .watch{background:var(--amber-soft);border-inline-start:4px solid var(--amber);border-radius:10px;
+    padding:13px 17px;margin:6px 0 2px;font-size:.95rem}
+  .watch .wh{font-weight:700;color:var(--amber);display:block;margin-bottom:3px}
+
+  pre.flow{font-family:var(--mono);font-size:.78rem;line-height:1.35;background:var(--bg);border:1px solid var(--line);
+    border-radius:10px;padding:14px 16px;overflow-x:auto;margin:16px 0}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+  @media(max-width:620px){.twocol{grid-template-columns:1fr}}
+  .threecol{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:20px 0}
+  @media(max-width:620px){.threecol{grid-template-columns:1fr}}
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .card h5{margin:.1em 0 .5em;font-size:.98rem}
+  .card p{margin:.3em 0;font-size:.9rem;color:var(--muted)}
+  .card .k{font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:.9rem}
+  table.tbl th,table.tbl td{border:1px solid var(--line);padding:7px 10px;text-align:start}
+  table.tbl th{background:var(--panel);font-weight:700}
+  table.tbl td.mono{font-family:var(--mono);font-size:.82rem}
+
+  .chapnav{display:flex;justify-content:space-between;gap:12px;margin-top:28px;flex-wrap:wrap}
+  .chapnav a{flex:1;min-width:180px;text-decoration:none;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;padding:14px 18px;color:inherit;transition:.15s}
+  .chapnav a:hover{border-color:var(--accent)}
+  .chapnav .dir{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .chapnav .lb{font-weight:600;color:var(--accent);margin-top:2px}
+  .chapnav a.disabled{opacity:.5;pointer-events:none}
+
+  footer{max-width:820px;margin:34px auto 0;padding:0 22px;color:var(--muted);font-size:.85rem;text-align:center}
+  .en{display:inline}.ar{display:none}
+  .block .en{display:block}.block .ar{display:none}
+  [data-lang="ar"] .en{display:none}[data-lang="ar"] .ar{display:inline}
+  [data-lang="ar"] .block .ar{display:block}
+</style>
+</head>
+<body data-lang="en">
+
+<header class="mast">
+  <div class="kicker">Fundamentals of CS &amp; AI · <span class="en">Module 2 · Lecture 4</span><span class="ar">الوحدة 2 · المحاضرة 4</span></div>
+  <h1><span class="en">The Software Life Cycle, Translation &amp; Development</span><span class="ar">دورة حياة البرمجيات، والترجمة، والتطوير</span></h1>
+  <div class="sub block">
+    <span class="en">How software is built from first idea to retirement, how your source code becomes a running process, and how teams keep it correct — the SDLC, compilers, testing, Agile and Git, watched step by step.</span>
+    <span class="ar">كيف تُبنى البرمجيات من الفكرة الأولى حتى الإخراج من الخدمة، وكيف تصير شيفرتك المصدرية عمليةً تعمل، وكيف تُبقيها الفِرق صحيحة — دورة الحياة، والمترجِمات، والاختبار، وأجايل، وGit، نُشاهدها خطوةً بخطوة.</span>
+  </div>
+</header>
+
+<div class="langbar">
+  <div class="inner">
+    <a class="home" href="index.html">← <span class="en">Contents</span><span class="ar">الفهرس</span></a>
+    <div class="seg" role="group" aria-label="language">
+      <button id="btn-en" aria-pressed="true" onclick="setLang('en')">EN</button>
+      <button id="btn-ar" aria-pressed="false" onclick="setLang('ar')">ع</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- §1 SDLC + ANIMATION 1 -->
+  <section class="chapter">
+    <h2><span class="en">§1 · The Software Development Life Cycle</span><span class="ar">§1 · دورة حياة تطوير البرمجيات</span></h2>
+    <p class="lead"><span class="en">Software is not written in a single burst — it moves through six phases. Walk them, and watch the cost of a mistake climb.</span><span class="ar">لا تُكتب البرمجيات دفعةً واحدة — بل تمرّ بستّ مراحل. سِر فيها، وشاهِد تكلفة الخطأ تتسلّق.</span></p>
+    <div class="prose block">
+      <span class="en"><p>The <b>Software Development Life Cycle (SDLC)</b> is a structured framework that describes <i>what</i> work is done, <i>in what order</i>, and <i>how quality is controlled</i> from the first idea to the retirement of a system. The classic form has <b>six phases</b>: requirements analysis, design, implementation, testing, deployment, and maintenance. Press <b>Step</b> below to walk them one at a time — each phase shows the question it answers and the output it produces, while the bar tracks how expensive the same defect becomes the later it is caught.</p></span>
+      <span class="ar"><p><b>دورة حياة تطوير البرمجيات (SDLC)</b> إطارٌ منظّم يصف <i>ما</i> العمل الذي يُنجَز، و<i>بأي ترتيب</i>، و<i>كيف تُضبط الجودة</i> من الفكرة الأولى حتى إخراج النظام من الخدمة. وشكلها الكلاسيكي <b>ستّ مراحل</b>: تحليل المتطلبات، والتصميم، والتنفيذ، والاختبار، والنشر، والصيانة. اضغط <b>خطوة</b> أدناه لتسير فيها واحدةً تلو الأخرى — تُظهِر كلُّ مرحلةٍ السؤالَ الذي تجيب عنه والمُخرَجَ الذي تنتجه، بينما يتتبّع الشريط كم يزداد العيب نفسُه كلفةً كلّما اكتُشِف متأخّرًا.</p></span>
+    </div>
+
+    <div class="demo" id="d-sdlc">
+      <div class="dhead"><span class="dot"></span><h4><span class="en">SDLC phase walkthrough</span><span class="ar">جولة في مراحل دورة الحياة</span></h4><span class="tag">animated</span></div>
+      <div class="stage">
+        <div class="sdlc">
+          <div class="phases" id="sd-phases"></div>
+          <div class="ph-detail" id="sd-detail"></div>
+          <div class="costbar">
+            <span class="en">cost to fix a defect here</span><span class="ar">كلفة إصلاح عيبٍ هنا</span>
+            <div class="track"><div class="fill" id="sd-fill"></div></div>
+            <b id="sd-cost">1×</b>
+          </div>
+        </div>
+      </div>
+      <div class="caption" id="sd-cap"></div>
+      <div class="controls">
+        <button class="ctrl primary" id="sd-play" onclick="SDLC.play()">▶ <span class="en">Play</span><span class="ar">تشغيل</span></button>
+        <button class="ctrl" id="sd-step" onclick="SDLC.step()">⏭ <span class="en">Step</span><span class="ar">خطوة</span></button>
+        <button class="ctrl" onclick="SDLC.reset()">↻ <span class="en">Reset</span><span class="ar">إعادة</span></button>
+      </div>
+    </div>
+    <div class="watch block">
+      <span class="wh">💡 <span class="en">What to notice</span><span class="ar">ما الذي نلاحظه؟</span></span>
+      <span class="en">A defect introduced in <b>requirements</b> but not caught until <b>production</b> costs roughly <b>100×</b> more to fix than if it were caught at the start — that steep climb in the bar is the single strongest argument for testing <i>early and often</i>. And notice the last phase: <b>maintenance</b> is not a footnote — 60–80% of a product's total cost is spent here, <i>after</i> the first release. The life cycle is mostly what happens after "done".</span>
+      <span class="ar">العيب الذي يُدخَل في <b>المتطلبات</b> ولا يُكتشَف حتى <b>الإنتاج</b> يكلّف إصلاحه نحو <b>100 ضعف</b> مقارنةً بلو اكتُشِف في البداية — وهذا التسلّق الحادّ في الشريط هو أقوى حجّةٍ للاختبار <i>مبكرًا وباستمرار</i>. ولاحِظ المرحلة الأخيرة: <b>الصيانة</b> ليست هامشًا — إذ يُنفَق 60–80% من كلفة المنتج كلِّها هنا، <i>بعد</i> الإصدار الأوّل. فدورة الحياة في معظمها ما يحدث بعد كلمة «انتهينا».</span>
+    </div>
+  </section>
+
+  <!-- §2 source to running program + ANIMATION 2 -->
+  <section class="chapter">
+    <h2><span class="en">§2 · From source code to a running program</span><span class="ar">§2 · من الشيفرة المصدرية إلى برنامجٍ يعمل</span></h2>
+    <p class="lead"><span class="en">The CPU runs only machine code. Watch a Java file compile once, then run anywhere on a virtual machine.</span><span class="ar">لا ينفّذ المعالج إلا شيفرة الآلة. شاهِد ملفَّ Java يُترجَم مرّةً، ثم يعمل في أي مكان على آلةٍ افتراضية.</span></p>
+    <div class="prose block">
+      <span class="en"><p>Human-written <b>source code</b> must be translated before a CPU can run it. There are three models. A <b>compiler</b> translates the whole file to machine code ahead of time (C, Go) — fast, but tied to one platform. An <b>interpreter</b> executes the source line by line at run time (the Python shell, JavaScript) — portable, but slower. The <b>hybrid</b> model compiles once to platform-independent <b>bytecode</b>, which a <b>virtual machine (VM)</b> then runs (Java, C#, Python). Press <b>Step</b> and trace one Java program from <span class="mono">.java</span> all the way to the CPU.</p></span>
+      <span class="ar"><p>يجب ترجمة <b>الشيفرة المصدرية</b> التي يكتبها الإنسان قبل أن ينفّذها المعالج. وهناك ثلاثة نماذج. ي<b>ترجم المترجِم</b> الملفَّ كاملًا إلى شيفرة آلةٍ مسبقًا (C، Go) — سريعٌ لكنه مرتبطٌ بمنصّةٍ واحدة. وي<b>نفّذ المفسِّر</b> المصدرَ سطرًا بسطر وقت التشغيل (صدفة Python، JavaScript) — محمولٌ لكنه أبطأ. أمّا النموذج <b>الهجين</b> فيُترجم مرّةً إلى <b>شيفرة وسيطة (Bytecode)</b> مستقلّةٍ عن المنصّة، تشغّلها بعدها <b>آلةٌ افتراضية (VM)</b> (Java، C#، Python). اضغط <b>خطوة</b> وتتبّع برنامج Java واحدًا من <span class="mono">.java</span> حتى المعالج.</p></span>
+    </div>
+
+    <div class="demo" id="d-pipe">
+      <div class="dhead"><span class="dot"></span><h4><span class="en">Trace: source → compile → bytecode → run</span><span class="ar">تتبّع: مصدر ← ترجمة ← شيفرة وسيطة ← تشغيل</span></h4><span class="tag">animated</span></div>
+      <div class="stage">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%">
+          <div class="pipe" id="pp-stages"></div>
+          <div class="artifact" id="pp-art"></div>
+        </div>
+      </div>
+      <div class="caption" id="pp-cap"></div>
+      <div class="controls">
+        <button class="ctrl primary" id="pp-play" onclick="Pipe.play()">▶ <span class="en">Play</span><span class="ar">تشغيل</span></button>
+        <button class="ctrl" id="pp-step" onclick="Pipe.step()">⏭ <span class="en">Step</span><span class="ar">خطوة</span></button>
+        <button class="ctrl" onclick="Pipe.reset()">↻ <span class="en">Reset</span><span class="ar">إعادة</span></button>
+      </div>
+    </div>
+    <div class="watch block">
+      <span class="wh">💡 <span class="en">What to notice</span><span class="ar">ما الذي نلاحظه؟</span></span>
+      <span class="en">The <b>compiler runs once</b>, producing <span class="mono">hello.class</span> — the same bytecode file runs unchanged on Windows, macOS or Linux, because the <b>VM</b> is the part that differs per platform. That is what "compile once, run anywhere" means. Contrast an <i>interpreter</i>, which re-translates every line every time it runs, and a <i>pure compiler</i> (C), whose <span class="mono">.exe</span> is fast but locked to one OS+CPU. The bytecode+VM model trades a little speed for portability.</span>
+      <span class="ar">ي<b>عمل المترجِم مرّةً واحدة</b> منتِجًا <span class="mono">hello.class</span> — وملفُّ الشيفرة الوسيطة نفسُه يعمل دون تغييرٍ على Windows أو macOS أو Linux، لأنّ <b>الآلة الافتراضية</b> هي الجزء الذي يختلف بحسب المنصّة. وهذا معنى «ترجِم مرّةً، شغّل في أي مكان». قارِن <i>المفسِّر</i> الذي يُعيد ترجمة كلّ سطرٍ في كلّ تشغيل، و<i>المترجِم الصِّرف</i> (C) الذي يكون ملفُّه <span class="mono">.exe</span> سريعًا لكنه مقيَّدٌ بنظام تشغيلٍ ومعالجٍ واحد. فنموذج الشيفرة الوسيطة + VM يقايض قليلًا من السرعة بقابلية النقل.</span>
+    </div>
+
+    <table class="tbl">
+      <thead><tr><th><span class="en">Model</span><span class="ar">النموذج</span></th><th><span class="en">Translated when</span><span class="ar">متى تحدث الترجمة</span></th><th><span class="en">Portability</span><span class="ar">قابلية النقل</span></th><th><span class="en">Speed</span><span class="ar">السرعة</span></th><th><span class="en">Example</span><span class="ar">مثال</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">Compiled</span><span class="ar">مُترجَم</span></td><td><span class="en">Once, before run</span><span class="ar">مرّة قبل التشغيل</span></td><td><span class="en">Low (per platform)</span><span class="ar">منخفضة (لكل منصّة)</span></td><td><span class="en">Fastest</span><span class="ar">الأسرع</span></td><td class="mono">C, Go</td></tr>
+        <tr><td><span class="en">Interpreted</span><span class="ar">مُفسَّر</span></td><td><span class="en">Every line, at run time</span><span class="ar">كل سطر أثناء التشغيل</span></td><td><span class="en">High</span><span class="ar">عالية</span></td><td><span class="en">Slowest</span><span class="ar">الأبطأ</span></td><td class="mono">Python shell, JS</td></tr>
+        <tr><td><span class="en">Bytecode + VM</span><span class="ar">شيفرة وسيطة + VM</span></td><td><span class="en">Once to bytecode, VM at run time</span><span class="ar">مرّة إلى شيفرة وسيطة، ثم VM وقت التشغيل</span></td><td><span class="en">High</span><span class="ar">عالية</span></td><td><span class="en">Medium–High</span><span class="ar">متوسطة–عالية</span></td><td class="mono">Java, C#</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note amber block"><b>⚙︎ <span class="en">The full build pipeline (compiled C)</span><span class="ar">خط أنابيب البناء الكامل (للغة C المُترجَمة)</span>:</b>
+      <span class="en"> "Compilation" is really several stages: <span class="mono">preprocess → compile → assemble → link → load → execute</span>. <b>Linking</b> combines object files and pulls in library code (e.g. <span class="mono">printf</span>); <b>loading</b> is the OS placing the program in memory (Lecture 2's loader).</span>
+      <span class="ar"> «الترجمة» فعليًّا عدّة مراحل: <span class="mono">معالجة مسبقة ← ترجمة ← تجميع ← ربط ← تحميل ← تنفيذ</span>. ال<b>ربط</b> يدمج الملفات الكائنية ويُدرِج شيفرة المكتبات (مثل <span class="mono">printf</span>)؛ وال<b>تحميل</b> هو وضع نظام التشغيل للبرنامج في الذاكرة (محمِّل المحاضرة 2).</span></div>
+  </section>
+
+  <!-- §3 testing & debugging -->
+  <section class="chapter">
+    <h2><span class="en">§3 · Testing &amp; debugging</span><span class="ar">§3 · الاختبار وتنقيح الأخطاء</span></h2>
+    <p class="lead"><span class="en">Testing shows a bug exists; debugging finds why. They are two different jobs.</span><span class="ar">الاختبار يُظهِر أن الخطأ موجود؛ والتنقيح يجد لماذا. وهما وظيفتان مختلفتان.</span></p>
+    <div class="prose block">
+      <span class="en"><p><b>Testing</b> executes a program to <i>find</i> defects; <b>debugging</b> <i>locates and fixes</i> the cause of one that testing revealed. Testing is organised from the smallest unit of code up to the whole system.</p></span>
+      <span class="ar"><p><b>الاختبار</b> ينفّذ البرنامج ل<i>يجد</i> العيوب؛ و<b>تنقيح الأخطاء</b> ي<i>حدّد سببه ويُصلحه</i> بعد أن يكشفه الاختبار. ويُنظَّم الاختبار من أصغر وحدة شيفرة صعودًا حتى النظام كلِّه.</p></span>
+    </div>
+    <div class="note block"><b>⚖︎ <span class="en">Dijkstra's principle</span><span class="ar">مبدأ دايكسترا</span>:</b>
+      <span class="en"> <i>"Testing can show the presence of bugs, but never their absence."</i> Passing tests increases confidence; it never proves correctness.</span>
+      <span class="ar"> <i>«الاختبار يمكن أن يُظهِر وجود الأخطاء، لكنه لا يُثبت غيابها أبدًا.»</i> فاجتياز الاختبارات يزيد الثقة، لكنه لا يُثبت الصحّة.</span></div>
+
+    <div class="twocol">
+      <div class="card">
+        <span class="k"><span class="en">Levels of testing</span><span class="ar">مستويات الاختبار</span></span>
+        <table class="tbl" style="margin:.5em 0 0">
+          <tbody>
+            <tr><td><b>Unit</b></td><td><span class="en">One function in isolation</span><span class="ar">دالة واحدة بمعزل</span></td></tr>
+            <tr><td><b>Integration</b></td><td><span class="en">Interaction between modules</span><span class="ar">التفاعل بين الوحدات</span></td></tr>
+            <tr><td><b>System</b></td><td><span class="en">The whole integrated system</span><span class="ar">النظام المتكامل كاملًا</span></td></tr>
+            <tr><td><b>Acceptance</b></td><td><span class="en">System vs. user requirements</span><span class="ar">النظام مقابل متطلبات المستخدم</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <span class="k"><span class="en">Kinds of errors</span><span class="ar">أنواع الأخطاء</span></span>
+        <table class="tbl" style="margin:.5em 0 0">
+          <tbody>
+            <tr><td><b>Syntax</b></td><td><span class="en">Compile time — missing bracket</span><span class="ar">وقت الترجمة — قوس مفقود</span></td></tr>
+            <tr><td><b>Runtime</b></td><td><span class="en">While running — divide by zero</span><span class="ar">أثناء التشغيل — قسمة على صفر</span></td></tr>
+            <tr><td><b>Logic</b></td><td><span class="en">Runs, but wrong result</span><span class="ar">يعمل لكن النتيجة خاطئة</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="note green block"><b>🐞 <span class="en">A systematic debugging process</span><span class="ar">عملية تنقيح منهجية</span>:</b>
+      <span class="en"> <span class="mono">1. Reproduce</span> the exact input → <span class="mono">2. Localise</span> where it happens → <span class="mono">3. Understand</span> the root cause → <span class="mono">4. Fix the cause</span>, not the symptom → <span class="mono">5. Verify</span> with the full regression suite. Logic errors are the hardest: the program does not crash, it simply gives the wrong answer.</span>
+      <span class="ar"> <span class="mono">1. أعِد الإنتاج</span> بالمدخل الدقيق ← <span class="mono">2. حدّد الموضع</span> أين يحدث ← <span class="mono">3. افهم</span> السبب الجذري ← <span class="mono">4. أصلِح السبب</span> لا العَرَض ← <span class="mono">5. تحقّق</span> بمجموعة اختبارات الانحدار كاملة. والأخطاء المنطقية هي الأصعب: لا يتعطّل البرنامج، بل ببساطة يعطي نتيجةً خاطئة.</span></div>
+  </section>
+
+  <!-- §4 methodologies -->
+  <section class="chapter">
+    <h2><span class="en">§4 · Development methodologies</span><span class="ar">§4 · منهجيات التطوير</span></h2>
+    <p class="lead"><span class="en">A methodology decides how the SDLC phases are arranged in time — once, in cycles, or continuously.</span><span class="ar">تحدّد المنهجية كيفية ترتيب مراحل دورة الحياة عبر الزمن — مرّةً، أو في دورات، أو باستمرار.</span></p>
+    <div class="prose block">
+      <span class="en"><p><b>Waterfall</b> runs the phases strictly in sequence — simple to manage, but a requirements mistake surfaces late and expensive. <b>Iterative/Incremental</b> builds the product in repeated cycles, each a small SDLC delivering a working increment. <b>Agile</b> (driven by the 2001 Manifesto) takes that further with short, adaptive cycles; its common frameworks are <b>Scrum</b> (fixed 2–4 week sprints) and <b>Kanban</b> (continuous flow, limited work-in-progress). <b>DevOps</b> extends Agile to operations through automation — <b>CI</b> builds and tests every change, <b>CD</b> releases it.</p></span>
+      <span class="ar"><p>ي<b>شغّل الشلّال</b> المراحلَ تسلسليًّا بصرامة — سهل الإدارة، لكن خطأ المتطلبات يظهر متأخّرًا ومكلفًا. وي<b>بني التكراري/التزايدي</b> المنتجَ في دوراتٍ متكرّرة، كلٌّ منها دورةُ حياةٍ صغيرة تُسلّم زيادةً عاملة. أمّا <b>أجايل</b> (بقيادة بيان 2001) فيمضي أبعد بدوراتٍ قصيرةٍ متكيّفة؛ وأشيع أُطره <b>Scrum</b> (سباقات ثابتة 2–4 أسابيع) و<b>Kanban</b> (تدفّق مستمر، عملٌ جارٍ محدود). و<b>DevOps</b> تمدّ أجايل إلى التشغيل عبر الأتمتة — <b>CI</b> يبني ويختبر كلّ تغيير، و<b>CD</b> يُصدره.</p></span>
+    </div>
+    <div class="twocol">
+      <div class="card"><span class="k">Waterfall</span><h5><span class="en">Sequential, once</span><span class="ar">تسلسلي، مرّة واحدة</span></h5><p class="block"><span class="en">Each phase finished before the next. Best when requirements are stable and clear.</span><span class="ar">تُكمَل كل مرحلة قبل التالية. الأنسب حين تكون المتطلبات ثابتة وواضحة.</span></p></div>
+      <div class="card"><span class="k">Iterative</span><h5><span class="en">Repeated cycles</span><span class="ar">دورات متكرّرة</span></h5><p class="block"><span class="en">Working software early; requirements refined as understanding grows; risk spread out.</span><span class="ar">برنامجٌ عامل مبكرًا؛ وتحسينُ المتطلبات مع نموّ الفهم؛ وتوزيعُ المخاطر.</span></p></div>
+      <div class="card"><span class="k">Agile</span><h5><span class="en">Scrum &amp; Kanban</span><span class="ar">Scrum وKanban</span></h5><p class="block"><span class="en">Short adaptive cycles. Working software over documentation; responding to change over a plan.</span><span class="ar">دورات قصيرة متكيّفة. برمجياتٌ عاملة على التوثيق؛ والاستجابة للتغيير على اتّباع خطة.</span></p></div>
+      <div class="card"><span class="k">DevOps</span><h5><span class="en">Continuous, automated</span><span class="ar">مستمر، مؤتمت</span></h5><p class="block"><span class="en">CI/CD unites dev and operations; automated testing and version control become essential.</span><span class="ar">يوحّد CI/CD التطوير والتشغيل؛ ويصبح الاختبار الآلي والتحكم في الإصدارات لا غنى عنهما.</span></p></div>
+    </div>
+  </section>
+
+  <!-- §5 Git -->
+  <section class="chapter">
+    <h2><span class="en">§5 · Version control with Git</span><span class="ar">§5 · التحكم في الإصدارات بـ Git</span></h2>
+    <p class="lead"><span class="en">A complete, browsable history of every change — an undo button for your whole project.</span><span class="ar">تاريخٌ كامل قابل للتصفّح لكل تغيير — زرُّ تراجعٍ عن مشروعك كلِّه.</span></p>
+    <div class="prose block">
+      <span class="en"><p><b>Git</b> is the industry-standard <b>distributed</b> version-control system: every developer holds a full copy of the project history. It tracks your work in three areas — the <b>working directory</b> (your files), the <b>staging area</b> (changes marked for the next snapshot), and the <b>repository</b> (the committed history).</p></span>
+      <span class="ar"><p><b>Git</b> نظام التحكم في الإصدارات المعياري <b>الموزّع</b>: لدى كلّ مطوّرٍ نسخةٌ كاملة من تاريخ المشروع. ويتتبّع عملك في ثلاث مناطق — <b>دليل العمل</b> (ملفاتك)، و<b>منطقة التهيئة</b> (التغييرات المُعلّمة للّقطة التالية)، و<b>المستودع</b> (التاريخ المحفوظ).</p></span>
+    </div>
+    <pre class="flow"><span class="en">Working directory ──[ git add ]──▶ Staging area ──[ git commit ]──▶ Repository
+
+git init                          # create a new repository
+git add hello.py                  # stage a file for the next commit
+git commit -m "Add hello script"  # save a snapshot with a message
+git branch feature-login          # create a branch
+git checkout feature-login        # switch to it
+git merge feature-login           # combine it back into main</span><span class="ar">دليل العمل ──[ git add ]──▶ منطقة التهيئة ──[ git commit ]──▶ المستودع
+
+git init                          # إنشاء مستودع جديد
+git add hello.py                  # تهيئة ملف للّقطة التالية
+git commit -m "Add hello script"  # حفظ لقطة مع رسالة
+git branch feature-login          # إنشاء فرع
+git checkout feature-login        # التبديل إليه
+git merge feature-login           # دمجه في الفرع الرئيسي</span></pre>
+    <div class="note green block"><b>🔀 <span class="en">Branch &amp; merge</span><span class="ar">التفريع والدمج</span>:</b>
+      <span class="en"> A <b>branch</b> is an independent line of development — experiment safely without disturbing working code, then <b>merge</b> it back. A <b>merge conflict</b> occurs when the same lines changed on both branches; Git marks it and asks you to resolve it. <b>Remotes</b> (GitHub, GitLab) host a shared copy: <span class="mono">git push</span> uploads, <span class="mono">git pull</span> downloads.</span>
+      <span class="ar"> ال<b>فرع</b> خطُّ تطويرٍ مستقل — جرّب بأمانٍ دون الإخلال بالشيفرة العاملة، ثم <b>ادمجه</b>. ويحدث <b>تعارض الدمج</b> حين تُغيَّر الأسطر نفسُها في كلا الفرعين؛ فيُعلِّمه Git ويطلب منك حلَّه. وتستضيف <b>المستودعات البعيدة</b> (GitHub، GitLab) نسخةً مشتركة: <span class="mono">git push</span> يرفع، و<span class="mono">git pull</span> ينزّل.</span></div>
+  </section>
+
+  <!-- summary -->
+  <section class="chapter">
+    <h2><span class="en">Chapter summary</span><span class="ar">خلاصة الفصل</span></h2>
+    <div class="twocol">
+      <div class="card">
+        <h5>🎬 <span class="en">You just watched</span><span class="ar">ما شاهدتَه للتوّ</span></h5>
+        <p class="block"><span class="en">Software moves through six SDLC phases, and a defect gets ~100× costlier to fix from requirements to production — you watched that cost climb. Source code becomes a process by compilation, interpretation, or the bytecode+VM hybrid — you traced a Java program compile once and run on a VM anywhere. Testing finds bugs at four levels; debugging fixes the cause. Waterfall, Iterative, Agile and DevOps arrange the phases differently — and Git keeps every change under version control.</span><span class="ar">تمرّ البرمجيات بستّ مراحل، ويزداد إصلاح العيب نحو 100 ضعف من المتطلبات إلى الإنتاج — وشاهدتَ تلك الكلفة تتسلّق. وتصير الشيفرة المصدرية عمليةً بالترجمة أو التفسير أو النموذج الهجين (شيفرة وسيطة + VM) — وتتبّعتَ برنامج Java يُترجَم مرّةً ويعمل على VM في أي مكان. ويجد الاختبار العيوب على أربعة مستويات؛ ويُصلح التنقيح السبب. ويرتّب الشلّال والتكراري وأجايل وDevOps المراحلَ على نحوٍ مختلف — ويُبقي Git كلَّ تغييرٍ تحت التحكم في الإصدارات.</span></p>
+      </div>
+      <div class="card">
+        <h5>📄 <span class="en">Text reference</span><span class="ar">المرجع النصّي</span></h5>
+        <p class="block"><span class="en">The full written handout (same content, no animation, with exercises and key terms) is the printable study copy: <span class="mono">lecture-04-en.md</span> / <span class="mono">lecture-04-ar.md</span>.</span><span class="ar">المذكّرة المكتوبة الكاملة (المحتوى نفسه بلا حركة، مع التمارين والمصطلحات) هي نسخة المذاكرة القابلة للطباعة: <span class="mono">lecture-04-en.md</span> / <span class="mono">lecture-04-ar.md</span>.</span></p>
+      </div>
+    </div>
+
+    <div class="chapnav">
+      <a href="lecture-03.html"><span class="dir"><span class="en">Previous</span><span class="ar">السابق</span></span><div class="lb"><span class="en">L3 · Algorithmization</span><span class="ar">م3 · الخوارزميات</span></div></a>
+      <a href="index.html"><span class="dir"><span class="en">Contents</span><span class="ar">الفهرس</span></span><div class="lb"><span class="en">All lectures</span><span class="ar">كل المحاضرات</span></div></a>
+      <a class="disabled"><span class="dir"><span class="en">Next</span><span class="ar">التالي</span></span><div class="lb"><span class="en">L5 · Information Security (soon)</span><span class="ar">م5 · أمن المعلومات (قريبًا)</span></div></a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <span class="en">Fundamentals of Computer Science &amp; AI · Lecture 4 · © 2026 Dr. Ali Mahmoud Mansour</span>
+  <span class="ar">أساسيات علوم الحاسوب والذكاء الاصطناعي · المحاضرة 4 · © 2026 د. علي محمود منصور</span>
+</footer>
+
+<script>
+/* ---------- language ---------- */
+function setLang(l){
+  document.body.setAttribute('data-lang',l);
+  document.documentElement.lang = l==='ar'?'ar':'en';
+  document.documentElement.dir  = l==='ar'?'rtl':'ltr';
+  document.getElementById('btn-en').setAttribute('aria-pressed', l==='en');
+  document.getElementById('btn-ar').setAttribute('aria-pressed', l==='ar');
+  try{localStorage.setItem('csai-lang',l);}catch(e){}
+  SDLC.refresh(); Pipe.refresh();
+}
+const T=(en,ar)=> document.body.getAttribute('data-lang')==='ar'?ar:en;
+
+/* ---------- §1 SDLC phase walkthrough ---------- */
+const SDLC=(()=>{
+  const phases=[
+    {en:'Requirements', ar:'المتطلبات',  qEn:'What must it do?',        qAr:'ماذا يجب أن يفعل؟',      oEn:'Requirements specification', oAr:'وثيقة مواصفات المتطلبات', cost:1},
+    {en:'Design',       ar:'التصميم',    qEn:'How will it be built?',   qAr:'كيف سيُبنى؟',            oEn:'Architecture & module design', oAr:'البنية وتصميم الوحدات', cost:5},
+    {en:'Implementation',ar:'التنفيذ',   qEn:'Write the source code',   qAr:'كتابة الشيفرة المصدرية', oEn:'Source code, modules',       oAr:'الشيفرة المصدرية، الوحدات', cost:10},
+    {en:'Testing',      ar:'الاختبار',   qEn:'Does it meet requirements?',qAr:'هل يفي بالمتطلبات؟',    oEn:'Tested, defect-free build',  oAr:'نسخة مُختبَرة خالية من العيوب', cost:20},
+    {en:'Deployment',   ar:'النشر',      qEn:'Deliver it to users',     qAr:'إيصاله إلى المستخدمين',  oEn:'Installed, running system',  oAr:'نظام مُثبَّت وقيد التشغيل', cost:50},
+    {en:'Maintenance',  ar:'الصيانة',    qEn:'Fix & improve over time', qAr:'إصلاحه وتحسينه عبر الزمن',oEn:'Patches, updates, versions', oAr:'تصحيحات، تحديثات، إصدارات', cost:100}
+  ];
+  let fi=0, timer=null;
+  const N=phases.length;
+
+  function render(){
+    let ph='';
+    phases.forEach((p,idx)=>{
+      let cls='ph'+(idx<fi?' done':'')+(idx===fi?' active':'');
+      ph+='<div class="'+cls+'"><span class="pnum">'+(idx+1)+'</span><span class="pname">'+T(p.en,p.ar)+'</span></div>';
+      if(idx<N-1) ph+='<span class="parrow">→</span>';
+    });
+    document.getElementById('sd-phases').innerHTML=ph;
+
+    const p=phases[fi];
+    document.getElementById('sd-detail').innerHTML=
+      '<div class="qrow"><span class="lab">'+T('Phase','المرحلة')+' '+(fi+1)+'</span><b>'+T(p.en,p.ar)+'</b></div>'+
+      '<div class="qrow"><span class="lab">'+T('Question','السؤال')+'</span><span>'+T(p.qEn,p.qAr)+'</span></div>'+
+      '<div class="qrow"><span class="lab">'+T('Output','المُخرَج')+'</span><span>'+T(p.oEn,p.oAr)+'</span></div>';
+
+    const pct=Math.log(p.cost)/Math.log(100)*100;
+    document.getElementById('sd-fill').style.width=pct+'%';
+    document.getElementById('sd-cost').textContent=p.cost+'×';
+    document.getElementById('sd-cap').textContent=
+      T('Phase '+(fi+1)+' of '+N+': '+p.en+'. A defect caught here costs about '+p.cost+'× the baseline.',
+        'المرحلة '+(fi+1)+' من '+N+': '+p.ar+'. عيبٌ يُكتشَف هنا يكلّف نحو '+p.cost+' ضعف الأساس.');
+  }
+  function refresh(){ render(); }
+  function reset(){ clearInterval(timer);timer=null; fi=0; render();
+    document.getElementById('sd-play').disabled=false; document.getElementById('sd-step').disabled=false; }
+  function step(){
+    if(fi<N-1){ fi++; render(); }
+    if(fi>=N-1){ clearInterval(timer);timer=null;
+      document.getElementById('sd-play').disabled=false; document.getElementById('sd-step').disabled=true; }
+  }
+  function play(){ reset(); document.getElementById('sd-play').disabled=true;
+    timer=setInterval(step, 1100); }
+  reset();
+  return {play:play,step:step,reset:reset,refresh:refresh};
+})();
+
+/* ---------- §2 source → compile → bytecode → run ---------- */
+const Pipe=(()=>{
+  const stages=[
+    {icon:'📝', kind:'',     en:'Source',     ar:'المصدر',        file:'hello.java'},
+    {icon:'⚙️', kind:'tool', en:'Compiler',   ar:'المترجِم',      file:'javac'},
+    {icon:'📦', kind:'',     en:'Bytecode',   ar:'شيفرة وسيطة',   file:'hello.class'},
+    {icon:'🖥️', kind:'tool', en:'JVM',        ar:'JVM',           file:'java'},
+    {icon:'🔢', kind:'',     en:'Machine code',ar:'شيفرة الآلة',  file:'JIT → 0101'},
+    {icon:'⚡', kind:'',     en:'CPU',        ar:'المعالج',       file:'runs'}
+  ];
+  // frames: {active, artEn, artAr, capEn, capAr}
+  const frames=[
+    {active:0, artEn:'hello.java', artAr:'hello.java',
+     capEn:'You write human-readable source: hello.java.', capAr:'تكتب مصدرًا مقروءًا للبشر: hello.java.'},
+    {active:1, artEn:'javac hello.java', artAr:'javac hello.java',
+     capEn:'The compiler (javac) translates the whole file — once, ahead of time.', capAr:'يترجم المترجِم (javac) الملفَّ كاملًا — مرّةً واحدة مسبقًا.'},
+    {active:2, artEn:'hello.class', artAr:'hello.class',
+     capEn:'Output is platform-independent bytecode: hello.class. Not machine code yet.', capAr:'المُخرَج شيفرة وسيطة مستقلّة عن المنصّة: hello.class. وليست شيفرة آلةٍ بعد.'},
+    {active:3, artEn:'JVM loads hello.class', artAr:'JVM يحمّل hello.class',
+     capEn:'The Java Virtual Machine reads the bytecode — the same file runs on any OS.', capAr:'تقرأ آلة Java الافتراضية الشيفرة الوسيطة — والملفُّ نفسُه يعمل على أي نظام تشغيل.'},
+    {active:4, artEn:'0101 native code', artAr:'0101 شيفرة أصلية',
+     capEn:'The VM JIT-compiles bytecode into native machine code for this CPU.', capAr:'تترجم الآلة الافتراضية آنيًّا (JIT) الشيفرة الوسيطة إلى شيفرة آلةٍ أصلية لهذا المعالج.'},
+    {active:5, artEn:'▶ running', artAr:'▶ يعمل',
+     capEn:'The CPU executes the native instructions — the program runs.', capAr:'ينفّذ المعالج التعليمات الأصلية — يعمل البرنامج.'}
+  ];
+  let fi=0, timer=null;
+
+  function render(){
+    const f=frames[fi];
+    let h='';
+    stages.forEach((s,idx)=>{
+      let cls='pstage'+(s.kind==='tool'?' tool':'')+(idx<f.active?' done':'')+(idx===f.active?' active':'');
+      h+='<div class="'+cls+'"><span class="picon">'+s.icon+'</span><span class="ptt">'+T(s.en,s.ar)+'</span><span class="pfile">'+s.file+'</span></div>';
+      if(idx<stages.length-1) h+='<span class="parr">▶</span>';
+    });
+    document.getElementById('pp-stages').innerHTML=h;
+    document.getElementById('pp-art').textContent=T(f.artEn,f.artAr);
+    document.getElementById('pp-cap').textContent=T(f.capEn,f.capAr);
+  }
+  function refresh(){ render(); }
+  function reset(){ clearInterval(timer);timer=null; fi=0; render();
+    document.getElementById('pp-play').disabled=false; document.getElementById('pp-step').disabled=false; }
+  function step(){
+    if(fi<frames.length-1){ fi++; render(); }
+    if(fi>=frames.length-1){ clearInterval(timer);timer=null;
+      document.getElementById('pp-play').disabled=false; document.getElementById('pp-step').disabled=true; }
+  }
+  function play(){ reset(); document.getElementById('pp-play').disabled=true;
+    timer=setInterval(step, 1100); }
+  reset();
+  return {play:play,step:step,reset:reset,refresh:refresh};
+})();
+
+/* restore saved language */
+try{var _l=localStorage.getItem('csai-lang'); if(_l)setLang(_l);}catch(e){}
+</script>
+</body>
+</html>

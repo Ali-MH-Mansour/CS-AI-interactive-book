@@ -13,6 +13,7 @@
 | `lecture-01.html` | **Lecture 1 — Information & Data Representation.** The first fully interactive chapter and the working **template** for the rest. Four animations: §1 the bit / information content, §2 decimal→binary, §3.3 two's complement, §5.3 UTF-8 encoding — each followed by a "💡 What to notice / ما الذي نلاحظه" commentary box. |
 | `lecture-02.html` | **Lecture 2 — Computer Architecture.** Three animations: §2 fetch–decode–execute step-trace, §3 the memory hierarchy look-up, §6 the CPU-vs-GPU race — each with a "💡 What to notice" box. |
 | `lecture-03.html` | **Lecture 3 — Algorithmization & Foundations of Programming.** Two animations: §3 a step-trace of a FOR-loop summing 1→10 (code line + variables + trace table), §4 a binary-search walk on a sorted array (live range shrinking, comparison count) — each with a "💡 What to notice" box. |
+| `lecture-04.html` | **Lecture 4 — Software Life Cycle, Translation & Development.** Two animations: §1 an SDLC phase walkthrough (six phases + a cost-of-change bar climbing to 100×), §2 a source→compile→bytecode→run pipeline trace (`hello.java` → javac → `hello.class` → JVM → native → CPU) — each with a "💡 What to notice" box. Covers SDLC, compilation/interpretation/bytecode+VM, testing & debugging, Waterfall/Iterative/Agile/DevOps, and Git. |
 
 Each page is **self-contained**: no build step, no internet, no dependencies. Open the file in any
 browser, or drop the folder onto a web host as-is.
@@ -45,7 +46,7 @@ User Task) and approves the push:
 ## Roadmap / خارطة الطريق
 
 - [x] L1 — Information & Data Representation (interactive)
-- [x] L2 — Computer Architecture (interactive) · [x] L3 — Algorithmization (interactive) · [ ] L4 — Software Life Cycle
+- [x] L2 — Computer Architecture (interactive) · [x] L3 — Algorithmization (interactive) · [x] L4 — Software Life Cycle (interactive)
 - [ ] L5 — Information Security · [ ] L6 — Computer Networks
 - [ ] L7 — Intro to AI · [ ] L8 — Mathematics of ML · [ ] L9 — AI in Practice
 
