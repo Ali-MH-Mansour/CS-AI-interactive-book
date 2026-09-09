@@ -35,8 +35,11 @@
   .mast h1{font-family:var(--serif);font-size:clamp(1.5rem,4.2vw,2.4rem);margin:.1em 0 .25em;font-weight:600;letter-spacing:-.01em}
   .mast h1 .ru{display:block;font-size:.72em;opacity:.9;font-weight:500;margin-top:.15em}
   .mast .sub{opacity:.92;font-size:1.05rem;max-width:680px;margin:.3em auto 0}
-  .mast .byline{margin-top:20px;font-size:.92rem;opacity:.95}
+  .mast .byline{margin-top:14px;font-size:.92rem;opacity:.95}
   .mast .byline a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+  .mast .portrait{width:96px;height:96px;border-radius:50%;object-fit:cover;
+    border:3px solid rgba(255,255,255,.85);box-shadow:0 4px 14px rgba(0,0,0,.25);
+    margin:22px auto 0;display:block;background:rgba(255,255,255,.15)}
 
   .intro{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
     box-shadow:var(--shadow);padding:28px clamp(20px,4vw,40px);margin-top:26px}
@@ -88,6 +91,7 @@
     <span class="ru">Основы компьютерных наук и искусственного интеллекта</span>
   </h1>
   <div class="sub">An interactive book where every idea that can be modelled becomes an animation you can play, step through and replay — with a short note on what to watch for.</div>
+  <img class="portrait" src="images/instructor.png" alt="Dr. Ali Mahmoud Mansour" onerror="this.style.display='none'">
   <div class="byline">Dr. Ali Mahmoud Mansour · PhD in Artificial Intelligence and Machine Learning · <a href="https://sfedu.ru/s7/person/ru/mansur" target="_blank" rel="noopener">Personal page</a></div>
 </header>
 
