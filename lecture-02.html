@@ -38,15 +38,20 @@
   .mast h1{font-family:var(--serif);font-size:clamp(1.5rem,4.5vw,2.4rem);margin:.1em 0 .15em;font-weight:600;letter-spacing:-.01em}
   .mast .sub{opacity:.92;font-size:1rem;max-width:640px;margin:.2em auto 0}
 
+  /* instructor block */
+  .instructor{position:relative;z-index:1;max-width:560px;margin:20px auto 0;padding:13px 18px;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:12px;
+    backdrop-filter:blur(3px);display:flex;flex-direction:column;gap:3px;align-items:center}
+  .instructor .iname{font-family:var(--serif);font-size:1.05rem;font-weight:600;color:#fff}
+  .instructor .ispec{font-size:.85rem;opacity:.92}
+  .instructor .ipage{font-size:.85rem;color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:2px}
+  .instructor .ipage:hover{opacity:.85}
+
   .langbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);
     backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:9px 0}
   .langbar .inner{max-width:820px;margin:0 auto;padding:0 22px;display:flex;gap:10px;align-items:center;justify-content:space-between}
   .langbar .home{font-size:.82rem;color:var(--muted);font-weight:600;text-decoration:none}
   .langbar .home:hover{color:var(--accent)}
-  .seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
-  .seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.82rem;font-weight:600;
-    padding:5px 15px;border-radius:999px;cursor:pointer;transition:.2s}
-  .seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
 
   section.chapter{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
     box-shadow:var(--shadow);padding:34px clamp(20px,4vw,44px);margin-top:26px}
@@ -54,7 +59,6 @@
   .chapter > .lead{color:var(--muted);margin:.2em 0 1.4em;font-size:1.02rem}
   p{margin:.9em 0}
   .prose{font-family:var(--serif);font-size:1.08rem}
-  [dir="rtl"] .prose,[dir="rtl"] .chapter>.lead,[dir="rtl"] .chapter>h2{font-family:"Geeza Pro","Al Bayan",var(--sans)}
   .mono{font-family:var(--mono)}
 
   .demo{border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden;background:var(--bg)}
@@ -159,30 +163,27 @@
   .chapnav a.disabled{opacity:.5;pointer-events:none}
 
   footer{max-width:820px;margin:34px auto 0;padding:0 22px;color:var(--muted);font-size:.85rem;text-align:center}
-  .en{display:inline}.ar{display:none}
-  .block .en{display:block}.block .ar{display:none}
-  [data-lang="ar"] .en{display:none}[data-lang="ar"] .ar{display:inline}
-  [data-lang="ar"] .block .ar{display:block}
 </style>
 </head>
-<body data-lang="en">
+<body>
 
 <header class="mast">
-  <div class="kicker">Fundamentals of CS &amp; AI · <span class="en">Module 1 · Lecture 2</span><span class="ar">الوحدة 1 · المحاضرة 2</span></div>
-  <h1><span class="en">Computer Architecture</span><span class="ar">بنية الحاسوب</span></h1>
+  <div class="kicker">Fundamentals of CS &amp; AI · Module 1 · Lecture 2</div>
+  <h1>Computer Architecture</h1>
   <div class="sub block">
-    <span class="en">How a stored-program machine actually runs code — the fetch–decode–execute cycle, the memory hierarchy, and why a GPU trains neural networks so much faster than a CPU. Watched, not just described.</span>
-    <span class="ar">كيف يُشغّل جهاز «البرنامج المخزَّن» الشيفرة فعليًّا — دورة الجلب/فكّ الترميز/التنفيذ، والتسلسل الهرمي للذاكرة، ولماذا يدرّب المعالجُ الرسومي الشبكاتِ العصبية أسرعَ بكثير من المعالج المركزي. نُشاهده لا نصفه فقط.</span>
+    How a stored-program machine actually runs code — the fetch–decode–execute cycle, the memory hierarchy, and why a GPU trains neural networks so much faster than a CPU. Watched, not just described.
+    
+  </div>
+  <div class="instructor">
+    <span class="iname">Dr. Ali Mahmoud Mansour</span>
+    <span class="ispec">PhD in Artificial Intelligence and Machine Learning</span>
+    <a class="ipage" href="https://sfedu.ru/s7/person/ru/mansur" target="_blank" rel="noopener">Personal page</a>
   </div>
 </header>
 
 <div class="langbar">
   <div class="inner">
-    <a class="home" href="index.html">← <span class="en">Contents</span><span class="ar">الفهرس</span></a>
-    <div class="seg" role="group" aria-label="language">
-      <button id="btn-en" aria-pressed="true" onclick="setLang('en')">EN</button>
-      <button id="btn-ar" aria-pressed="false" onclick="setLang('ar')">ع</button>
-    </div>
+    <a class="home" href="index.html">← Contents</a>
   </div>
 </div>
 
@@ -190,33 +191,33 @@
 
   <!-- §1 Von Neumann -->
   <section class="chapter">
-    <h2><span class="en">§1 · The Von Neumann model</span><span class="ar">§1 · نموذج فون نيومان</span></h2>
-    <p class="lead"><span class="en">One idea from 1945 that every computer you own still obeys.</span><span class="ar">فكرةٌ واحدة من عام 1945 لا يزال كل حاسوبٍ تملكه يُطيعها.</span></p>
+    <h2>§1 · The Von Neumann model</h2>
+    <p class="lead">One idea from 1945 that every computer you own still obeys.</p>
     <div class="prose block">
-      <span class="en"><p>In 1945 John Von Neumann described the <b>stored-program computer</b>: instructions and data live in the <i>same</i> memory and travel over the <i>same</i> wires. That single decision is why a computer is general-purpose — feed it different instructions and it becomes a different machine, with no rewiring. Every part hangs off a shared <b>system bus</b>.</p></span>
-      <span class="ar"><p>في عام 1945 وصف جون فون نيومان <b>حاسوب البرنامج المخزَّن</b>: التعليمات والبيانات تعيش في <i>الذاكرة نفسها</i> وتنتقل عبر <i>الأسلاك نفسها</i>. هذا القرار وحده هو سبب كون الحاسوب عامَّ الغرض — أعطِه تعليماتٍ مختلفة فيصير آلةً مختلفة، دون إعادة توصيل. وكل جزءٍ يتّصل بـ<b>ناقل النظام</b> (system bus) المشترك.</p></span>
+      <p>In 1945 John Von Neumann described the <b>stored-program computer</b>: instructions and data live in the <i>same</i> memory and travel over the <i>same</i> wires. That single decision is why a computer is general-purpose — feed it different instructions and it becomes a different machine, with no rewiring. Every part hangs off a shared <b>system bus</b>.</p>
+      
     </div>
     <div class="threecol">
-      <div class="card"><span class="k">CPU</span><h5><span class="en">Processor</span><span class="ar">المعالج</span></h5><p class="block"><span class="en">Executes instructions. Holds the ALU (arithmetic + logic), the Control Unit (sequencing) and the registers.</span><span class="ar">يُنفّذ التعليمات. يحوي وحدة الحساب والمنطق (ALU) ووحدة التحكّم (CU) والمسجّلات.</span></p></div>
-      <div class="card"><span class="k">Memory · RAM</span><h5><span class="en">Working memory</span><span class="ar">ذاكرة العمل</span></h5><p class="block"><span class="en">Holds the programs and data in use right now. Fast, but forgotten when power is cut.</span><span class="ar">تحمل البرامج والبيانات المُستخدَمة الآن. سريعة، لكنها تُنسى عند انقطاع الطاقة.</span></p></div>
-      <div class="card"><span class="k">System bus</span><h5><span class="en">The shared wires</span><span class="ar">الأسلاك المشتركة</span></h5><p class="block"><span class="en">Three channels: <b>data</b> (the values), <b>address</b> (which cell), <b>control</b> (read / write / clock).</span><span class="ar">ثلاث قنوات: <b>البيانات</b> (القيم)، <b>العناوين</b> (أيّ خلية)، <b>التحكّم</b> (قراءة/كتابة/ساعة).</span></p></div>
+      <div class="card"><span class="k">CPU</span><h5>Processor</h5><p class="block">Executes instructions. Holds the ALU (arithmetic + logic), the Control Unit (sequencing) and the registers.</p></div>
+      <div class="card"><span class="k">Memory · RAM</span><h5>Working memory</h5><p class="block">Holds the programs and data in use right now. Fast, but forgotten when power is cut.</p></div>
+      <div class="card"><span class="k">System bus</span><h5>The shared wires</h5><p class="block">Three channels: <b>data</b> (the values), <b>address</b> (which cell), <b>control</b> (read / write / clock).</p></div>
     </div>
-    <div class="note block"><b>ℹ︎ <span class="en">Key registers</span><span class="ar">أهم المسجّلات</span>:</b>
-      <span class="en"> <span class="mono">PC</span> = address of the next instruction · <span class="mono">IR</span> = the instruction being decoded · <span class="mono">R1…R3</span> = general-purpose working registers. You will see all of these move in the animation below.</span>
-      <span class="ar"> <span class="mono">PC</span> = عنوان التعليمة التالية · <span class="mono">IR</span> = التعليمة قيد فكّ الترميز · <span class="mono">R1…R3</span> = مسجّلات عملٍ عامّة الغرض. سترى كلًّا منها يتحرّك في الحركة أدناه.</span></div>
+    <div class="note block"><b>ℹ︎ Key registers:</b>
+       <span class="mono">PC</span> = address of the next instruction · <span class="mono">IR</span> = the instruction being decoded · <span class="mono">R1…R3</span> = general-purpose working registers. You will see all of these move in the animation below.
+      </div>
   </section>
 
   <!-- §2 fetch-decode-execute -->
   <section class="chapter">
-    <h2><span class="en">§2 · The fetch–decode–execute cycle</span><span class="ar">§2 · دورة الجلب — فكّ الترميز — التنفيذ</span></h2>
-    <p class="lead"><span class="en">The three-beat rhythm every instruction dances, billions of times a second.</span><span class="ar">الإيقاع الثلاثي الذي ترقصه كلّ تعليمة، مليارات المرّات في الثانية.</span></p>
+    <h2>§2 · The fetch–decode–execute cycle</h2>
+    <p class="lead">The three-beat rhythm every instruction dances, billions of times a second.</p>
     <div class="prose block">
-      <span class="en"><p>The CPU repeats three steps forever. <b>Fetch</b>: copy the instruction at address <span class="mono">PC</span> into <span class="mono">IR</span>, then advance <span class="mono">PC</span>. <b>Decode</b>: the Control Unit works out what the instruction means. <b>Execute</b>: the ALU (or a memory access) carries it out. A printed page can only <i>list</i> these steps. Press <b>Step</b> and watch a tiny four-line program — load two numbers, add them, store the result — actually run.</p></span>
-      <span class="ar"><p>يكرّر المعالج ثلاث خطواتٍ إلى الأبد. <b>الجلب</b>: انسخ التعليمة الموجودة في العنوان <span class="mono">PC</span> إلى <span class="mono">IR</span>، ثم زِد <span class="mono">PC</span>. <b>فكّ الترميز</b>: تُحدّد وحدة التحكّم معنى التعليمة. <b>التنفيذ</b>: تنفّذها وحدة الحساب والمنطق (أو عملية وصولٍ للذاكرة). الصفحة المطبوعة تستطيع <i>سرد</i> هذه الخطوات فقط. اضغط <b>خطوة</b> وشاهِد برنامجًا صغيرًا من أربعة أسطر — حمِّل عددين، اجمعهما، خزّن الناتج — يعمل فعلًا.</p></span>
+      <p>The CPU repeats three steps forever. <b>Fetch</b>: copy the instruction at address <span class="mono">PC</span> into <span class="mono">IR</span>, then advance <span class="mono">PC</span>. <b>Decode</b>: the Control Unit works out what the instruction means. <b>Execute</b>: the ALU (or a memory access) carries it out. A printed page can only <i>list</i> these steps. Press <b>Step</b> and watch a tiny four-line program — load two numbers, add them, store the result — actually run.</p>
+      
     </div>
 
     <div class="demo" id="d-fde">
-      <div class="dhead"><span class="dot"></span><h4><span class="en">Run: R3 = mem[200] + mem[201]</span><span class="ar">شغّل: R3 = mem[200] + mem[201]</span></h4><span class="tag">animated</span></div>
+      <div class="dhead"><span class="dot"></span><h4>Run: R3 = mem[200] + mem[201]</h4><span class="tag">animated</span></div>
       <div class="stage">
         <div class="cpu-wrap">
           <div class="memcol" id="fde-mem"></div>
@@ -229,157 +230,148 @@
       </div>
       <div class="caption" id="fde-cap"></div>
       <div class="controls">
-        <button class="ctrl primary" id="fde-play" onclick="FDE.play()">▶ <span class="en">Play</span><span class="ar">تشغيل</span></button>
-        <button class="ctrl" id="fde-step" onclick="FDE.step()">⏭ <span class="en">Step</span><span class="ar">خطوة</span></button>
-        <button class="ctrl" onclick="FDE.reset()">↻ <span class="en">Reset</span><span class="ar">إعادة</span></button>
+        <button class="ctrl primary" id="fde-play" onclick="FDE.play()">▶ Play</button>
+        <button class="ctrl" id="fde-step" onclick="FDE.step()">⏭ Step</button>
+        <button class="ctrl" onclick="FDE.reset()">↻ Reset</button>
       </div>
     </div>
     <div class="watch block">
-      <span class="wh">💡 <span class="en">What to notice</span><span class="ar">ما الذي نلاحظه؟</span></span>
-      <span class="en">The <span class="mono">PC</span> ticks up by 1 during every <b>fetch</b>, <i>before</i> the instruction even runs — that is how the CPU always knows where to look next, and how a loop can later just set <span class="mono">PC</span> back. Also watch that <b>only Execute changes data</b>: fetch and decode move information around inside the CPU but compute nothing.</span>
-      <span class="ar">يرتفع <span class="mono">PC</span> بمقدار 1 أثناء كل <b>جلب</b>، <i>قبل</i> أن تُنفَّذ التعليمة أصلًا — وهكذا يعرف المعالج دائمًا أين ينظر تاليًا، وكيف يمكن لحلقةٍ لاحقًا أن تُعيد ضبط <span class="mono">PC</span> فحسب. ولاحظ أنّ <b>التنفيذ وحده يُغيّر البيانات</b>: أمّا الجلب وفكّ الترميز فينقلان المعلومات داخل المعالج دون أن يحسبا شيئًا.</span>
+      <span class="wh">💡 What to notice</span>
+      The <span class="mono">PC</span> ticks up by 1 during every <b>fetch</b>, <i>before</i> the instruction even runs — that is how the CPU always knows where to look next, and how a loop can later just set <span class="mono">PC</span> back. Also watch that <b>only Execute changes data</b>: fetch and decode move information around inside the CPU but compute nothing.
+      
     </div>
   </section>
 
   <!-- §3 memory hierarchy -->
   <section class="chapter">
-    <h2><span class="en">§3 · The memory hierarchy</span><span class="ar">§3 · التسلسل الهرمي للذاكرة</span></h2>
-    <p class="lead"><span class="en">Fast is small, big is slow — so the CPU searches from the top down.</span><span class="ar">السريع صغير، والكبير بطيء — فيبحث المعالج من الأعلى نزولًا.</span></p>
+    <h2>§3 · The memory hierarchy</h2>
+    <p class="lead">Fast is small, big is slow — so the CPU searches from the top down.</p>
     <div class="prose block">
-      <span class="en"><p>There is no single memory that is both huge and instant, so computers stack several: tiny, blazing <b>registers</b> and <b>cache</b> next to the CPU; large, slow <b>RAM</b> and <b>disk</b> further out. When the CPU needs a value it looks in the nearest level first; if it is not there (a <b>miss</b>) it tries the next, paying more time at each step. Try a <b>cache hit</b> and then a <b>cache miss</b> and watch the total wait grow.</p></span>
-      <span class="ar"><p>لا توجد ذاكرةٌ واحدة ضخمةٌ وفوريةٌ معًا، لذا تُكدّس الحواسيب عدّة طبقات: <b>مسجّلاتٌ</b> و<b>ذاكرة كاش</b> صغيرةٌ فائقة السرعة بجوار المعالج؛ و<b>ذاكرة RAM</b> و<b>قرصٌ</b> كبيران بطيئان أبعد. حين يحتاج المعالج قيمةً يبحث في أقرب طبقةٍ أولًا؛ فإن لم يجدها (<b>إخفاق/miss</b>) جرّب التالية، دافعًا وقتًا أكبر في كل خطوة. جرّب <b>إصابة كاش</b> ثم <b>إخفاق كاش</b> وراقب مجموع الانتظار يتضخّم.</p></span>
+      <p>There is no single memory that is both huge and instant, so computers stack several: tiny, blazing <b>registers</b> and <b>cache</b> next to the CPU; large, slow <b>RAM</b> and <b>disk</b> further out. When the CPU needs a value it looks in the nearest level first; if it is not there (a <b>miss</b>) it tries the next, paying more time at each step. Try a <b>cache hit</b> and then a <b>cache miss</b> and watch the total wait grow.</p>
+      
     </div>
 
     <div class="demo" id="d-hier">
-      <div class="dhead"><span class="dot"></span><h4><span class="en">Look up a value</span><span class="ar">ابحث عن قيمة</span></h4><span class="tag">animated</span></div>
+      <div class="dhead"><span class="dot"></span><h4>Look up a value</h4><span class="tag">animated</span></div>
       <div class="stage">
-        <div class="hbar"><span><span class="en">near / fast / small</span><span class="ar">قريب / سريع / صغير</span></span><span><span class="en">time</span><span class="ar">الزمن</span></span></div>
+        <div class="hbar"><span>near / fast / small</span><span>time</span></div>
         <div class="hier" id="hier"></div>
       </div>
       <div class="caption" id="hier-cap"></div>
       <div class="controls">
-        <button class="ctrl primary" id="hier-hit" onclick="Hier.play('L1')">✓ <span class="en">Cache hit (in L1)</span><span class="ar">إصابة كاش (في L1)</span></button>
-        <button class="ctrl" id="hier-miss" onclick="Hier.play('RAM')">✕ <span class="en">Cache miss (down to RAM)</span><span class="ar">إخفاق كاش (حتى RAM)</span></button>
-        <button class="ctrl" onclick="Hier.reset()">↻ <span class="en">Reset</span><span class="ar">إعادة</span></button>
+        <button class="ctrl primary" id="hier-hit" onclick="Hier.play('L1')">✓ Cache hit (in L1)</button>
+        <button class="ctrl" id="hier-miss" onclick="Hier.play('RAM')">✕ Cache miss (down to RAM)</button>
+        <button class="ctrl" onclick="Hier.reset()">↻ Reset</button>
       </div>
     </div>
     <div class="watch block">
-      <span class="wh">💡 <span class="en">What to notice</span><span class="ar">ما الذي نلاحظه؟</span></span>
-      <span class="en">A cache <b>miss</b> to RAM costs roughly <b>60×</b> a hit — that jump is why fast code keeps the data it reuses close together (the <b>principle of locality</b>). The hierarchy is a bet: keep recently-used data near the top and most look-ups win at L1/L2 before ever paying the RAM price.</span>
-      <span class="ar">إخفاق الكاش نزولًا إلى RAM يكلّف نحو <b>60 ضعف</b> الإصابة — وهذه القفزة هي سبب حرص الشيفرة السريعة على إبقاء بياناتها المُعاد استخدامها متجاورة (<b>مبدأ المحلّية</b>). فالتسلسل الهرمي رهانٌ: أبقِ البيانات المُستخدَمة حديثًا قرب القمّة، فتفوز معظم عمليات البحث عند L1/L2 قبل أن تدفع ثمن RAM أصلًا.</span>
+      <span class="wh">💡 What to notice</span>
+      A cache <b>miss</b> to RAM costs roughly <b>60×</b> a hit — that jump is why fast code keeps the data it reuses close together (the <b>principle of locality</b>). The hierarchy is a bet: keep recently-used data near the top and most look-ups win at L1/L2 before ever paying the RAM price.
+      
     </div>
   </section>
 
   <!-- §4 system software -->
   <section class="chapter">
-    <h2><span class="en">§4 · System software &amp; the OS</span><span class="ar">§4 · برمجيات النظام ونظام التشغيل</span></h2>
-    <p class="lead"><span class="en">The layer that stands between your program and the bare metal.</span><span class="ar">الطبقة التي تقف بين برنامجك والعتاد المجرَّد.</span></p>
+    <h2>§4 · System software &amp; the OS</h2>
+    <p class="lead">The layer that stands between your program and the bare metal.</p>
     <div class="prose block">
-      <span class="en"><p>Your programs almost never touch the hardware directly. The <b>operating system</b> sits in between — it schedules which program runs, hands out memory, organises files, and talks to devices through <b>drivers</b>. At its core is the <b>kernel</b>, which alone runs in privileged mode; when your program needs the hardware it asks the kernel with a <b>system call</b>. That wall is what stops one buggy app from taking down the whole machine.</p></span>
-      <span class="ar"><p>برامجك لا تلمس العتاد مباشرةً تقريبًا أبدًا. يقف <b>نظام التشغيل</b> بينهما — يجدول أيّ برنامجٍ يعمل، ويوزّع الذاكرة، وينظّم الملفّات، ويخاطب الأجهزة عبر <b>المُشغّلات</b> (drivers). وفي قلبه <b>النواة</b> (kernel) التي وحدها تعمل في الوضع المُمتاز؛ وحين يحتاج برنامجك العتادَ يطلبه من النواة عبر <b>نداء نظام</b> (system call). هذا الجدار هو ما يمنع تطبيقًا مُعطَّلًا واحدًا من إسقاط الجهاز كلّه.</p></span>
+      <p>Your programs almost never touch the hardware directly. The <b>operating system</b> sits in between — it schedules which program runs, hands out memory, organises files, and talks to devices through <b>drivers</b>. At its core is the <b>kernel</b>, which alone runs in privileged mode; when your program needs the hardware it asks the kernel with a <b>system call</b>. That wall is what stops one buggy app from taking down the whole machine.</p>
+      
     </div>
-    <div class="note block"><b><span class="en">The stack, top to bottom</span><span class="ar">المكدّس من الأعلى للأسفل</span>:</b>
-      <span class="en"> User applications → system utilities → <b>Operating System (kernel)</b> → device drivers / firmware → hardware. A <span class="mono">system call</span> is the doorway from the top half to the privileged bottom half.</span>
-      <span class="ar"> تطبيقات المستخدم ← أدوات النظام ← <b>نظام التشغيل (النواة)</b> ← المُشغّلات/البرامج الثابتة ← العتاد. و<span class="mono">نداء النظام</span> هو الباب من النصف العلوي إلى النصف السفلي المُمتاز.</span></div>
+    <div class="note block"><b>The stack, top to bottom:</b>
+       User applications → system utilities → <b>Operating System (kernel)</b> → device drivers / firmware → hardware. A <span class="mono">system call</span> is the doorway from the top half to the privileged bottom half.
+      </div>
   </section>
 
   <!-- §5 cloud -->
   <section class="chapter">
-    <h2><span class="en">§5 · Cloud computing</span><span class="ar">§5 · الحوسبة السحابية</span></h2>
-    <p class="lead"><span class="en">Renting computing over the Internet instead of owning it.</span><span class="ar">استئجار الحوسبة عبر الإنترنت بدل امتلاكها.</span></p>
+    <h2>§5 · Cloud computing</h2>
+    <p class="lead">Renting computing over the Internet instead of owning it.</p>
     <div class="prose block">
-      <span class="en"><p>Cloud computing means using servers, storage and software on demand over the Internet. The three service levels differ by <i>how much the provider manages for you</i>:</p></span>
-      <span class="ar"><p>الحوسبة السحابية تعني استخدام الخوادم والتخزين والبرمجيات عند الطلب عبر الإنترنت. وتختلف المستويات الثلاثة بحسب <i>كم يديره المزوّد نيابةً عنك</i>:</p></span>
+      <p>Cloud computing means using servers, storage and software on demand over the Internet. The three service levels differ by <i>how much the provider manages for you</i>:</p>
+      
     </div>
     <div class="threecol">
-      <div class="card"><span class="k">IaaS</span><h5><span class="en">Infrastructure</span><span class="ar">البنية التحتية</span></h5><p class="block"><span class="en">Raw virtual machines, storage, networking. You install everything above it. <i>Like renting a car.</i> (AWS EC2)</span><span class="ar">أجهزة افتراضية وتخزين وشبكات خام. تُثبّت كل ما فوقها بنفسك. <i>كاستئجار سيارة.</i> (AWS EC2)</span></p></div>
-      <div class="card"><span class="k">PaaS</span><h5><span class="en">Platform</span><span class="ar">المنصّة</span></h5><p class="block"><span class="en">You upload code; the platform runs and scales it. <i>Like taking a taxi.</i> (App Engine, Heroku)</span><span class="ar">ترفع الشيفرة؛ والمنصّة تشغّلها وتوسّعها. <i>كركوب سيارة أجرة.</i> (App Engine، Heroku)</span></p></div>
-      <div class="card"><span class="k">SaaS</span><h5><span class="en">Software</span><span class="ar">البرمجية</span></h5><p class="block"><span class="en">A ready-to-use application in the browser. <i>Like riding the bus.</i> (Gmail, Microsoft 365)</span><span class="ar">تطبيقٌ جاهز للاستخدام في المتصفّح. <i>كركوب الحافلة.</i> (Gmail، Microsoft 365)</span></p></div>
+      <div class="card"><span class="k">IaaS</span><h5>Infrastructure</h5><p class="block">Raw virtual machines, storage, networking. You install everything above it. <i>Like renting a car.</i> (AWS EC2)</p></div>
+      <div class="card"><span class="k">PaaS</span><h5>Platform</h5><p class="block">You upload code; the platform runs and scales it. <i>Like taking a taxi.</i> (App Engine, Heroku)</p></div>
+      <div class="card"><span class="k">SaaS</span><h5>Software</h5><p class="block">A ready-to-use application in the browser. <i>Like riding the bus.</i> (Gmail, Microsoft 365)</p></div>
     </div>
-    <div class="note block"><b><span class="en">Behind it all</span><span class="ar">خلف ذلك كلّه</span>:</b>
-      <span class="en"> <b>virtualisation</b> — one physical server hosts many isolated <b>virtual machines</b>; <b>containers</b> (Docker) are a lighter version that share the host kernel, so they start in a fraction of the time.</span>
-      <span class="ar"> <b>المحاكاة الافتراضية</b> — خادمٌ فيزيائي واحد يستضيف عدّة <b>أجهزة افتراضية</b> معزولة؛ و<b>الحاويات</b> (Docker) نسخةٌ أخفّ تتشارك نواة المضيف، فتبدأ في جزءٍ يسير من الزمن.</span></div>
+    <div class="note block"><b>Behind it all:</b>
+       <b>virtualisation</b> — one physical server hosts many isolated <b>virtual machines</b>; <b>containers</b> (Docker) are a lighter version that share the host kernel, so they start in a fraction of the time.
+      </div>
   </section>
 
   <!-- §6 CPU vs GPU -->
   <section class="chapter">
-    <h2><span class="en">§6 · CPU vs GPU — why AI needs the GPU</span><span class="ar">§6 · المعالج المركزي مقابل الرسومي — لماذا يحتاج الذكاء الاصطناعي المعالجَ الرسومي</span></h2>
-    <p class="lead"><span class="en">A few brilliant workers, or thousands of simple ones — race them.</span><span class="ar">عمّالٌ قلائل بارعون، أم آلافٌ بسطاء — أجرِ السباق بينهم.</span></p>
+    <h2>§6 · CPU vs GPU — why AI needs the GPU</h2>
+    <p class="lead">A few brilliant workers, or thousands of simple ones — race them.</p>
     <div class="prose block">
-      <span class="en"><p>A <b>CPU</b> has a few powerful cores tuned for complex, sequential work. A <b>GPU</b> has thousands of simple cores that all do the <i>same</i> operation at once. Training a neural network is millions of independent multiplications — exactly the job thousands of small cores devour in parallel. Press <b>Play</b> to send the same batch of 64 multiplications to both and watch them race.</p></span>
-      <span class="ar"><p>يملك <b>المعالج المركزي</b> نوىً قليلةً قويّة مُهيّأة للعمل المتسلسل المعقّد. أمّا <b>المعالج الرسومي</b> فيملك آلاف النوى البسيطة التي تُنفّذ <i>العملية نفسها</i> دفعةً واحدة. وتدريب شبكةٍ عصبية هو ملايين عمليات الضرب المستقلّة — وهو تحديدًا ما تلتهمه آلاف النوى الصغيرة على التوازي. اضغط <b>تشغيل</b> لإرسال الدفعة نفسها (64 عملية ضرب) إلى كليهما وشاهِد السباق.</p></span>
+      <p>A <b>CPU</b> has a few powerful cores tuned for complex, sequential work. A <b>GPU</b> has thousands of simple cores that all do the <i>same</i> operation at once. Training a neural network is millions of independent multiplications — exactly the job thousands of small cores devour in parallel. Press <b>Play</b> to send the same batch of 64 multiplications to both and watch them race.</p>
+      
     </div>
 
     <div class="demo" id="d-race">
-      <div class="dhead"><span class="dot"></span><h4><span class="en">64 multiplications — CPU vs GPU</span><span class="ar">64 عملية ضرب — المركزي مقابل الرسومي</span></h4><span class="tag">animated</span></div>
+      <div class="dhead"><span class="dot"></span><h4>64 multiplications — CPU vs GPU</h4><span class="tag">animated</span></div>
       <div class="stage">
         <div class="race">
           <div class="proc">
             <div class="ph"><span class="nm cpu">CPU</span><span class="ct" id="cpu-ct">0 / 64</span></div>
             <div class="grid" id="cpu-grid"></div>
-            <div class="lanes"><span class="en">4 cores · 4 at a time</span><span class="ar">4 نوى · 4 في المرّة</span></div>
+            <div class="lanes">4 cores · 4 at a time</div>
           </div>
           <div class="proc">
             <div class="ph"><span class="nm gpu">GPU</span><span class="ct" id="gpu-ct">0 / 64</span></div>
             <div class="grid" id="gpu-grid"></div>
-            <div class="lanes"><span class="en">32 cores · 32 at a time</span><span class="ar">32 نواة · 32 في المرّة</span></div>
+            <div class="lanes">32 cores · 32 at a time</div>
           </div>
         </div>
         <div class="winline" id="race-win"></div>
       </div>
       <div class="caption" id="race-cap"></div>
       <div class="controls">
-        <button class="ctrl primary" id="race-play" onclick="Race.play()">▶ <span class="en">Play the race</span><span class="ar">ابدأ السباق</span></button>
-        <button class="ctrl" onclick="Race.reset()">↻ <span class="en">Reset</span><span class="ar">إعادة</span></button>
+        <button class="ctrl primary" id="race-play" onclick="Race.play()">▶ Play the race</button>
+        <button class="ctrl" onclick="Race.reset()">↻ Reset</button>
       </div>
     </div>
     <div class="watch block">
-      <span class="wh">💡 <span class="en">What to notice</span><span class="ar">ما الذي نلاحظه؟</span></span>
-      <span class="en">The GPU is <i>not</i> faster per core — its cores are actually slower. It wins by doing <b>many at once</b>. This only helps when the work splits into independent pieces (multiplications, pixels, matrix rows). Give a GPU one long <i>sequential</i> task and the CPU wins easily — which is why a real computer keeps both.</span>
-      <span class="ar">المعالج الرسومي ليس أسرع في النواة الواحدة — بل نواه أبطأ فعلًا. إنّما يفوز بتنفيذ <b>الكثير دفعةً واحدة</b>. وهذا لا ينفع إلّا حين ينقسم العمل إلى قطعٍ مستقلّة (عمليات ضرب، بكسلات، صفوف مصفوفة). أمّا لو أعطيتَه مهمّةً <i>متسلسلة</i> طويلةً واحدة لفاز المعالج المركزي بسهولة — ولهذا يحتفظ الحاسوب الحقيقي بكليهما.</span>
+      <span class="wh">💡 What to notice</span>
+      The GPU is <i>not</i> faster per core — its cores are actually slower. It wins by doing <b>many at once</b>. This only helps when the work splits into independent pieces (multiplications, pixels, matrix rows). Give a GPU one long <i>sequential</i> task and the CPU wins easily — which is why a real computer keeps both.
+      
     </div>
   </section>
 
   <!-- summary -->
   <section class="chapter">
-    <h2><span class="en">Chapter summary</span><span class="ar">خلاصة الفصل</span></h2>
+    <h2>Chapter summary</h2>
     <div class="twocol">
       <div class="card">
-        <h5>🎬 <span class="en">You just watched</span><span class="ar">ما شاهدتَه للتوّ</span></h5>
-        <p class="block"><span class="en">A stored program runs by fetch→decode→execute, with the PC always pointing one step ahead. Memory is a hierarchy the CPU searches top-down, and a miss to RAM costs ~60× a cache hit. A GPU beats a CPU on AI by doing thousands of independent multiplications at once.</span><span class="ar">البرنامج المخزَّن يعمل بدورة جلب←فكّ ترميز←تنفيذ، و<span class="mono">PC</span> يشير دائمًا خطوةً للأمام. والذاكرة تسلسلٌ هرمي يبحثه المعالج من الأعلى، وإخفاقٌ إلى RAM يكلّف نحو 60 ضعف إصابة الكاش. ويتفوّق المعالج الرسومي في الذكاء الاصطناعي بتنفيذ آلاف عمليات الضرب المستقلّة دفعةً واحدة.</span></p>
+        <h5>🎬 You just watched</h5>
+        <p class="block">A stored program runs by fetch→decode→execute, with the PC always pointing one step ahead. Memory is a hierarchy the CPU searches top-down, and a miss to RAM costs ~60× a cache hit. A GPU beats a CPU on AI by doing thousands of independent multiplications at once.</p>
       </div>
       <div class="card">
-        <h5>📄 <span class="en">Text reference</span><span class="ar">المرجع النصّي</span></h5>
-        <p class="block"><span class="en">The full written handout (same content, no animation, with exercises and key terms) is the printable study copy: <span class="mono">lecture-02-en.md</span> / <span class="mono">lecture-02-ar.md</span>.</span><span class="ar">المذكّرة المكتوبة الكاملة (المحتوى نفسه بلا حركة، مع التمارين والمصطلحات) هي نسخة المذاكرة القابلة للطباعة: <span class="mono">lecture-02-en.md</span> / <span class="mono">lecture-02-ar.md</span>.</span></p>
+        <h5>📄 Text reference</h5>
+        <p class="block">The full written handout (same content, no animation, with exercises and key terms) is the printable study copy: <span class="mono">lecture-02-en.md</span> / <span class="mono">lecture-02-ar.md</span>.</p>
       </div>
     </div>
 
     <div class="chapnav">
-      <a href="lecture-01.html"><span class="dir"><span class="en">Previous</span><span class="ar">السابق</span></span><div class="lb"><span class="en">L1 · Information &amp; Data</span><span class="ar">م1 · المعلومات والبيانات</span></div></a>
-      <a href="index.html"><span class="dir"><span class="en">Contents</span><span class="ar">الفهرس</span></span><div class="lb"><span class="en">All lectures</span><span class="ar">كل المحاضرات</span></div></a>
-      <a href="lecture-03.html"><span class="dir"><span class="en">Next</span><span class="ar">التالي</span></span><div class="lb"><span class="en">L3 · Algorithmization</span><span class="ar">م3 · الخوارزميات</span></div></a>
+      <a href="lecture-01.html"><span class="dir">Previous</span><div class="lb">L1 · Information &amp; Data</div></a>
+      <a href="index.html"><span class="dir">Contents</span><div class="lb">All lectures</div></a>
+      <a href="lecture-03.html"><span class="dir">Next</span><div class="lb">L3 · Algorithmization</div></a>
     </div>
   </section>
 
 </div>
 
 <footer>
-  <span class="en">Fundamentals of Computer Science &amp; AI · Lecture 2 · © 2026 Dr. Ali Mahmoud Mansour</span>
-  <span class="ar">أساسيات علوم الحاسوب والذكاء الاصطناعي · المحاضرة 2 · © 2026 د. علي محمود منصور</span>
+  Fundamentals of Computer Science &amp; AI · Lecture 2 · © 2026 Dr. Ali Mahmoud Mansour
+  
 </footer>
 
 <script>
 /* ---------- language ---------- */
-function setLang(l){
-  document.body.setAttribute('data-lang',l);
-  document.documentElement.lang = l==='ar'?'ar':'en';
-  document.documentElement.dir  = l==='ar'?'rtl':'ltr';
-  document.getElementById('btn-en').setAttribute('aria-pressed', l==='en');
-  document.getElementById('btn-ar').setAttribute('aria-pressed', l==='ar');
-  try{localStorage.setItem('csai-lang',l);}catch(e){}
-  FDE.refresh(); Hier.refresh();
-}
-const T=(en,ar)=> document.body.getAttribute('data-lang')==='ar'?ar:en;
+const T=(en,ar)=>en;
 
 /* ---------- §2 fetch-decode-execute ---------- */
 const FDE=(()=>{
@@ -402,39 +394,39 @@ const FDE=(()=>{
     frames=[]; initState();
     const snap=()=>frames.push({data:{...data},regs:{...regs},stage,hotMem,hotReg,wroteMem,capEn,capAr});
     // start
-    capEn='PC = 100 — the address of the first instruction.'; capAr='PC = 100 — عنوان أوّل تعليمة.'; snap();
+    capEn='PC = 100 — the address of the first instruction.'; capAr=''; snap();
     prog.forEach((ins,k)=>{
       // FETCH
       stage='FETCH'; hotMem=ins.addr; wroteMem=null; regs.IR=ins.txt; regs.PC=ins.addr+1; hotReg='PC';
       capEn=`Fetch: read [${ins.addr}] into IR = "${ins.txt}", then PC → ${ins.addr+1}.`;
-      capAr=`جلب: اقرأ [${ins.addr}] إلى IR = "${ins.txt}"، ثم PC ← ${ins.addr+1}.`; snap();
+      capAr=``; snap();
       // DECODE
       stage='DECODE'; hotMem=null; hotReg='IR';
       capEn=`Decode: the Control Unit reads IR and identifies "${ins.txt}".`;
-      capAr=`فكّ الترميز: تقرأ وحدة التحكّم IR وتُحدّد "${ins.txt}".`; snap();
+      capAr=``; snap();
       // EXECUTE
       stage='EXECUTE';
       if(k===0){ hotMem=200; regs.R1=data[200]; hotReg='R1';
-        capEn=`Execute: load mem[200] = ${data[200]} into R1.`; capAr=`تنفيذ: حمِّل mem[200] = ${data[200]} إلى R1.`; }
+        capEn=`Execute: load mem[200] = ${data[200]} into R1.`; capAr=``; }
       else if(k===1){ hotMem=201; regs.R2=data[201]; hotReg='R2';
-        capEn=`Execute: load mem[201] = ${data[201]} into R2.`; capAr=`تنفيذ: حمِّل mem[201] = ${data[201]} إلى R2.`; }
+        capEn=`Execute: load mem[201] = ${data[201]} into R2.`; capAr=``; }
       else if(k===2){ hotMem=null; regs.R3=regs.R1+regs.R2; hotReg='R3';
         capEn=`Execute: ALU computes R1 + R2 = ${regs.R1} + ${regs.R2} = ${regs.R3} → R3.`;
-        capAr=`تنفيذ: تحسب ALU المجموع R1 + R2 = ${regs.R1} + ${regs.R2} = ${regs.R3} ← R3.`; }
+        capAr=``; }
       else { data[202]=regs.R3; hotMem=null; wroteMem=202; hotReg=null;
-        capEn=`Execute: store R3 = ${regs.R3} back into mem[202].`; capAr=`تنفيذ: خزّن R3 = ${regs.R3} في mem[202].`; }
+        capEn=`Execute: store R3 = ${regs.R3} back into mem[202].`; capAr=``; }
       snap();
     });
     // done
     stage='DONE'; hotMem=null; hotReg=null; wroteMem=202;
     capEn=`Done — the program computed 5 + 3 = 8 and stored it at address 202.`;
-    capAr=`تمّ — حسب البرنامج 5 + 3 = 8 وخزّنه في العنوان 202.`; snap();
+    capAr=``; snap();
   }
 
   function render(f){
     // memory column
     const mem=document.getElementById('fde-mem');
-    let h='<div class="cap">'+T('MEMORY','الذاكرة')+'</div>';
+    let h='<div class="cap">'+T('MEMORY','')+'</div>';
     prog.forEach(ins=>{
       const hot=f.hotMem===ins.addr?' hot':'';
       h+=`<div class="memrow${hot}"><span class="addr">${ins.addr}</span><span class="val">${ins.txt}</span></div>`;
@@ -446,7 +438,7 @@ const FDE=(()=>{
     mem.innerHTML=h;
     // stage badge
     const sb=document.getElementById('fde-stage');
-    const label={'FETCH':T('① FETCH','① جلب'),'DECODE':T('② DECODE','② فكّ ترميز'),'EXECUTE':T('③ EXECUTE','③ تنفيذ'),'DONE':T('✓ DONE','✓ تمّ'),'—':'—'}[f.stage]||f.stage;
+    const label={'FETCH':T('① FETCH',''),'DECODE':T('② DECODE',''),'EXECUTE':T('③ EXECUTE',''),'DONE':T('✓ DONE',''),'—':'—'}[f.stage]||f.stage;
     sb.textContent=label; sb.className='stage-badge'+(f.stage==='FETCH'?' fetch':f.stage==='DECODE'?' decode':(f.stage==='EXECUTE'||f.stage==='DONE')?' execute':'');
     // registers
     const rg=document.getElementById('fde-regs');
@@ -477,13 +469,13 @@ const FDE=(()=>{
 /* ---------- §3 memory hierarchy ---------- */
 const Hier=(()=>{
   const levels=[
-    {id:'REG',en:'Registers',ar:'المسجّلات',sz:'~1 KB',t:'0.3 ns',ns:0.3},
-    {id:'L1', en:'L1 cache',ar:'كاش L1',sz:'64 KB',t:'1 ns',ns:1},
-    {id:'L2', en:'L2 cache',ar:'كاش L2',sz:'512 KB',t:'4 ns',ns:4},
-    {id:'L3', en:'L3 cache',ar:'كاش L3',sz:'32 MB',t:'10 ns',ns:10},
-    {id:'RAM',en:'RAM',ar:'ذاكرة RAM',sz:'16 GB',t:'60 ns',ns:60},
-    {id:'SSD',en:'SSD',ar:'قرص SSD',sz:'1 TB',t:'100 µs',ns:100000},
-    {id:'HDD',en:'HDD',ar:'قرص HDD',sz:'8 TB',t:'10 ms',ns:10000000},
+    {id:'REG',en:'Registers',ar:'',sz:'~1 KB',t:'0.3 ns',ns:0.3},
+    {id:'L1', en:'L1 cache',ar:'',sz:'64 KB',t:'1 ns',ns:1},
+    {id:'L2', en:'L2 cache',ar:'',sz:'512 KB',t:'4 ns',ns:4},
+    {id:'L3', en:'L3 cache',ar:'',sz:'32 MB',t:'10 ns',ns:10},
+    {id:'RAM',en:'RAM',ar:'',sz:'16 GB',t:'60 ns',ns:60},
+    {id:'SSD',en:'SSD',ar:'',sz:'1 TB',t:'100 µs',ns:100000},
+    {id:'HDD',en:'HDD',ar:'',sz:'8 TB',t:'10 ms',ns:10000000},
   ];
   let timer=null;
   function build(){
@@ -496,7 +488,7 @@ const Hier=(()=>{
   }
   function refresh(){ build(); }
   function reset(){ clearInterval(timer);timer=null; build();
-    document.getElementById('hier-cap').textContent=T('Pick a look-up above.','اختر عملية بحثٍ أعلاه.');
+    document.getElementById('hier-cap').textContent=T('Pick a look-up above.','');
     document.getElementById('hier-hit').disabled=false; document.getElementById('hier-miss').disabled=false; }
   function play(target){
     reset(); document.getElementById('hier-hit').disabled=true; document.getElementById('hier-miss').disabled=true;
@@ -508,13 +500,13 @@ const Hier=(()=>{
       const l=levels[i]; const le=document.getElementById('lv-'+l.id); const bd=document.getElementById('bd-'+l.id);
       total+=l.ns;
       if(l.id===target){
-        le.classList.add('hit'); bd.textContent=T('HIT','إصابة');
-        document.getElementById('hier-cap').textContent=T(`Found in ${l.en} after ~${l.t}. Total wait ≈ ${l.t}.`,`وُجدت في ${l.ar} بعد ~${l.t}. مجموع الانتظار ≈ ${l.t}.`);
+        le.classList.add('hit'); bd.textContent=T('HIT','');
+        document.getElementById('hier-cap').textContent=T(`Found in ${l.en} after ~${l.t}. Total wait ≈ ${l.t}.`,``);
         clearInterval(timer);timer=null; document.getElementById('hier-hit').disabled=false; document.getElementById('hier-miss').disabled=false; return;
       } else {
         le.classList.add('probing');
-        document.getElementById('hier-cap').textContent=T(`Checking ${l.en}… not here (miss). Move down.`,`نفحص ${l.ar}… ليست هنا (إخفاق). ننزل.`);
-        setTimeout(()=>{ le.classList.remove('probing'); le.classList.add('miss'); bd.textContent=T('miss','إخفاق'); }, 400);
+        document.getElementById('hier-cap').textContent=T(`Checking ${l.en}… not here (miss). Move down.`,``);
+        setTimeout(()=>{ le.classList.remove('probing'); le.classList.add('miss'); bd.textContent=T('miss',''); }, 400);
       }
       i++;
     }, 850);
@@ -536,7 +528,7 @@ const Race=(()=>{
     document.getElementById('cpu-ct').textContent='0 / '+N; document.getElementById('gpu-ct').textContent='0 / '+N;
     const w=document.getElementById('race-win'); w.className='winline'; w.textContent=''; }
   function reset(){ clearInterval(timer);timer=null; build();
-    document.getElementById('race-cap').textContent=T('Same 64 multiplications for both. Press Play.','نفس الـ64 عملية ضرب لكليهما. اضغط تشغيل.');
+    document.getElementById('race-cap').textContent=T('Same 64 multiplications for both. Press Play.','');
     document.getElementById('race-play').disabled=false; }
   function play(){
     reset(); document.getElementById('race-play').disabled=true;
@@ -549,12 +541,12 @@ const Race=(()=>{
       document.getElementById('gpu-ct').textContent=gpu+' / '+N;
       if(gpu>=N && gpuDoneTick===null) gpuDoneTick=tick;
       if(cpu>=N && cpuDoneTick===null) cpuDoneTick=tick;
-      document.getElementById('race-cap').textContent=T(`Tick ${tick}: CPU ${cpu}, GPU ${gpu}.`,`نبضة ${tick}: المركزي ${cpu}، الرسومي ${gpu}.`);
+      document.getElementById('race-cap').textContent=T(`Tick ${tick}: CPU ${cpu}, GPU ${gpu}.`,``);
       if(cpu>=N && gpu>=N){
         clearInterval(timer);timer=null; document.getElementById('race-play').disabled=false;
         const w=document.getElementById('race-win'); w.classList.add('show');
         w.innerHTML=T(`GPU finished in ${gpuDoneTick} ticks · CPU in ${cpuDoneTick} — about ${Math.round(cpuDoneTick/gpuDoneTick)}× faster`,
-                      `الرسومي أنهى في ${gpuDoneTick} نبضة · المركزي في ${cpuDoneTick} — أسرع بنحو ${Math.round(cpuDoneTick/gpuDoneTick)}×`);
+                      ``);
       }
     }, 300);
   }
@@ -562,8 +554,6 @@ const Race=(()=>{
   return {play,reset};
 })();
 
-/* restore saved language */
-try{var _l=localStorage.getItem('csai-lang'); if(_l)setLang(_l);}catch(e){}
 </script>
 </body>
 </html>
