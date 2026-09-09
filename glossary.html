@@ -89,6 +89,26 @@
 
   footer{max-width:1040px;margin:44px auto 0;padding:0 22px;color:var(--muted);
     font-size:.85rem;text-align:center;line-height:1.7}
+
+  /* interactive filter controls (block-029) */
+  .controls{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:20px clamp(18px,3.5vw,32px);margin-top:22px;
+    display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end}
+  .controls .ctl{display:flex;flex-direction:column;gap:6px;flex:1 1 240px;min-width:180px}
+  .controls label{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--accent);font-weight:700}
+  .controls select{font-family:var(--sans);font-size:1rem;color:var(--ink);background:var(--bg);
+    border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;width:100%}
+  .controls select:focus{outline:2px solid var(--accent);outline-offset:1px}
+  #gview{margin-top:28px}
+  #gview .lech{font-family:var(--serif);font-size:1.32rem;font-weight:600;margin:0 0 2px;
+    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  #gview .lecnum{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--accent);font-weight:700}
+  #gview .count{color:var(--muted);font-size:.88rem;margin:0 0 14px}
+  #gview table{min-width:0}
+  /* the six-language data stays in the page but is revealed only through the selectors (block-029) */
+  .lecblock,nav.toc{display:none}
 </style>
 <script type="application/ld+json">
 {
@@ -127,9 +147,22 @@
   <section class="intro">
     <h2>About this glossary</h2>
     <p>This glossary collects the English technical terms from each lecture and gives each one in five more languages, so you can follow the vocabulary of the course whichever language you think in. Terms are grouped by the lecture where they appear, and a term that recurs in a later lecture is listed again there. The last column tells you where in the lecture each term is used.</p>
-    <p>The page works offline once it has opened — nothing is loaded from the internet. Use the contents below to jump straight to a lecture.</p>
+    <p>The page works offline once it has opened — nothing is loaded from the internet. Choose a lecture and a language below and only those terms are shown, so you are never faced with the whole six-language table at once.</p>
     <div class="legend"><span>EN English</span><span>RU Русский</span><span>AR العربية</span><span>PT Português</span><span>ES Español</span><span>FR Français</span></div>
   </section>
+
+  <section class="controls" aria-label="Glossary filters">
+    <div class="ctl">
+      <label for="lecsel">Lecture</label>
+      <select id="lecsel"></select>
+    </div>
+    <div class="ctl">
+      <label for="langsel">Language</label>
+      <select id="langsel"></select>
+    </div>
+  </section>
+
+  <div id="gview" aria-live="polite"></div>
 
   <nav class="toc">
     <h2>Contents</h2>
@@ -616,6 +649,88 @@
   Course Terms Glossary · Introduction to Computer Science and Artificial Intelligence · Interactive book<br>
   © 2026 Dr. Ali Mahmoud Mansour · All rights reserved. Content &amp; concept: Dr. Ali Mahmoud Mansour · Co-created with Claude (Anthropic).<span aria-hidden="true">⁠​‌​​‌‌‌‌​‌​‌​‌‌‌​‌​​‌‌‌​​‌​​​‌​‌​‌​‌​​‌​​​‌‌‌‌​‌​‌​​​​​‌​‌​​‌‌​​​‌​​‌​​‌​​‌​‌‌​‌​‌​​‌‌​‌​‌​​​​​‌​‌​​‌​​​​‌​​‌‌​‌​‌​​‌‌‌‌​‌​‌​‌​‌​‌​​​‌​​​​‌​‌‌​‌​‌​​‌‌​‌​‌​​​​​‌​‌​​‌‌‌​​‌​‌​​‌‌​‌​​‌‌‌‌​‌​‌​‌​‌​‌​‌​​‌​​​‌‌‌​‌‌​‌​​​​‌‌​‌​​‌‌‌‌​​‌​‌‌​‌​‌​​​​‌‌​‌​‌​​‌​​‌​​​‌​‌​‌​​​​​‌​‌​‌​‌​​​‌​​‌‌‌‌​‌​‌​​‌​​​‌‌‌‌​‌​‌​​​​‌‌​‌​​‌‌​​​‌​​​​​‌​‌​‌​‌​‌​‌​​​‌​​​‌​​​‌​‌​​‌‌‌​‌‌​‌​‌‌​​‌​‌​​​‌​‌​‌​​​​​‌​‌​‌​​‌​​​‌‌‌‌​‌​​‌‌​​‌​​​‌‌​​​​​​‌‌​​‌​​​‌‌​‌‌​⁠</span>
 </footer>
+
+<script>
+/* Interactive glossary filter (block-029) — self-contained, no external deps.
+   The six-language tables above stay in the page as the data source; this script
+   reads them and shows only the chosen lecture in English + the chosen language. */
+(function () {
+  "use strict";
+  var LANGS = [
+    { code: "ru", idx: 1, label: "Русский (ru)", rtl: false },
+    { code: "ar", idx: 2, label: "العربية (ar)", rtl: true },
+    { code: "pt", idx: 3, label: "Português (pt)", rtl: false },
+    { code: "es", idx: 4, label: "Español (es)", rtl: false },
+    { code: "fr", idx: 5, label: "Français (fr)", rtl: false }
+  ];
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  var lecsel = document.getElementById("lecsel");
+  var langsel = document.getElementById("langsel");
+  var gview = document.getElementById("gview");
+  if (!lecsel || !langsel || !gview) { return; }
+
+  // Read the hidden per-lecture tables into memory.
+  var lectures = [];
+  Array.prototype.forEach.call(document.querySelectorAll(".lecblock"), function (sec) {
+    var numEl = sec.querySelector(".lecnum");
+    var headEl = sec.querySelector(".lech");
+    var num = numEl ? numEl.textContent.trim() : sec.id;
+    var title = headEl ? headEl.textContent.replace(num, "").trim() : "";
+    var rows = [];
+    Array.prototype.forEach.call(sec.querySelectorAll("tbody tr"), function (tr) {
+      var cells = Array.prototype.map.call(tr.children, function (td) {
+        return td.textContent.trim();
+      });
+      if (cells.length >= 7) { rows.push(cells); }
+    });
+    lectures.push({ num: num, title: title, rows: rows });
+  });
+
+  function langByCode(code) {
+    for (var i = 0; i < LANGS.length; i++) { if (LANGS[i].code === code) { return LANGS[i]; } }
+    return LANGS[0];
+  }
+
+  function render() {
+    var li = parseInt(lecsel.value, 10) || 0;
+    var lang = langByCode(langsel.value);
+    var lec = lectures[li];
+    if (!lec) { gview.innerHTML = ""; return; }
+    var out = '<h2 class="lech"><span class="lecnum">' + esc(lec.num) + "</span>" + esc(lec.title) + "</h2>";
+    out += '<p class="count">' + lec.rows.length + " terms · English → " + esc(lang.label) + "</p>";
+    out += '<div class="tablewrap"><table><thead><tr><th>English</th><th>' + esc(lang.label) +
+           "</th><th>Section / where it appears</th></tr></thead><tbody>";
+    lec.rows.forEach(function (c) {
+      var attr = lang.rtl ? ' lang="ar" dir="rtl" class="ar"' : "";
+      out += '<tr><td class="term">' + esc(c[0]) + "</td><td" + attr + ">" + esc(c[lang.idx]) +
+             '</td><td class="sec">' + esc(c[6]) + "</td></tr>";
+    });
+    out += "</tbody></table></div>";
+    gview.innerHTML = out;
+  }
+
+  lectures.forEach(function (l, i) {
+    var o = document.createElement("option");
+    o.value = String(i);
+    o.textContent = l.num + " — " + l.title;
+    lecsel.appendChild(o);
+  });
+  LANGS.forEach(function (l) {
+    var o = document.createElement("option");
+    o.value = l.code;
+    o.textContent = l.label;
+    langsel.appendChild(o);
+  });
+
+  lecsel.value = "0";
+  langsel.value = "ru";
+  lecsel.addEventListener("change", render);
+  langsel.addEventListener("change", render);
+  render();
+})();
+</script>
 
 </body>
 </html>
