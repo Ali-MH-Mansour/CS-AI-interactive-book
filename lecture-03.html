@@ -1,0 +1,504 @@
+<!doctype html>
+<!--
+  Origin: cs-ai-course (activity 260831-001), execution serial 017, chunk C01.
+  Deliverable: interactive-book Lecture 3 chapter (B08 book rollout, L3).
+  Version: 1.0 · 2026-09-09.
+  Source content: Output/lecture-03-en.md + Output/lecture-03-ar.md (algorithmization, 6 sections).
+  Structural template: lecture-02.html / lecture-01.html. Self-contained, no external dependencies.
+-->
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 3 · Algorithmization — Interactive Book</title>
+<style>
+  :root{
+    --bg:#faf7f2; --panel:#ffffff; --ink:#1d2430; --muted:#5c6675;
+    --line:#e7e0d6; --accent:#c8622a; --accent-soft:#f6e4d6;
+    --blue:#2f6db3; --blue-soft:#e3eef9; --green:#2f8f5b; --green-soft:#e2f2e9;
+    --amber:#b8890f; --amber-soft:#f7edcf; --red:#c0392b; --red-soft:#f7dfdc;
+    --shadow:0 10px 30px rgba(40,30,20,.08), 0 2px 6px rgba(40,30,20,.05);
+    --radius:16px; --serif:"Iowan Old Style",Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Mono","Fira Code",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#15181d; --panel:#1e232b; --ink:#eef1f5; --muted:#9aa4b2;
+      --line:#2c333d; --accent:#e08a52; --accent-soft:#38271c;
+      --blue:#69a6e6; --blue-soft:#1c2a3a; --green:#6fce97; --green-soft:#172a20;
+      --amber:#d8ab3a; --amber-soft:#2c2411; --red:#e07568; --red-soft:#33201d;
+      --shadow:0 10px 30px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.3);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;margin:0}
+  .wrap{max-width:820px;margin:0 auto;padding:0 22px 90px}
+
+  header.mast{
+    background:linear-gradient(135deg,var(--accent) 0%,#a84c1f 100%);
+    color:#fff;padding:46px 22px 40px;text-align:center;position:relative;overflow:hidden}
+  header.mast::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 20% 120%,rgba(255,255,255,.18),transparent 45%);pointer-events:none}
+  .mast .kicker{text-transform:uppercase;letter-spacing:.22em;font-size:.68rem;opacity:.8;font-weight:600}
+  .mast h1{font-family:var(--serif);font-size:clamp(1.5rem,4.5vw,2.4rem);margin:.1em 0 .15em;font-weight:600;letter-spacing:-.01em}
+  .mast .sub{opacity:.92;font-size:1rem;max-width:640px;margin:.2em auto 0}
+
+  .langbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:9px 0}
+  .langbar .inner{max-width:820px;margin:0 auto;padding:0 22px;display:flex;gap:10px;align-items:center;justify-content:space-between}
+  .langbar .home{font-size:.82rem;color:var(--muted);font-weight:600;text-decoration:none}
+  .langbar .home:hover{color:var(--accent)}
+  .seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.82rem;font-weight:600;
+    padding:5px 15px;border-radius:999px;cursor:pointer;transition:.2s}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+
+  section.chapter{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:34px clamp(20px,4vw,44px);margin-top:26px}
+  .chapter > h2{font-family:var(--serif);font-size:1.5rem;margin:.1em 0 .1em;font-weight:600}
+  .chapter > .lead{color:var(--muted);margin:.2em 0 1.4em;font-size:1.02rem}
+  p{margin:.9em 0}
+  .prose{font-family:var(--serif);font-size:1.08rem}
+  [dir="rtl"] .prose,[dir="rtl"] .chapter>.lead,[dir="rtl"] .chapter>h2{font-family:"Geeza Pro","Al Bayan",var(--sans)}
+  .mono{font-family:var(--mono)}
+
+  .demo{border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden;background:var(--bg)}
+  .demo .dhead{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .demo .dhead .dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+  .demo .dhead h4{margin:0;font-size:.92rem;font-weight:700;letter-spacing:.01em}
+  .demo .dhead .tag{margin-inline-start:auto;font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;
+    color:var(--muted);border:1px solid var(--line);padding:3px 8px;border-radius:999px}
+  .demo .stage{padding:22px 16px;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .demo .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:0 16px 16px}
+  button.ctrl{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-weight:600;
+    font-size:.84rem;padding:7px 14px;border-radius:10px;cursor:pointer;transition:.15s;display:inline-flex;gap:6px;align-items:center}
+  button.ctrl:hover{border-color:var(--accent);color:var(--accent)}
+  button.ctrl.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  button.ctrl.primary:hover{filter:brightness(1.05);color:#fff}
+  button.ctrl:disabled{opacity:.4;cursor:default;border-color:var(--line);color:var(--muted)}
+  .caption{font-size:.9rem;color:var(--muted);min-height:1.4em;text-align:center;transition:.2s;padding:0 12px}
+
+  /* §3 step-trace: code lines + variables + trace table */
+  .trace-wrap{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;align-items:flex-start;width:100%}
+  .code-lines{display:flex;flex-direction:column;gap:3px;font-family:var(--mono);font-size:.82rem;min-width:230px}
+  .cl{display:flex;gap:8px;align-items:center;border:1px solid transparent;border-radius:7px;padding:4px 9px;white-space:pre;transition:.2s}
+  .cl .ln{color:var(--muted);font-size:.7rem;min-width:16px;text-align:right}
+  .cl.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:700}
+  .side{display:flex;flex-direction:column;gap:12px;min-width:180px}
+  .vbox{border:1.5px solid var(--blue);border-radius:12px;padding:10px 12px;background:var(--blue-soft)}
+  .vbox .ttl{font-size:.62rem;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;font-weight:700;text-align:center;margin-bottom:8px}
+  .vgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .var{display:flex;justify-content:space-between;gap:6px;font-family:var(--mono);font-size:.82rem;
+    border:1px solid var(--line);border-radius:7px;padding:5px 9px;background:var(--panel);transition:.25s}
+  .var .rn{color:var(--muted);font-size:.72rem}
+  .var .rv{font-weight:700}
+  .var.hot{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .ttable{border:1px solid var(--line);border-radius:10px;overflow:hidden;font-family:var(--mono);font-size:.76rem;min-width:150px}
+  .ttable .th{display:flex;background:var(--panel);border-bottom:1px solid var(--line);font-weight:700;color:var(--muted)}
+  .ttable .th span,.trow span{flex:1;text-align:center;padding:4px 6px}
+  .trow{display:flex;border-bottom:1px solid var(--line);transition:.2s}
+  .trow:last-child{border-bottom:0}
+  .trow.new{background:var(--green-soft)}
+  .trow .k{color:var(--accent);font-weight:700}
+
+  /* §4 binary search array walk */
+  .bs{display:flex;flex-direction:column;gap:4px;width:100%;max-width:560px;align-items:center}
+  .arr{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+  .cell{display:flex;flex-direction:column;align-items:center;gap:3px;transition:.25s}
+  .cell .box{width:46px;height:46px;display:flex;align-items:center;justify-content:center;
+    border:1.5px solid var(--line);border-radius:10px;background:var(--panel);font-family:var(--mono);font-weight:700;font-size:1rem;transition:.25s}
+  .cell .idx{font-family:var(--mono);font-size:.66rem;color:var(--muted)}
+  .cell .mk{font-family:var(--mono);font-size:.66rem;font-weight:800;height:1em;letter-spacing:.02em}
+  .cell.out .box{opacity:.32;border-style:dashed}
+  .cell.mid .box{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);transform:translateY(-2px)}
+  .cell.found .box{border-color:var(--green);background:var(--green-soft);color:var(--green);box-shadow:0 0 0 3px var(--green-soft)}
+  .cell .mk.l{color:var(--blue)} .cell .mk.h{color:var(--red)} .cell .mk.m{color:var(--accent)}
+  .bs-stat{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-family:var(--mono);font-size:.8rem;color:var(--muted);margin-top:6px}
+  .bs-stat b{color:var(--ink)}
+
+  .note{background:var(--blue-soft);border-inline-start:4px solid var(--blue);border-radius:10px;
+    padding:12px 16px;margin:20px 0;font-size:.94rem}
+  .note b{color:var(--blue)}
+  .note.green{background:var(--green-soft);border-color:var(--green)}
+  .note.green b{color:var(--green)}
+  .watch{background:var(--amber-soft);border-inline-start:4px solid var(--amber);border-radius:10px;
+    padding:13px 17px;margin:6px 0 2px;font-size:.95rem}
+  .watch .wh{font-weight:700;color:var(--amber);display:block;margin-bottom:3px}
+
+  pre.flow{font-family:var(--mono);font-size:.78rem;line-height:1.35;background:var(--bg);border:1px solid var(--line);
+    border-radius:10px;padding:14px 16px;overflow-x:auto;margin:16px 0}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+  @media(max-width:620px){.twocol{grid-template-columns:1fr}}
+  .threecol{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:20px 0}
+  @media(max-width:620px){.threecol{grid-template-columns:1fr}}
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .card h5{margin:.1em 0 .5em;font-size:.98rem}
+  .card p{margin:.3em 0;font-size:.9rem;color:var(--muted)}
+  .card .k{font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:.9rem}
+  table.tbl th,table.tbl td{border:1px solid var(--line);padding:7px 10px;text-align:start}
+  table.tbl th{background:var(--panel);font-weight:700}
+  table.tbl td.mono{font-family:var(--mono);font-size:.82rem}
+
+  .chapnav{display:flex;justify-content:space-between;gap:12px;margin-top:28px;flex-wrap:wrap}
+  .chapnav a{flex:1;min-width:180px;text-decoration:none;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;padding:14px 18px;color:inherit;transition:.15s}
+  .chapnav a:hover{border-color:var(--accent)}
+  .chapnav .dir{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .chapnav .lb{font-weight:600;color:var(--accent);margin-top:2px}
+  .chapnav a.disabled{opacity:.5;pointer-events:none}
+
+  footer{max-width:820px;margin:34px auto 0;padding:0 22px;color:var(--muted);font-size:.85rem;text-align:center}
+  .en{display:inline}.ar{display:none}
+  .block .en{display:block}.block .ar{display:none}
+  [data-lang="ar"] .en{display:none}[data-lang="ar"] .ar{display:inline}
+  [data-lang="ar"] .block .ar{display:block}
+</style>
+</head>
+<body data-lang="en">
+
+<header class="mast">
+  <div class="kicker">Fundamentals of CS &amp; AI · <span class="en">Module 2 · Lecture 3</span><span class="ar">الوحدة 2 · المحاضرة 3</span></div>
+  <h1><span class="en">Algorithmization &amp; Foundations of Programming</span><span class="ar">الخوارزميات وأسس البرمجة</span></h1>
+  <div class="sub block">
+    <span class="en">What an algorithm really is, the three building blocks every program is made from, and how we measure whether one is fast — watched step by step, not just described.</span>
+    <span class="ar">ما الخوارزمية حقًّا، والهياكل الثلاثة التي يُبنى منها كل برنامج، وكيف نقيس سرعتها — نُشاهدها خطوةً بخطوة لا نصفها فقط.</span>
+  </div>
+</header>
+
+<div class="langbar">
+  <div class="inner">
+    <a class="home" href="index.html">← <span class="en">Contents</span><span class="ar">الفهرس</span></a>
+    <div class="seg" role="group" aria-label="language">
+      <button id="btn-en" aria-pressed="true" onclick="setLang('en')">EN</button>
+      <button id="btn-ar" aria-pressed="false" onclick="setLang('ar')">ع</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- §1 What is an algorithm -->
+  <section class="chapter">
+    <h2><span class="en">§1 · What is an algorithm?</span><span class="ar">§1 · ما هي الخوارزمية؟</span></h2>
+    <p class="lead"><span class="en">A finite recipe that always finishes — and the five rules it must obey.</span><span class="ar">وصفةٌ منتهية تنتهي دائمًا — والقواعد الخمس التي يجب أن تُطيعها.</span></p>
+    <div class="prose block">
+      <span class="en"><p>An <b>algorithm</b> is a finite, ordered set of unambiguous instructions that solves a class of problems and always terminates after a finite number of steps. The word comes from the 9th-century mathematician <b>Muhammad ibn Musa al-Khwarizmi</b>, whose treatise on arithmetic brought systematic calculation to European mathematics.</p></span>
+      <span class="ar"><p>ال<b>خوارزمية</b> مجموعة منتهية ومرتّبة من التعليمات غير الملتبسة، تحلّ فئةً من المسائل وتنتهي دائمًا بعد عددٍ منتهٍ من الخطوات. ويعود الاسم إلى عالِم القرن التاسع <b>محمد بن موسى الخوارزمي</b>، الذي أدخل كتابُه في الحساب منهجَ العمليات المنظَّمة إلى رياضيات أوروبا.</p></span>
+    </div>
+    <div class="note block"><b>ℹ︎ <span class="en">The five properties</span><span class="ar">الخصائص الخمس</span>:</b>
+      <span class="en"> <b>Finiteness</b> (it must stop) · <b>Definiteness</b> (each step has one meaning) · <b>Input</b> (zero or more) · <b>Output</b> (one or more results) · <b>Effectiveness</b> (each step is doable with basic operations). Break any one and it is no longer an algorithm.</span>
+      <span class="ar"> <b>الانتهاء</b> (يجب أن تتوقّف) · <b>الوضوح</b> (لكلّ خطوة معنًى واحد) · <b>المدخلات</b> (صفر أو أكثر) · <b>المخرجات</b> (نتيجة أو أكثر) · <b>الفعّالية</b> (كلّ خطوة قابلة للتنفيذ بعمليات أوّلية). اكسِر أيًّا منها فلن تبقى خوارزمية.</span></div>
+    <div class="threecol">
+      <div class="card"><span class="k">Algorithm</span><h5><span class="en">The method</span><span class="ar">الطريقة</span></h5><p class="block"><span class="en">An abstract description of a solution. <i>Like a recipe.</i></span><span class="ar">وصفٌ مجرّد لطريقة الحل. <i>كوصفة طعام.</i></span></p></div>
+      <div class="card"><span class="k">Program</span><h5><span class="en">The method, written</span><span class="ar">الطريقة مكتوبة</span></h5><p class="block"><span class="en">The algorithm expressed in one language. <i>Like the recipe printed on paper.</i></span><span class="ar">الخوارزمية معبَّرًا عنها بلغةٍ محدّدة. <i>كالوصفة مطبوعةً على ورق.</i></span></p></div>
+      <div class="card"><span class="k">Process</span><h5><span class="en">The method, running</span><span class="ar">الطريقة تعمل</span></h5><p class="block"><span class="en">A program using real memory and CPU time. <i>Like a cook following it.</i></span><span class="ar">برنامجٌ يستهلك ذاكرةً ووقت معالجٍ فعليًّا. <i>كالطاهي يطبّقها.</i></span></p></div>
+    </div>
+  </section>
+
+  <!-- §2 Representing algorithms -->
+  <section class="chapter">
+    <h2><span class="en">§2 · Writing it down — flowcharts &amp; pseudocode</span><span class="ar">§2 · تدوينها — مخطّطات التدفّق والشفرة الزائفة</span></h2>
+    <p class="lead"><span class="en">Two ways to capture an algorithm before it becomes code.</span><span class="ar">طريقتان لالتقاط الخوارزمية قبل أن تصير كودًا.</span></p>
+    <div class="prose block">
+      <span class="en"><p>Before writing code we sketch the algorithm. A <b>flowchart</b> draws it: an oval for <i>start/end</i>, a rectangle for a <i>process</i> step, a diamond for a <i>decision</i>, a parallelogram for <i>input/output</i>, arrows for the flow. <b>Pseudocode</b> writes it in plain-but-structured words — not executable, but a bridge to real code.</p></span>
+      <span class="ar"><p>قبل كتابة الكود نرسم الخوارزمية. ي<b>رسمها مخطّط التدفّق</b>: بيضاويٌّ لل<i>بداية/النهاية</i>، ومستطيلٌ لخطوة <i>عملية</i>، ومعيَّنٌ ل<i>قرار</i>، ومتوازي أضلاعٍ ل<i>الإدخال/الإخراج</i>، وأسهمٌ لاتّجاه التدفّق. أمّا ال<b>شفرة الزائفة</b> فتكتبها بكلماتٍ مبسّطةٍ لكن منظَّمة — غير قابلة للتنفيذ، لكنها جسرٌ إلى الكود الفعلي.</p></span>
+    </div>
+    <pre class="flow"><span class="en">   ┌─────────┐        FUNCTION max(A, B)
+   │  Start  │          IF A &gt; B THEN
+   └────┬────┘            RETURN A
+    Input A, B          ELSE
+        ↓                 RETURN B
+     ┌──┴──┐            END IF
+     │A &gt; B?│           END FUNCTION
+     └┬───┬┘
+    Yes   No            ← the diamond (A &gt; B?) is the decision;
+   max=A max=B            each branch is one path of §3's "selection".
+        ↓
+    Output max  →  End</span><span class="ar">   ┌─────────┐        دالة أكبر(A، B)
+   │ البداية │          إذا A &gt; B إذن
+   └────┬────┘            أرجِع A
+    أدخل A، B           وإلا
+        ↓                 أرجِع B
+     ┌──┴──┐            نهاية إذا
+     │A &gt; B؟│           نهاية دالة
+     └┬───┬┘
+   نعم   لا             ← المعيَّن (A &gt; B؟) هو القرار؛
+  max=A max=B             وكلّ فرعٍ مسارٌ من «التحديد» في §3.
+        ↓
+   أخرِج max  →  النهاية</span></pre>
+  </section>
+
+  <!-- §3 the three building blocks + ANIMATION 1 -->
+  <section class="chapter">
+    <h2><span class="en">§3 · The three building blocks</span><span class="ar">§3 · اللبِنات الثلاث</span></h2>
+    <p class="lead"><span class="en">Sequence, selection, iteration — every algorithm is made of only these.</span><span class="ar">التسلسل والتحديد والتكرار — كلّ خوارزمية تُبنى من هذه وحدها.</span></p>
+    <div class="prose block">
+      <span class="en"><p>Böhm and Jacopini proved in 1966 that any algorithm can be built from exactly three control structures. <b>Sequence</b>: steps run in order. <b>Selection</b>: a condition chooses a branch (<span class="mono">IF…ELSE</span>). <b>Iteration</b>: a block repeats (<span class="mono">FOR</span>, <span class="mono">WHILE</span>). A printed page lists the loop; press <b>Step</b> below and watch one actually run — a counted loop that adds up <span class="mono">1 + 2 + … + 10</span>. Follow the highlighted line, the variables, and the trace table filling in.</p></span>
+      <span class="ar"><p>أثبت بوم وياكوبيني عام 1966 أنّ أيّ خوارزمية تُبنى من ثلاثة هياكل تحكّمٍ فقط. <b>التسلسل</b>: خطواتٌ بالترتيب. <b>التحديد</b>: شرطٌ يختار فرعًا (<span class="mono">IF…ELSE</span>). <b>التكرار</b>: مقطعٌ يتكرّر (<span class="mono">FOR</span>، <span class="mono">WHILE</span>). الصفحة المطبوعة تسرد الحلقة؛ اضغط <b>خطوة</b> أدناه وشاهِد واحدةً تعمل فعلًا — حلقةٌ عَدّية تجمع <span class="mono">1 + 2 + … + 10</span>. تابِع السطر المُبرَز والمتغيّرات وجدول التتبّع يمتلئ.</p></span>
+    </div>
+
+    <div class="demo" id="d-trace">
+      <div class="dhead"><span class="dot"></span><h4><span class="en">Step-trace: sum of 1 to 10</span><span class="ar">تتبّع خطوةً بخطوة: مجموع 1 إلى 10</span></h4><span class="tag">animated</span></div>
+      <div class="stage">
+        <div class="trace-wrap">
+          <div class="code-lines" id="tr-code"></div>
+          <div class="side">
+            <div class="vbox">
+              <div class="ttl"><span class="en">variables</span><span class="ar">المتغيّرات</span></div>
+              <div class="vgrid" id="tr-vars"></div>
+            </div>
+            <div class="ttable" id="tr-table"></div>
+          </div>
+        </div>
+      </div>
+      <div class="caption" id="tr-cap"></div>
+      <div class="controls">
+        <button class="ctrl primary" id="tr-play" onclick="Trace.play()">▶ <span class="en">Play</span><span class="ar">تشغيل</span></button>
+        <button class="ctrl" id="tr-step" onclick="Trace.step()">⏭ <span class="en">Step</span><span class="ar">خطوة</span></button>
+        <button class="ctrl" onclick="Trace.reset()">↻ <span class="en">Reset</span><span class="ar">إعادة</span></button>
+      </div>
+    </div>
+    <div class="watch block">
+      <span class="wh">💡 <span class="en">What to notice</span><span class="ar">ما الذي نلاحظه؟</span></span>
+      <span class="en">The loop body runs <b>10 times</b> but you wrote it <b>once</b> — that reuse is the whole point of iteration. Watch the <i>order</i>: <span class="mono">i</span> is checked <b>before</b> the body each pass, so the moment the check fails the body is skipped and control jumps straight to <span class="mono">OUTPUT</span>. And <span class="mono">sum</span> is an <b>accumulator</b>: it carries the running total across iterations — lose it and each pass would forget the last.</span>
+      <span class="ar">جسم الحلقة يعمل <b>10 مرّات</b> وقد كتبتَه <b>مرّةً واحدة</b> — وإعادة الاستخدام هذه هي جوهر التكرار. لاحِظ <i>الترتيب</i>: تُفحَص <span class="mono">i</span> <b>قبل</b> الجسم في كلّ مرور، فبمجرّد فشل الفحص يُتخطّى الجسم ويقفز التحكّم مباشرةً إلى <span class="mono">OUTPUT</span>. و<span class="mono">sum</span> <b>مُجمِّع</b>: يحمل المجموع الجاري عبر التكرارات — لو ضاع لنسي كلُّ مرورٍ ما قبله.</span>
+    </div>
+  </section>
+
+  <!-- §4 complexity + ANIMATION 2 -->
+  <section class="chapter">
+    <h2><span class="en">§4 · How fast is it? — complexity &amp; Big-O</span><span class="ar">§4 · ما مدى سرعتها؟ — التعقيد وترميز Big-O</span></h2>
+    <p class="lead"><span class="en">Correct is not enough — it must scale. Watch a sorted search halve its work each step.</span><span class="ar">الصحّة وحدها لا تكفي — يجب أن تتوسّع. شاهِد البحث في مصفوفةٍ مرتّبة يُنصِّف عمله في كل خطوة.</span></p>
+    <div class="prose block">
+      <span class="en"><p><b>Time complexity</b> counts basic operations as the input size <span class="mono">n</span> grows, written in <b>Big-O</b> — the worst-case growth rate, ignoring constants. <b>Linear search</b> checks every element: <span class="mono">O(n)</span>. <b>Binary search</b> needs a <i>sorted</i> array and throws away half the remaining elements on every comparison: <span class="mono">O(log n)</span>. Press <b>Step</b> and watch binary search find a value — see the live range shrink and the discarded halves fade out.</p></span>
+      <span class="ar"><p><b>تعقيد الزمن</b> يعدّ العمليات الأساسية مع نموّ حجم المدخلات <span class="mono">n</span>، ويُكتَب بـ<b>Big-O</b> — معدّل النموّ في أسوأ الحالات متجاهلًا الثوابت. ال<b>بحث الخطّي</b> يفحص كلّ عنصر: <span class="mono">O(n)</span>. أمّا ال<b>بحث الثنائي</b> فيشترط مصفوفةً <i>مرتّبة</i> ويرمي نصف العناصر المتبقّية في كلّ مقارنة: <span class="mono">O(log n)</span>. اضغط <b>خطوة</b> وشاهِد البحث الثنائي يجد قيمة — راقِب المدى الحيّ يتقلّص والنصفين المُهمَلين يتلاشيان.</p></span>
+    </div>
+
+    <div class="demo" id="d-bs">
+      <div class="dhead"><span class="dot"></span><h4><span class="en">Binary search for 22 in a sorted array</span><span class="ar">بحثٌ ثنائي عن 22 في مصفوفةٍ مرتّبة</span></h4><span class="tag">animated</span></div>
+      <div class="stage">
+        <div class="bs">
+          <div class="arr" id="bs-arr"></div>
+          <div class="bs-stat" id="bs-stat"></div>
+        </div>
+      </div>
+      <div class="caption" id="bs-cap"></div>
+      <div class="controls">
+        <button class="ctrl primary" id="bs-play" onclick="BSearch.play()">▶ <span class="en">Play</span><span class="ar">تشغيل</span></button>
+        <button class="ctrl" id="bs-step" onclick="BSearch.step()">⏭ <span class="en">Step</span><span class="ar">خطوة</span></button>
+        <button class="ctrl" onclick="BSearch.reset()">↻ <span class="en">Reset</span><span class="ar">إعادة</span></button>
+      </div>
+    </div>
+    <div class="watch block">
+      <span class="wh">💡 <span class="en">What to notice</span><span class="ar">ما الذي نلاحظه؟</span></span>
+      <span class="en">Binary search finds 22 in <b>3 comparisons</b>; a linear scan would touch <b>5 elements</b> to reach index 4. The gap looks small on 7 items but explodes with size: on a <b>million</b> sorted items binary search needs <b>at most 20</b> comparisons — because each step <i>halves</i> what is left (that is what <span class="mono">O(log n)</span> means). The catch: this only works because the array is <b>sorted</b>. No sort, no binary search.</span>
+      <span class="ar">يجد البحثُ الثنائي 22 في <b>3 مقارنات</b>؛ بينما المسح الخطّي يلمس <b>5 عناصر</b> ليبلغ الفهرس 4. تبدو الفجوة صغيرةً على 7 عناصر لكنها تنفجر مع الحجم: على <b>مليون</b> عنصرٍ مرتّب يحتاج البحث الثنائي <b>20 مقارنةً على الأكثر</b> — لأنّ كلّ خطوةٍ <i>تُنصِّف</i> ما تبقّى (وهذا معنى <span class="mono">O(log n)</span>). والشرط: لا يعمل هذا إلّا لأنّ المصفوفة <b>مرتّبة</b>. لا فرزَ، لا بحثَ ثنائي.</span>
+    </div>
+
+    <table class="tbl">
+      <thead><tr><th>Big-O</th><th><span class="en">Name</span><span class="ar">الاسم</span></th><th><span class="en">Example</span><span class="ar">مثال</span></th><th class="en">n = 1,000</th><th class="ar">n = 1,000</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">O(1)</td><td><span class="en">Constant</span><span class="ar">ثابت</span></td><td><span class="en">Array access by index</span><span class="ar">الوصول بالفهرس</span></td><td class="mono">1</td><td class="mono">1</td></tr>
+        <tr><td class="mono">O(log n)</td><td><span class="en">Logarithmic</span><span class="ar">لوغاريتمي</span></td><td><span class="en">Binary search</span><span class="ar">البحث الثنائي</span></td><td class="mono">~10</td><td class="mono">~10</td></tr>
+        <tr><td class="mono">O(n)</td><td><span class="en">Linear</span><span class="ar">خطّي</span></td><td><span class="en">Linear search</span><span class="ar">البحث الخطّي</span></td><td class="mono">1,000</td><td class="mono">1,000</td></tr>
+        <tr><td class="mono">O(n²)</td><td><span class="en">Quadratic</span><span class="ar">تربيعي</span></td><td><span class="en">Bubble sort, nested loops</span><span class="ar">فرز الفقاعة، حلقات متداخلة</span></td><td class="mono">1,000,000</td><td class="mono">1,000,000</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- §5 dev environment -->
+  <section class="chapter">
+    <h2><span class="en">§5 · From source code to a running program</span><span class="ar">§5 · من الكود المصدري إلى برنامجٍ يعمل</span></h2>
+    <p class="lead"><span class="en">The toolchain — and the one place you spend your day: the IDE.</span><span class="ar">سلسلة الأدوات — والمكان الذي تقضي فيه يومك: بيئة التطوير المتكاملة.</span></p>
+    <div class="prose block">
+      <span class="en"><p>Source code (<span class="mono">.py</span>, <span class="mono">.c</span>, <span class="mono">.java</span>) is not what the CPU runs. A <b>compiler</b> translates the whole file to machine code ahead of time (C, Go); an <b>interpreter</b> executes it line by line (Python); some languages compile to <b>bytecode</b> that a virtual machine runs (Java). An <b>IDE</b> bundles the editor, the build/run button, the <b>debugger</b> and error highlighting into one window — and from day one you keep it all under <b>version control</b> with Git.</p></span>
+      <span class="ar"><p>الكود المصدري (<span class="mono">.py</span>، <span class="mono">.c</span>، <span class="mono">.java</span>) ليس ما يشغّله المعالج. ي<b>ترجم المُصرِّف</b> الملفَّ كاملًا إلى كود الآلة مسبقًا (C، Go)؛ وي<b>نفّذه المُفسِّر</b> سطرًا سطرًا (Python)؛ وبعض اللغات تُصرِّف إلى <b>بايتكود</b> تشغّله آلةٌ افتراضية (Java). و<b>بيئة التطوير المتكاملة (IDE)</b> تجمع المحرّر وزرّ البناء/التشغيل و<b>المُصحِّح</b> وإبراز الأخطاء في نافذةٍ واحدة — ومنذ اليوم الأوّل تحفظ ذلك كلَّه تحت <b>إدارة الإصدارات</b> بـ Git.</p></span>
+    </div>
+    <div class="threecol">
+      <div class="card"><span class="k">Compiler</span><h5><span class="en">Translate, then run</span><span class="ar">ترجِم ثم شغّل</span></h5><p class="block"><span class="en">Whole file → machine code before running. Fast to run. (C, C++, Go)</span><span class="ar">الملفّ كاملًا ← كود آلةٍ قبل التشغيل. سريعٌ عند التشغيل. (C، C++، Go)</span></p></div>
+      <div class="card"><span class="k">Interpreter</span><h5><span class="en">Run line by line</span><span class="ar">شغّل سطرًا سطرًا</span></h5><p class="block"><span class="en">Executes the source directly, one line at a time. Flexible. (Python)</span><span class="ar">ينفّذ المصدر مباشرةً سطرًا سطرًا. مرنٌ. (Python)</span></p></div>
+      <div class="card"><span class="k">IDE + Git</span><h5><span class="en">One workspace</span><span class="ar">مساحة عملٍ واحدة</span></h5><p class="block"><span class="en">Editor, run button, debugger, error hints — plus a full history of every change.</span><span class="ar">محرّرٌ وزرّ تشغيلٍ ومُصحِّحٌ وتلميحاتُ أخطاء — مع سجلٍّ كاملٍ لكلّ تغيير.</span></p></div>
+    </div>
+    <div class="note green block"><b>▶ <span class="en">Your first three Git commands</span><span class="ar">أوّل ثلاثة أوامر Git</span>:</b>
+      <span class="en"> <span class="mono">git init</span> (start a repo) · <span class="mono">git add hello.py</span> (stage a file) · <span class="mono">git commit -m "Initial commit"</span> (save a snapshot). Even for a solo project this gives you an undo button for your whole history.</span>
+      <span class="ar"> <span class="mono">git init</span> (ابدأ مستودعًا) · <span class="mono">git add hello.py</span> (جهّز ملفًّا) · <span class="mono">git commit -m "البداية الأولى"</span> (احفظ لقطة). حتى في مشروعٍ فرديّ يمنحك هذا زرَّ تراجعٍ عن تاريخك كلِّه.</span></div>
+  </section>
+
+  <!-- summary -->
+  <section class="chapter">
+    <h2><span class="en">Chapter summary</span><span class="ar">خلاصة الفصل</span></h2>
+    <div class="twocol">
+      <div class="card">
+        <h5>🎬 <span class="en">You just watched</span><span class="ar">ما شاهدتَه للتوّ</span></h5>
+        <p class="block"><span class="en">An algorithm is a finite, definite recipe that must terminate. Every one is built from sequence, selection and iteration — you saw a counted loop reuse one line 10 times to reach 55. Efficiency is measured in Big-O: binary search halves its work each step (O(log n)) and beats linear search (O(n)) on any sorted array.</span><span class="ar">الخوارزمية وصفةٌ منتهية محدّدة يجب أن تتوقّف. وكلٌّ منها يُبنى من تسلسلٍ وتحديدٍ وتكرار — ورأيتَ حلقةً عَدّية تُعيد استخدام سطرٍ واحد 10 مرّاتٍ لتبلغ 55. وتُقاس الكفاءة بـ Big-O: البحث الثنائي يُنصِّف عمله في كلّ خطوة (O(log n)) ويتفوّق على الخطّي (O(n)) في أيّ مصفوفةٍ مرتّبة.</span></p>
+      </div>
+      <div class="card">
+        <h5>📄 <span class="en">Text reference</span><span class="ar">المرجع النصّي</span></h5>
+        <p class="block"><span class="en">The full written handout (same content, no animation, with exercises and key terms) is the printable study copy: <span class="mono">lecture-03-en.md</span> / <span class="mono">lecture-03-ar.md</span>.</span><span class="ar">المذكّرة المكتوبة الكاملة (المحتوى نفسه بلا حركة، مع التمارين والمصطلحات) هي نسخة المذاكرة القابلة للطباعة: <span class="mono">lecture-03-en.md</span> / <span class="mono">lecture-03-ar.md</span>.</span></p>
+      </div>
+    </div>
+
+    <div class="chapnav">
+      <a href="lecture-02.html"><span class="dir"><span class="en">Previous</span><span class="ar">السابق</span></span><div class="lb"><span class="en">L2 · Computer Architecture</span><span class="ar">م2 · بنية الحاسوب</span></div></a>
+      <a href="index.html"><span class="dir"><span class="en">Contents</span><span class="ar">الفهرس</span></span><div class="lb"><span class="en">All lectures</span><span class="ar">كل المحاضرات</span></div></a>
+      <a class="disabled"><span class="dir"><span class="en">Next</span><span class="ar">التالي</span></span><div class="lb"><span class="en">L4 · Software Life Cycle (soon)</span><span class="ar">م4 · دورة حياة البرمجيات (قريبًا)</span></div></a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <span class="en">Fundamentals of Computer Science &amp; AI · Lecture 3 · © 2026 Dr. Ali Mahmoud Mansour</span>
+  <span class="ar">أساسيات علوم الحاسوب والذكاء الاصطناعي · المحاضرة 3 · © 2026 د. علي محمود منصور</span>
+</footer>
+
+<script>
+/* ---------- language ---------- */
+function setLang(l){
+  document.body.setAttribute('data-lang',l);
+  document.documentElement.lang = l==='ar'?'ar':'en';
+  document.documentElement.dir  = l==='ar'?'rtl':'ltr';
+  document.getElementById('btn-en').setAttribute('aria-pressed', l==='en');
+  document.getElementById('btn-ar').setAttribute('aria-pressed', l==='ar');
+  try{localStorage.setItem('csai-lang',l);}catch(e){}
+  Trace.refresh(); BSearch.refresh();
+}
+const T=(en,ar)=> document.body.getAttribute('data-lang')==='ar'?ar:en;
+
+/* ---------- §3 step-trace: sum 1..10 ---------- */
+const Trace=(()=>{
+  const lines=[
+    {en:'SET sum ← 0',    ar:'اضبط sum ← 0'},
+    {en:'FOR i ← 1 TO 10', ar:'لكل i من 1 إلى 10'},
+    {en:'  sum ← sum + i', ar:'  sum ← sum + i'},
+    {en:'END FOR',            ar:'نهاية لكل'},
+    {en:'OUTPUT sum',         ar:'أخرج sum'}
+  ];
+  let frames=[], fi=0, timer=null;
+
+  function build(){
+    frames=[];
+    let sum=0, i='—', trace=[], hot=null;
+    const snap=(line,capEn,capAr)=>frames.push({line:line,i:i,sum:sum,hot:hot,trace:trace.slice(),capEn:capEn,capAr:capAr});
+    snap(0,'Start: sum = 0 — the accumulator begins empty.','البداية: sum = 0 — المُجمِّع يبدأ فارغًا.');
+    for(let k=1;k<=10;k++){
+      i=k; hot='i';
+      snap(1,'Loop check: i = '+k+' is ≤ 10, so run the body.','فحص الحلقة: i = '+k+' ≤ 10، إذن نفّذ الجسم.');
+      const prev=sum; sum=sum+k; hot='sum'; trace.push({i:k,sum:sum});
+      snap(2,'sum ← '+prev+' + '+k+' = '+sum+'.','sum ← '+prev+' + '+k+' = '+sum+'.');
+    }
+    i='—'; hot=null;
+    snap(4,'i has passed 10, so the loop ends. Output sum = '+sum+'.','تجاوزت i القيمة 10، فتنتهي الحلقة. أخرج sum = '+sum+'.');
+  }
+
+  function render(f){
+    let ch='';
+    lines.forEach((ln,idx)=>{
+      ch+='<div class="cl'+(f.line===idx?' active':'')+'"><span class="ln">'+idx+'</span><span>'+T(ln.en,ln.ar)+'</span></div>';
+    });
+    document.getElementById('tr-code').innerHTML=ch;
+
+    const vars=[['i',f.i],['sum',f.sum]];
+    let vh='';
+    vars.forEach(v=>{ vh+='<div class="var'+(f.hot===v[0]?' hot':'')+'"><span class="rn">'+v[0]+'</span><span class="rv">'+v[1]+'</span></div>'; });
+    document.getElementById('tr-vars').innerHTML=vh;
+
+    let th='<div class="th"><span>i</span><span>sum</span></div>';
+    f.trace.forEach((r,idx)=>{
+      const isNew=idx===f.trace.length-1 && f.line===2;
+      th+='<div class="trow'+(isNew?' new':'')+'"><span class="k">'+r.i+'</span><span>'+r.sum+'</span></div>';
+    });
+    document.getElementById('tr-table').innerHTML=th;
+
+    document.getElementById('tr-cap').textContent=T(f.capEn,f.capAr);
+  }
+  function refresh(){ if(frames.length) render(frames[Math.min(fi,frames.length-1)]); }
+  function reset(){ clearInterval(timer);timer=null; build(); fi=0; render(frames[0]);
+    document.getElementById('tr-play').disabled=false; document.getElementById('tr-step').disabled=false; }
+  function step(){
+    if(fi<frames.length-1){ fi++; render(frames[fi]); }
+    if(fi>=frames.length-1){ clearInterval(timer);timer=null;
+      document.getElementById('tr-play').disabled=false; document.getElementById('tr-step').disabled=true; }
+  }
+  function play(){ reset(); document.getElementById('tr-play').disabled=true;
+    timer=setInterval(step, 750); }
+  build(); reset();
+  return {play:play,step:step,reset:reset,refresh:refresh};
+})();
+
+/* ---------- §4 binary search walk ---------- */
+const BSearch=(()=>{
+  const arr=[3,7,11,15,22,31,45], target=22;
+  let frames=[], fi=0, timer=null;
+
+  function build(){
+    frames=[];
+    let low=0, high=arr.length-1, comp=0;
+    const snap=(mid,found,capEn,capAr)=>frames.push({low:low,high:high,mid:mid,found:found,comp:comp,capEn:capEn,capAr:capAr});
+    snap(-1,false,'Sorted array of '+arr.length+'. Searching for '+target+'. Range: low = 0, high = '+(arr.length-1)+'.',
+                  'مصفوفة مرتّبة من '+arr.length+' عناصر. نبحث عن '+target+'. المدى: low = 0، high = '+(arr.length-1)+'.');
+    while(low<=high){
+      const mid=Math.floor((low+high)/2); comp++;
+      if(arr[mid]===target){
+        snap(mid,true,'Compare #'+comp+': arr['+mid+'] = '+arr[mid]+' = '+target+' → found at index '+mid+'!',
+                      'مقارنة #'+comp+': arr['+mid+'] = '+arr[mid]+' = '+target+' ← وُجِد في الفهرس '+mid+'!');
+        break;
+      } else if(arr[mid]<target){
+        snap(mid,false,'Compare #'+comp+': arr['+mid+'] = '+arr[mid]+' < '+target+' → drop the left half, low = '+(mid+1)+'.',
+                       'مقارنة #'+comp+': arr['+mid+'] = '+arr[mid]+' < '+target+' ← نُسقط النصف الأيسر، low = '+(mid+1)+'.');
+        low=mid+1;
+      } else {
+        snap(mid,false,'Compare #'+comp+': arr['+mid+'] = '+arr[mid]+' > '+target+' → drop the right half, high = '+(mid-1)+'.',
+                       'مقارنة #'+comp+': arr['+mid+'] = '+arr[mid]+' > '+target+' ← نُسقط النصف الأيمن، high = '+(mid-1)+'.');
+        high=mid-1;
+      }
+    }
+  }
+
+  function render(f){
+    let h='';
+    for(let idx=0;idx<arr.length;idx++){
+      let cls='cell';
+      if(idx<f.low||idx>f.high) cls+=' out';
+      if(idx===f.mid) cls+= f.found?' found':' mid';
+      let mk='';
+      if(idx===f.low && idx===f.high) mk=T('L·H','ح·د');
+      else if(idx===f.low) mk=T('L','ح');
+      else if(idx===f.high) mk=T('H','د');
+      let mkcls='mk';
+      if(idx===f.mid) { mk=(mk?mk+'·':'')+'M'; mkcls='mk m'; }
+      else if(idx===f.low) mkcls='mk l';
+      else if(idx===f.high) mkcls='mk h';
+      h+='<div class="'+cls+'"><span class="'+mkcls+'">'+mk+'</span><div class="box">'+arr[idx]+'</div><span class="idx">'+idx+'</span></div>';
+    }
+    document.getElementById('bs-arr').innerHTML=h;
+    document.getElementById('bs-stat').innerHTML=
+      '<span>'+T('comparisons','المقارنات')+': <b>'+f.comp+'</b></span>'+
+      '<span>'+T('range','المدى')+': <b>['+f.low+', '+f.high+']</b></span>'+
+      '<span>'+T('target','الهدف')+': <b>'+target+'</b></span>';
+    document.getElementById('bs-cap').textContent=T(f.capEn,f.capAr);
+  }
+  function refresh(){ if(frames.length) render(frames[Math.min(fi,frames.length-1)]); }
+  function reset(){ clearInterval(timer);timer=null; build(); fi=0; render(frames[0]);
+    document.getElementById('bs-play').disabled=false; document.getElementById('bs-step').disabled=false; }
+  function step(){
+    if(fi<frames.length-1){ fi++; render(frames[fi]); }
+    if(fi>=frames.length-1){ clearInterval(timer);timer=null;
+      document.getElementById('bs-play').disabled=false; document.getElementById('bs-step').disabled=true; }
+  }
+  function play(){ reset(); document.getElementById('bs-play').disabled=true;
+    timer=setInterval(step, 1100); }
+  build(); reset();
+  return {play:play,step:step,reset:reset,refresh:refresh};
+})();
+
+/* restore saved language */
+try{var _l=localStorage.getItem('csai-lang'); if(_l)setLang(_l);}catch(e){}
+</script>
+</body>
+</html>
