@@ -164,6 +164,25 @@
 
   footer{max-width:820px;margin:34px auto 0;padding:0 22px;color:var(--muted);font-size:.85rem;text-align:center}
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "Lecture 1 · Information & Data Representation",
+  "isPartOf": { "@type": "CreativeWork", "name": "Introduction to Computer Science and Artificial Intelligence" },
+  "inLanguage": "en",
+  "copyrightYear": 2026,
+  "copyrightHolder": { "@type": "Person", "name": "Dr. Ali Mahmoud Mansour", "url": "https://sfedu.ru/s7/person/ru/mansur" },
+  "creator":         { "@type": "Person", "name": "Dr. Ali Mahmoud Mansour", "url": "https://sfedu.ru/s7/person/ru/mansur" },
+  "author":          { "@type": "Person", "name": "Dr. Ali Mahmoud Mansour" },
+  "contributor":     { "@type": "Person", "name": "Claude (Anthropic)" },
+  "publisher":       { "@type": "Person", "name": "Dr. Ali Mahmoud Mansour" },
+  "copyrightNotice": "© 2026 Dr. Ali Mahmoud Mansour. All rights reserved.",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "creditText": "Content and concept by Dr. Ali Mahmoud Mansour; co-created with Claude (Anthropic).",
+  "identifier": "OWNER=ALI-MAHMOUD-MANSOUR;CO-CREATOR=CLAUDE;YEAR=2026"
+}
+</script>
 </head>
 <body>
 
@@ -358,6 +377,26 @@
     </div>
     <div class="note green"><b>Result:</b> <span class="mono">1&nbsp;10000001&nbsp;10101000000000000000000</span> = hex <span class="mono">0xC0D40000</span>. Check: 1.10101₂ = 1.65625, × 2² = 6.625, sign negative → <b>−6.625</b> exactly ✓.</div>
 
+    <div class="prose"><p><b>Watch it happen.</b> Press <b>Play</b> (or <b>Step</b>) and the eight steps of the −6.625 conversion appear one at a time, then the three fields drop into the 32-bit word:</p></div>
+    <div class="demo" id="d-f32">
+      <div class="dhead"><span class="dot"></span><h4>Convert −6.625 → 32-bit IEEE 754</h4><span class="tag">animated</span></div>
+      <div class="stage">
+        <table class="divt"><tbody id="f32-body"></tbody></table>
+        <div class="word" id="f32-word" style="opacity:0;transition:opacity .5s"></div>
+        <div class="resultline" id="f32-res"></div>
+      </div>
+      <div class="caption" id="f32-cap"></div>
+      <div class="controls">
+        <button class="ctrl primary" id="f32-play" onclick="F32.play()">▶ Play</button>
+        <button class="ctrl" id="f32-step" onclick="F32.step()">⏭ Step</button>
+        <button class="ctrl" onclick="F32.reset()">↻ Reset</button>
+      </div>
+    </div>
+    <div class="watch">
+      <span class="wh">💡 What to notice</span>
+      Every step is <b>exact</b> — no rounding anywhere — because 0.625 terminates as <b>0.101₂</b>. Follow the <b>sign bit</b>: it is decided first (1 = negative) but placed <i>last</i>, at the very left of the word. And watch the three coloured fields snap together in order — <b style="color:var(--accent)">sign</b> · <b style="color:var(--blue)">exponent 129</b> · <b style="color:var(--green)">mantissa 10101000…</b> — to give exactly <span class="mono">0xC0D40000</span>.
+    </div>
+
     <div class="watch">
       <span class="wh">💡 What to notice</span>
       The two conversions run the <b>identical eight steps</b>; only the numbers differ. The real split is in <b>Step 3</b>: 0.625 <i>terminates</i> so −6.625 is stored perfectly, while 0.325 <i>repeats</i> and must be cut to 23 bits — which is exactly why <span class="mono">0.1 + 0.2 ≠ 0.3</span> in floating-point. And notice the bias: a small number (0.325) gives an exponent <i>below</i> 127, a larger one (6.625) gives an exponent <i>above</i> it.
@@ -419,7 +458,8 @@
 </div>
 
 <footer>
-  Fundamentals of Computer Science &amp; AI · Lecture 1 · © 2026 Dr. Ali Mahmoud Mansour
+  Introduction to Computer Science and Artificial Intelligence · Lecture 1<br>
+  © 2026 Dr. Ali Mahmoud Mansour · All rights reserved. Content &amp; concept: Dr. Ali Mahmoud Mansour · Co-created with Claude (Anthropic).<span aria-hidden="true">⁠​‌​​‌‌‌‌​‌​‌​‌‌‌​‌​​‌‌‌​​‌​​​‌​‌​‌​‌​​‌​​​‌‌‌‌​‌​‌​​​​​‌​‌​​‌‌​​​‌​​‌​​‌​​‌​‌‌​‌​‌​​‌‌​‌​‌​​​​​‌​‌​​‌​​​​‌​​‌‌​‌​‌​​‌‌‌‌​‌​‌​‌​‌​‌​​​‌​​​​‌​‌‌​‌​‌​​‌‌​‌​‌​​​​​‌​‌​​‌‌‌​​‌​‌​​‌‌​‌​​‌‌‌‌​‌​‌​‌​‌​‌​‌​​‌​​​‌‌‌​‌‌​‌​​​​‌‌​‌​​‌‌‌‌​​‌​‌‌​‌​‌​​​​‌‌​‌​‌​​‌​​‌​​​‌​‌​‌​​​​​‌​‌​‌​‌​​​‌​​‌‌‌‌​‌​‌​​‌​​​‌‌‌‌​‌​‌​​​​‌‌​‌​​‌‌​​​‌​​​​​‌​‌​‌​‌​‌​‌​​​‌​​​‌​​​‌​‌​​‌‌‌​‌‌​‌​‌‌​​‌​‌​​​‌​‌​‌​​​​​‌​‌​‌​​‌​​​‌‌‌‌​‌​​‌‌​​‌​​​‌‌​​​​​​‌‌​​‌​​​‌‌​‌‌​⁠</span>
 </footer>
 
 <script>
@@ -562,6 +602,63 @@ const U8=(()=>{
     i++;
   }
   function play(){reset();document.getElementById('u8-play').disabled=true;timer=setInterval(step,420);}
+  reset();
+  return {play,step,reset};
+})();
+
+/* ---------- §4 IEEE 754 · convert -6.625 ---------- */
+const F32=(()=>{
+  // [label, value-html] — the eight steps of the -6.625 conversion
+  const steps=[
+    ['Sign',      '−6.625 &lt; 0  →  <span class="rem">S = 1</span> (work with 6.625)'],
+    ['Integer',   '6 = <span class="rem">110</span>₂'],
+    ['Fraction',  '0.625 = <span class="rem">0.101</span>₂  (0.625→1 · 0.25→0 · 0.5→1, terminates)'],
+    ['Combine',   '6.625 = <span class="rem">110.101</span>₂'],
+    ['Normalise', '110.101 = <span class="rem">1.10101 × 2²</span>  (n = 2)'],
+    ['Exponent',  'E = n + 127 = 2 + 127 = 129 = <span class="rem">10000001</span>₂'],
+    ['Mantissa',  'bits after "1." = 10101, padded to 23 = <span class="rem">10101000000000000000000</span>'],
+    ['Assemble',  'sign · exponent · mantissa → the 32-bit word']
+  ];
+  const S='1', E='10000001', M='10101000000000000000000';
+  let i=0, timer=null;
+  const body=document.getElementById('f32-body');
+  const wordEl=document.getElementById('f32-word');
+  const res=document.getElementById('f32-res');
+  const cap=document.getElementById('f32-cap');
+  function fieldHtml(cls,bits,lbl){
+    let fb=''; for(const b of bits) fb+=`<span class="fb">${b}</span>`;
+    return `<div class="field ${cls}"><div class="fbits">${fb}</div><span class="flbl">${lbl}</span></div>`;
+  }
+  function build(){
+    body.innerHTML='';
+    steps.forEach((s,k)=>{
+      const tr=document.createElement('tr'); tr.id='f32r'+k;
+      tr.innerHTML=`<td style="text-align:right;color:var(--muted)">${k+1}. ${s[0]}</td><td style="text-align:left">${s[1]}</td>`;
+      body.appendChild(tr);
+    });
+    wordEl.innerHTML=''; wordEl.style.opacity='0';
+    res.className='resultline'; res.textContent='';
+  }
+  function reset(){clearInterval(timer);timer=null;i=0;build();
+    cap.textContent='Press Play or Step.';
+    document.getElementById('f32-play').disabled=false;}
+  function step(){
+    if(i<steps.length){
+      document.getElementById('f32r'+i).classList.add('show');
+      cap.textContent=`Step ${i+1}/8 · ${steps[i][0]}`;
+      if(i===steps.length-1){
+        wordEl.innerHTML=fieldHtml('s',S,'sign · −')+fieldHtml('e',E,'exponent · 129')+fieldHtml('m',M,'mantissa (23)');
+        wordEl.style.opacity='1';
+        res.innerHTML='= <span class="b">1 10000001 10101000000000000000000</span>  =  hex <span class="b">0xC0D40000</span>  =  −6.625';
+        res.classList.add('show');
+      }
+      i++;
+    } else {
+      cap.textContent='Done — −6.625 = 0xC0D40000 (exact).';
+      clearInterval(timer);timer=null;document.getElementById('f32-play').disabled=false;
+    }
+  }
+  function play(){reset();document.getElementById('f32-play').disabled=true;timer=setInterval(step,750);}
   reset();
   return {play,step,reset};
 })();
