@@ -1,0 +1,560 @@
+<!doctype html>
+<!--
+  Origin: cs-ai-course (activity 260831-001), execution serial 019, chunk C02.
+  Deliverable: interactive-book Lecture 5 chapter (B08 book rollout, L5).
+  Version: 1.0 · 2026-09-09.
+  Source content: Output/lecture-05-en.md + Output/lecture-05-ar.md
+    (Information Security: CIA triad · threats malware/social-engineering/DoS/web-attacks ·
+     cryptography symmetric/asymmetric/hash/digital-signature · authentication & 2FA ·
+     defences firewall/VPN/HTTPS-TLS/backups).
+  Structural template: lecture-04.html / lecture-03.html / lecture-02.html / lecture-01.html.
+  Self-contained, no external dependencies.
+-->
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 5 · Information Security — Interactive Book</title>
+<style>
+  :root{
+    --bg:#faf7f2; --panel:#ffffff; --ink:#1d2430; --muted:#5c6675;
+    --line:#e7e0d6; --accent:#c8622a; --accent-soft:#f6e4d6;
+    --blue:#2f6db3; --blue-soft:#e3eef9; --green:#2f8f5b; --green-soft:#e2f2e9;
+    --amber:#b8890f; --amber-soft:#f7edcf; --red:#c0392b; --red-soft:#f7dfdc;
+    --shadow:0 10px 30px rgba(40,30,20,.08), 0 2px 6px rgba(40,30,20,.05);
+    --radius:16px; --serif:"Iowan Old Style",Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Mono","Fira Code",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#15181d; --panel:#1e232b; --ink:#eef1f5; --muted:#9aa4b2;
+      --line:#2c333d; --accent:#e08a52; --accent-soft:#38271c;
+      --blue:#69a6e6; --blue-soft:#1c2a3a; --green:#6fce97; --green-soft:#172a20;
+      --amber:#d8ab3a; --amber-soft:#2c2411; --red:#e07568; --red-soft:#33201d;
+      --shadow:0 10px 30px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.3);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;margin:0}
+  .wrap{max-width:820px;margin:0 auto;padding:0 22px 90px}
+
+  header.mast{
+    background:linear-gradient(135deg,var(--accent) 0%,#a84c1f 100%);
+    color:#fff;padding:46px 22px 40px;text-align:center;position:relative;overflow:hidden}
+  header.mast::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 20% 120%,rgba(255,255,255,.18),transparent 45%);pointer-events:none}
+  .mast .kicker{text-transform:uppercase;letter-spacing:.22em;font-size:.68rem;opacity:.8;font-weight:600}
+  .mast h1{font-family:var(--serif);font-size:clamp(1.5rem,4.5vw,2.4rem);margin:.1em 0 .15em;font-weight:600;letter-spacing:-.01em}
+  .mast .sub{opacity:.92;font-size:1rem;max-width:640px;margin:.2em auto 0}
+
+  .langbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:9px 0}
+  .langbar .inner{max-width:820px;margin:0 auto;padding:0 22px;display:flex;gap:10px;align-items:center;justify-content:space-between}
+  .langbar .home{font-size:.82rem;color:var(--muted);font-weight:600;text-decoration:none}
+  .langbar .home:hover{color:var(--accent)}
+  .seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.82rem;font-weight:600;
+    padding:5px 15px;border-radius:999px;cursor:pointer;transition:.2s}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+
+  section.chapter{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:34px clamp(20px,4vw,44px);margin-top:26px}
+  .chapter > h2{font-family:var(--serif);font-size:1.5rem;margin:.1em 0 .1em;font-weight:600}
+  .chapter > h3{font-family:var(--serif);font-size:1.18rem;margin:1.2em 0 .1em;font-weight:600}
+  .chapter > .lead{color:var(--muted);margin:.2em 0 1.4em;font-size:1.02rem}
+  p{margin:.9em 0}
+  .prose{font-family:var(--serif);font-size:1.08rem}
+  [dir="rtl"] .prose,[dir="rtl"] .chapter>.lead,[dir="rtl"] .chapter>h2,[dir="rtl"] .chapter>h3{font-family:"Geeza Pro","Al Bayan",var(--sans)}
+  .mono{font-family:var(--mono)}
+
+  .demo{border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden;background:var(--bg)}
+  .demo .dhead{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .demo .dhead .dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+  .demo .dhead h4{margin:0;font-size:.92rem;font-weight:700;letter-spacing:.01em}
+  .demo .dhead .tag{margin-inline-start:auto;font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;
+    color:var(--muted);border:1px solid var(--line);padding:3px 8px;border-radius:999px}
+  .demo .stage{padding:22px 16px;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .demo .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:0 16px 16px}
+  button.ctrl{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-weight:600;
+    font-size:.84rem;padding:7px 14px;border-radius:10px;cursor:pointer;transition:.15s;display:inline-flex;gap:6px;align-items:center}
+  button.ctrl:hover{border-color:var(--accent);color:var(--accent)}
+  button.ctrl.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  button.ctrl.primary:hover{filter:brightness(1.05);color:#fff}
+  button.ctrl[aria-pressed="true"]{background:var(--blue);color:#fff;border-color:var(--blue)}
+  button.ctrl:disabled{opacity:.4;cursor:default;border-color:var(--line);color:var(--muted)}
+  .modebar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:12px 16px 0}
+  .caption{font-size:.9rem;color:var(--muted);min-height:1.4em;text-align:center;transition:.2s;padding:0 12px}
+
+  /* crypto pipeline (symmetric vs asymmetric) */
+  .pipe{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:stretch;width:100%}
+  .pstage{display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;
+    border:1.5px solid var(--line);border-radius:11px;background:var(--panel);padding:10px 12px;min-width:104px;transition:.25s}
+  .pstage .picon{font-size:1.1rem}
+  .pstage .ptt{font-size:.74rem;font-weight:700;text-align:center;line-height:1.15}
+  .pstage .pfile{font-family:var(--mono);font-size:.66rem;color:var(--muted)}
+  .pstage .pkey{font-family:var(--mono);font-size:.62rem;color:var(--blue);font-weight:700;text-align:center;line-height:1.15;max-width:130px}
+  .pstage.tool{background:var(--amber-soft);border-color:var(--amber)}
+  .pstage.done{border-color:var(--green);background:var(--green-soft)}
+  .pstage.active{border-color:var(--accent);background:var(--accent-soft);
+    box-shadow:0 0 0 4px var(--accent-soft);transform:translateY(-3px)}
+  .pstage.active .ptt{color:var(--accent)}
+  .parr{align-self:center;color:var(--muted);font-family:var(--mono);font-weight:700;font-size:.95rem}
+  [dir="rtl"] .parr{transform:scaleX(-1)}
+  .artifact{font-family:var(--mono);font-size:.86rem;font-weight:700;color:var(--accent);
+    border:1px solid var(--accent);background:var(--accent-soft);border-radius:8px;padding:5px 12px;margin-top:4px;transition:.2s}
+
+  /* digital-signature sign/verify walk */
+  .sigflow{display:flex;flex-direction:column;gap:8px;width:100%;max-width:540px}
+  .sigstep{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:11px;
+    background:var(--panel);padding:9px 14px;transition:.25s;opacity:.42}
+  .sigstep .si{font-size:1.15rem;width:24px;text-align:center}
+  .sigstep .st{font-size:.82rem;font-weight:600;flex:1;line-height:1.25}
+  .sigstep .sv{font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:700;white-space:nowrap}
+  .sigstep.on{opacity:1}
+  .sigstep.active{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 4px var(--accent-soft)}
+  .siglane{font-size:.64rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin:6px 0 0}
+  .verdict{margin-top:8px;border-radius:11px;padding:11px 14px;font-weight:700;font-size:.92rem;text-align:center;width:100%;max-width:540px;transition:.2s}
+  .verdict.ok{background:var(--green-soft);color:var(--green);border:1.5px solid var(--green)}
+  .verdict.bad{background:var(--red-soft);color:var(--red);border:1.5px solid var(--red)}
+
+  .note{background:var(--blue-soft);border-inline-start:4px solid var(--blue);border-radius:10px;
+    padding:12px 16px;margin:20px 0;font-size:.94rem}
+  .note b{color:var(--blue)}
+  .note.green{background:var(--green-soft);border-color:var(--green)}
+  .note.green b{color:var(--green)}
+  .note.amber{background:var(--amber-soft);border-color:var(--amber)}
+  .note.amber b{color:var(--amber)}
+  .note.red{background:var(--red-soft);border-color:var(--red)}
+  .note.red b{color:var(--red)}
+  .watch{background:var(--amber-soft);border-inline-start:4px solid var(--amber);border-radius:10px;
+    padding:13px 17px;margin:6px 0 2px;font-size:.95rem}
+  .watch .wh{font-weight:700;color:var(--amber);display:block;margin-bottom:3px}
+
+  pre.flow{font-family:var(--mono);font-size:.78rem;line-height:1.35;background:var(--bg);border:1px solid var(--line);
+    border-radius:10px;padding:14px 16px;overflow-x:auto;margin:16px 0}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+  @media(max-width:620px){.twocol{grid-template-columns:1fr}}
+  .threecol{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:20px 0}
+  @media(max-width:620px){.threecol{grid-template-columns:1fr}}
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .card h5{margin:.1em 0 .5em;font-size:.98rem}
+  .card p{margin:.3em 0;font-size:.9rem;color:var(--muted)}
+  .card .k{font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:.9rem}
+  table.tbl th,table.tbl td{border:1px solid var(--line);padding:7px 10px;text-align:start}
+  table.tbl th{background:var(--panel);font-weight:700}
+  table.tbl td.mono{font-family:var(--mono);font-size:.82rem}
+
+  .chapnav{display:flex;justify-content:space-between;gap:12px;margin-top:28px;flex-wrap:wrap}
+  .chapnav a{flex:1;min-width:180px;text-decoration:none;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;padding:14px 18px;color:inherit;transition:.15s}
+  .chapnav a:hover{border-color:var(--accent)}
+  .chapnav .dir{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .chapnav .lb{font-weight:600;color:var(--accent);margin-top:2px}
+  .chapnav a.disabled{opacity:.5;pointer-events:none}
+
+  footer{max-width:820px;margin:34px auto 0;padding:0 22px;color:var(--muted);font-size:.85rem;text-align:center}
+  .en{display:inline}.ar{display:none}
+  .block .en{display:block}.block .ar{display:none}
+  [data-lang="ar"] .en{display:none}[data-lang="ar"] .ar{display:inline}
+  [data-lang="ar"] .block .ar{display:block}
+</style>
+</head>
+<body data-lang="en">
+
+<header class="mast">
+  <div class="kicker">Fundamentals of CS &amp; AI · <span class="en">Module 3 · Lecture 5</span><span class="ar">الوحدة 3 · المحاضرة 5</span></div>
+  <h1><span class="en">Information Security</span><span class="ar">أمن المعلومات</span></h1>
+  <div class="sub block">
+    <span class="en">What we protect and what attacks it — the CIA triad, malware and social engineering, and the cryptography that defends it: symmetric and public-key encryption, hashing and digital signatures, watched step by step.</span>
+    <span class="ar">ما الذي نحميه وما الذي يهاجمه — ثالوث CIA، والبرمجيات الخبيثة والهندسة الاجتماعية، والتشفير الذي يدافع عنه: التشفير المتماثل والمفتاح العام، والتجزئة والتواقيع الرقمية، نُشاهدها خطوةً بخطوة.</span>
+  </div>
+</header>
+
+<div class="langbar">
+  <div class="inner">
+    <a class="home" href="index.html">← <span class="en">Contents</span><span class="ar">الفهرس</span></a>
+    <div class="seg" role="group" aria-label="language">
+      <button id="btn-en" aria-pressed="true" onclick="setLang('en')">EN</button>
+      <button id="btn-ar" aria-pressed="false" onclick="setLang('ar')">ع</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- §1 CIA triad -->
+  <section class="chapter">
+    <h2><span class="en">§1 · What security protects — the CIA triad</span><span class="ar">§1 · ماذا يحمي الأمن — ثالوث CIA</span></h2>
+    <p class="lead"><span class="en">Every security measure serves one of three goals: keeping information secret, correct, or available.</span><span class="ar">كل إجراء أمني يخدم واحدًا من ثلاثة أهداف: إبقاء المعلومة سرّية، أو صحيحة، أو متاحة.</span></p>
+    <div class="prose block">
+      <span class="en"><p><b>Information security</b> protects information and systems from unauthorised access, disclosure, alteration or disruption. Its goals are captured by three properties, together called the <b>CIA triad</b>. They matter <i>together</i>: encrypting data (confidentiality) is useless if an attacker can silently corrupt it (integrity) or knock the whole service offline (availability).</p></span>
+      <span class="ar"><p>ي<b>حمي أمن المعلومات</b> المعلوماتِ وأنظمتها من الوصول أو الإفشاء أو التعديل أو التعطيل غير المصرَّح به. وتُلخَّص أهدافه في ثلاث خصائص تُسمّى معًا <b>ثالوث CIA</b>. وهي مترابطة <i>معًا</i>: تشفير البيانات (السرية) بلا فائدة إذا استطاع المهاجم تحريفها بصمت (السلامة) أو جعل الخدمة كلها غير متاحة (التوافر).</p></span>
+    </div>
+    <table class="tbl">
+      <thead><tr><th><span class="en">Property</span><span class="ar">الخاصية</span></th><th><span class="en">Meaning</span><span class="ar">المعنى</span></th><th><span class="en">Fails when…</span><span class="ar">تفشل عندما…</span></th><th><span class="en">Safeguard</span><span class="ar">الحماية</span></th></tr></thead>
+      <tbody>
+        <tr><td><b>Confidentiality</b></td><td><span class="en">Only authorised parties can read it</span><span class="ar">لا يقرؤها إلا المصرَّح لهم</span></td><td><span class="en">A password database is leaked</span><span class="ar">تُسرَّب قاعدة كلمات المرور</span></td><td><span class="en">Encryption, access control</span><span class="ar">التشفير، التحكم في الوصول</span></td></tr>
+        <tr><td><b>Integrity</b></td><td><span class="en">Accurate, not altered</span><span class="ar">دقيقة ولم تُعدَّل</span></td><td><span class="en">An attacker changes a transfer amount</span><span class="ar">يغيّر مهاجم مبلغ حوالة</span></td><td><span class="en">Hashing, digital signatures</span><span class="ar">التجزئة، التواقيع الرقمية</span></td></tr>
+        <tr><td><b>Availability</b></td><td><span class="en">Accessible when needed</span><span class="ar">متاحة عند الحاجة</span></td><td><span class="en">A server is knocked offline</span><span class="ar">يُعطَّل خادم بهجوم</span></td><td><span class="en">Backups, redundancy, DDoS protection</span><span class="ar">النسخ الاحتياطي، التكرار، الحماية من DDoS</span></td></tr>
+      </tbody>
+    </table>
+    <div class="note block"><b>➕ <span class="en">Three more ideas for accountability</span><span class="ar">ثلاث أفكار إضافية للمساءلة</span>:</b>
+      <span class="en"> <b>Authentication</b> — proving <i>who</i> you are; <b>Authorisation</b> — deciding <i>what</i> you may do once authenticated; <b>Non-repudiation</b> — you cannot later deny an action (provided by digital signatures, §3.4).</span>
+      <span class="ar"> <b>المصادقة</b> — إثبات <i>مَن</i> أنت؛ <b>التفويض</b> — تحديد <i>ما</i> يُسمح لك به بعد المصادقة؛ <b>عدم الإنكار</b> — لا تستطيع إنكار عملٍ لاحقًا (توفّره التواقيع الرقمية، §3.4).</span></div>
+  </section>
+
+  <!-- §2 threats & attacks -->
+  <section class="chapter">
+    <h2><span class="en">§2 · Threats and attacks</span><span class="ar">§2 · التهديدات والهجمات</span></h2>
+    <p class="lead"><span class="en">A vulnerability is a weakness; a threat is potential harm; an attack is an attempt to exploit the weakness.</span><span class="ar">الثغرة ضعف؛ والتهديد ضررٌ محتمل؛ والهجوم محاولة لاستغلال الضعف.</span></p>
+    <h3><span class="en">2.1 Malware</span><span class="ar">2.1 البرمجيات الخبيثة</span></h3>
+    <div class="prose block">
+      <span class="en"><p><b>Malware</b> is any program written to damage or gain unauthorised control of a system.</p></span>
+      <span class="ar"><p><b>البرمجية الخبيثة</b> أي برنامج كُتِب لإلحاق الضرر بالنظام أو السيطرة عليه دون إذن.</p></span>
+    </div>
+    <table class="tbl">
+      <thead><tr><th><span class="en">Type</span><span class="ar">النوع</span></th><th><span class="en">How it behaves</span><span class="ar">كيف يتصرّف</span></th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Virus</td><td><span class="en">Attaches to a file; spreads when that file is run</span><span class="ar">يلتصق بملف وينتشر عند تشغيله</span></td></tr>
+        <tr><td class="mono">Worm</td><td><span class="en">Self-replicating; spreads across a network <b>without</b> user action</span><span class="ar">ذاتي التكاثر؛ ينتشر عبر الشبكة <b>دون</b> تدخّل المستخدم</span></td></tr>
+        <tr><td class="mono">Trojan</td><td><span class="en">Disguised as useful software; hides a malicious payload</span><span class="ar">يتنكّر ببرنامج مفيد ويخفي حمولة خبيثة</span></td></tr>
+        <tr><td class="mono">Ransomware</td><td><span class="en">Encrypts the victim's files and demands payment</span><span class="ar">يشفّر ملفات الضحية ويطلب فدية</span></td></tr>
+        <tr><td class="mono">Spyware</td><td><span class="en">Secretly collects keystrokes, browsing, credentials</span><span class="ar">يجمع سرًّا ضغطات المفاتيح والتصفّح وبيانات الدخول</span></td></tr>
+        <tr><td class="mono">Rootkit</td><td><span class="en">Hides deep in the system for persistent, stealthy control</span><span class="ar">يختبئ عميقًا لسيطرة خفيّة مستمرة</span></td></tr>
+      </tbody>
+    </table>
+    <h3><span class="en">2.2 Social engineering &amp; denial of service</span><span class="ar">2.2 الهندسة الاجتماعية وحجب الخدمة</span></h3>
+    <div class="prose block">
+      <span class="en"><p><b>Social engineering</b> manipulates <i>people</i> rather than machines: <b>phishing</b> (fraudulent messages imitating a trusted sender), <b>pretexting</b> (inventing a believable scenario — "I'm from IT"), and <b>baiting</b> (leaving an infected USB stick). A <b>Denial-of-Service (DoS)</b> attack floods a system so real users cannot reach it — an attack on <b>availability</b>; a <b>DDoS</b> launches the flood from a <b>botnet</b> of thousands of machines at once.</p></span>
+      <span class="ar"><p>ت<b>تلاعب الهندسة الاجتماعية</b> بـ<i>الأشخاص</i> لا بالآلات: <b>التصيّد</b> (رسائل تنتحل مرسِلًا موثوقًا)، و<b>انتحال الذريعة</b> (اختلاق سيناريو مقنع — «أنا من الدعم الفني»)، و<b>الإغراء</b> (ترك ذاكرة USB مصابة). وهجوم <b>حجب الخدمة (DoS)</b> يُغرق النظام حتى يعجز المستخدمون الحقيقيون عن الوصول — وهو هجوم على <b>التوافر</b>؛ أما <b>DDoS</b> فيُطلق الطوفان من <b>botnet</b> من آلاف الأجهزة دفعةً واحدة.</p></span>
+    </div>
+    <div class="note amber block"><b>🧑 <span class="en">The human is the weakest link</span><span class="ar">الإنسان هو الحلقة الأضعف</span>:</b>
+      <span class="en"> The strongest encryption is bypassed if a user simply tells an attacker their password. Security-awareness training is a genuine defence, not an afterthought.</span>
+      <span class="ar"> يُتجاوَز أقوى تشفير إذا أخبر المستخدم المهاجمَ بكلمة مروره. فالتوعية الأمنية دفاعٌ حقيقي لا رفاهية.</span></div>
+    <h3><span class="en">2.3 Common web attacks</span><span class="ar">2.3 هجمات الويب الشائعة</span></h3>
+    <table class="tbl">
+      <thead><tr><th><span class="en">Attack</span><span class="ar">الهجوم</span></th><th><span class="en">What it does</span><span class="ar">ماذا يفعل</span></th><th><span class="en">Basic defence</span><span class="ar">الدفاع الأساسي</span></th></tr></thead>
+      <tbody>
+        <tr><td class="mono">SQL injection</td><td><span class="en">Injects malicious SQL into an input to read/alter the DB</span><span class="ar">يحقن SQL خبيثًا في الإدخال لقراءة/تعديل القاعدة</span></td><td><span class="en">Parameterised queries</span><span class="ar">Parameterised queries</span></td></tr>
+        <tr><td class="mono">XSS</td><td><span class="en">Injects JavaScript that runs in another user's browser</span><span class="ar">يحقن JavaScript يعمل في متصفّح مستخدم آخر</span></td><td><span class="en">Escape / sanitise output</span><span class="ar">تهريب/تنقية المخرجات</span></td></tr>
+        <tr><td class="mono">CSRF</td><td><span class="en">Forges a request from a logged-in user's browser</span><span class="ar">يزوّر طلبًا من متصفّح مستخدم مسجَّل</span></td><td><span class="en">Anti-CSRF tokens</span><span class="ar">رموز anti-CSRF</span></td></tr>
+      </tbody>
+    </table>
+    <div class="note block"><b>💉 <span class="en">How SQL injection works</span><span class="ar">كيف يعمل SQL injection</span>:</b>
+      <span class="en"> A login query built by string concatenation — <span class="mono">"... WHERE name = '" + input + "'"</span> — with the input <span class="mono">' OR '1'='1</span> becomes <span class="mono">... WHERE name = '' OR '1'='1'</span>, always true: the attacker logs in without a password. The fix is never to paste user text into a query — use <b>parameterised queries</b> that keep data and code separate.</span>
+      <span class="ar"> استعلام دخول مبنيّ بدمج النصوص — <span class="mono">"... WHERE name = '" + input + "'"</span> — مع الإدخال <span class="mono">' OR '1'='1</span> يصبح <span class="mono">... WHERE name = '' OR '1'='1'</span>، وهو صحيح دائمًا: فيدخل المهاجم دون كلمة مرور. والحلّ ألّا تُلصَق نصوص المستخدم في الاستعلام — بل تُستخدم <b>parameterised queries</b> التي تفصل البيانات عن الشيفرة.</span></div>
+  </section>
+
+  <!-- §3 cryptography + ANIMATION 1 + ANIMATION 2 -->
+  <section class="chapter">
+    <h2><span class="en">§3 · Cryptography — protecting confidentiality &amp; integrity</span><span class="ar">§3 · التشفير — حماية السرية والسلامة</span></h2>
+    <p class="lead"><span class="en">Encryption turns readable plaintext into unreadable ciphertext. The security lies in the key, not in hiding the algorithm.</span><span class="ar">يحوّل التشفير النصّ المقروء إلى نصّ غير مقروء. والأمان في المفتاح لا في إخفاء الخوارزمية.</span></p>
+    <div class="prose block">
+      <span class="en"><p>There are two families. In <b>symmetric</b> encryption the <b>same secret key</b> encrypts and decrypts (<b>AES</b>) — very fast, but both parties must already share the key: the <b>key-distribution problem</b>. In <b>asymmetric (public-key)</b> encryption each party has a <b>key pair</b> — a <b>public key</b> shared with everyone and a <b>private key</b> kept secret (<b>RSA</b>, <b>ECC</b>); what one key locks, only the <i>other</i> unlocks. Switch the mode below and step the same message through both.</p></span>
+      <span class="ar"><p>هناك عائلتان. في التشفير <b>المتماثل</b> يُستخدم <b>المفتاح السرّي نفسه</b> للتشفير وفكّه (<b>AES</b>) — سريعٌ جدًّا، لكن يجب أن يتشارك الطرفان المفتاح مسبقًا: <b>مشكلة توزيع المفتاح</b>. وفي التشفير <b>غير المتماثل (المفتاح العام)</b> لكل طرف <b>زوج مفاتيح</b> — <b>مفتاح عام</b> يُشارَك مع الجميع و<b>مفتاح خاص</b> يبقى سرًّا (<b>RSA</b>، <b>ECC</b>)؛ وما يقفله أحدهما لا يفتحه إلا <i>الآخر</i>. بدّل النمط أدناه وسِر بالرسالة نفسها عبر الاثنين.</p></span>
+    </div>
+
+    <!-- ANIMATION 1 -->
+    <div class="demo" id="d-crypto">
+      <div class="dhead"><span class="dot"></span><h4><span class="en">Encrypt → decrypt: symmetric vs asymmetric</span><span class="ar">تشفير ← فكّ: متماثل مقابل غير متماثل</span></h4><span class="tag">animated</span></div>
+      <div class="modebar">
+        <button class="ctrl" id="cr-sym" aria-pressed="true" onclick="Crypto.setMode('sym')"><span class="en">Symmetric (AES)</span><span class="ar">متماثل (AES)</span></button>
+        <button class="ctrl" id="cr-asym" aria-pressed="false" onclick="Crypto.setMode('asym')"><span class="en">Asymmetric (RSA)</span><span class="ar">غير متماثل (RSA)</span></button>
+      </div>
+      <div class="stage">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%">
+          <div class="pipe" id="cr-stages"></div>
+          <div class="artifact" id="cr-art"></div>
+        </div>
+      </div>
+      <div class="caption" id="cr-cap"></div>
+      <div class="controls">
+        <button class="ctrl primary" id="cr-play" onclick="Crypto.play()">▶ <span class="en">Play</span><span class="ar">تشغيل</span></button>
+        <button class="ctrl" id="cr-step" onclick="Crypto.step()">⏭ <span class="en">Step</span><span class="ar">خطوة</span></button>
+        <button class="ctrl" onclick="Crypto.reset()">↻ <span class="en">Reset</span><span class="ar">إعادة</span></button>
+      </div>
+    </div>
+    <div class="watch block">
+      <span class="wh">💡 <span class="en">What to notice</span><span class="ar">ما الذي نلاحظه؟</span></span>
+      <span class="en">In <b>symmetric</b> mode the <i>same</i> key K appears at both ends — fast, but that key somehow had to reach the other side safely first. In <b>asymmetric</b> mode the two keys <i>differ</i>: anyone may encrypt with Alice's <b>public</b> key, yet only her <b>private</b> key decrypts — so <b>no shared secret ever travels</b>. That is why the real web uses <b>both</b> (<i>hybrid encryption</i>): slow public-key crypto runs once just to agree a fresh symmetric session key, then the fast symmetric key encrypts all the traffic — exactly what HTTPS does (§5.3).</span>
+      <span class="ar">في النمط <b>المتماثل</b> يظهر المفتاح K <i>نفسه</i> في الطرفين — سريع، لكن كان على ذلك المفتاح أن يصل إلى الطرف الآخر بأمانٍ أوّلًا. وفي النمط <b>غير المتماثل</b> يختلف المفتاحان: يستطيع أيٌّ كان التشفير بمفتاح Alice <b>العام</b>، لكن لا يفكّه إلا مفتاحها <b>الخاص</b> — فـ<b>لا ينتقل أيّ سرٍّ مشترك</b>. ولهذا يستخدم الويب الحقيقي <b>الاثنين</b> (<i>التشفير الهجين</i>): يعمل التشفير غير المتماثل البطيء مرّةً فقط للاتفاق على مفتاح جلسة متماثل جديد، ثم يشفّر المفتاح المتماثل السريع كلّ الحركة — وهذا بالضبط ما يفعله HTTPS (§5.3).</span>
+    </div>
+
+    <h3><span class="en">3.3 Hash functions</span><span class="ar">3.3 دوال التجزئة</span></h3>
+    <div class="prose block">
+      <span class="en"><p>A <b>cryptographic hash function</b> takes any input and produces a fixed-size <b>digest</b> (a "fingerprint"). It is <b>deterministic</b> (same input → same digest), <b>one-way</b> (you cannot reverse it), <b>collision-resistant</b>, and has the <b>avalanche effect</b> (one changed bit changes the whole digest). <b>SHA-256</b> is secure; MD5 and SHA-1 are <b>broken</b>. Hashes verify that a file was not altered, and let a system store the <b>hash</b> of a password (with a random <b>salt</b>) rather than the password itself.</p></span>
+      <span class="ar"><p>تأخذ <b>دالة التجزئة التشفيرية</b> أيّ مدخل وتنتج <b>بصمة (digest)</b> ثابتة الطول. وهي <b>حتمية</b> (المدخل نفسه ← البصمة نفسها)، و<b>أحادية الاتجاه</b> (لا يمكن عكسها)، و<b>مقاوِمة للتصادم</b>، ولها <b>أثر الانهيار</b> (بتّ واحد متغيّر يغيّر البصمة كلها). و<b>SHA-256</b> آمنة؛ أما MD5 وSHA-1 فمكسورتان. وتتحقّق التجزئة من أن ملفًا لم يُعدَّل، وتتيح تخزين <b>تجزئة</b> كلمة المرور (مع <b>salt</b> عشوائي) بدل الكلمة نفسها.</p></span>
+    </div>
+
+    <h3><span class="en">3.4 Digital (electronic) signatures</span><span class="ar">3.4 التواقيع الرقمية (الإلكترونية)</span></h3>
+    <div class="prose block">
+      <span class="en"><p>A <b>digital signature</b> uses public-key cryptography <i>in reverse</i> to prove who created a message and that it was not changed. The signer <b>hashes</b> the document and <b>encrypts the hash with their private key</b>; anyone verifies it with the signer's <b>public key</b>. Step through a sign-then-verify below — then press <b>Tamper</b> to alter the document in transit and watch verification fail.</p></span>
+      <span class="ar"><p>يستخدم <b>التوقيع الرقمي</b> تشفير المفتاح العام <i>بالعكس</i> لإثبات مَن أنشأ الرسالة وأنها لم تتغيّر. يحسب الموقِّع <b>تجزئة</b> المستند ثم <b>يشفّرها بمفتاحه الخاص</b>؛ ويتحقّق أيٌّ كان بمفتاح الموقِّع <b>العام</b>. سِر في توقيعٍ ثم تحقّقٍ أدناه — ثم اضغط <b>تخريب</b> لتغيير المستند أثناء النقل وشاهِد التحقّق يفشل.</p></span>
+    </div>
+
+    <!-- ANIMATION 2 -->
+    <div class="demo" id="d-sig">
+      <div class="dhead"><span class="dot"></span><h4><span class="en">Sign, send &amp; verify a document</span><span class="ar">توقيع مستند وإرساله والتحقّق منه</span></h4><span class="tag">animated</span></div>
+      <div class="modebar">
+        <button class="ctrl" id="sg-tamper" aria-pressed="false" onclick="Sign.toggleTamper()"><span class="en">🔧 Tamper: OFF</span><span class="ar">🔧 تخريب: مُطفأ</span></button>
+      </div>
+      <div class="stage">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;width:100%">
+          <div class="siglane"><span class="en">① Alice signs</span><span class="ar">① Alice توقّع</span></div>
+          <div class="sigflow" id="sg-signlane"></div>
+          <div class="siglane"><span class="en">② Bob verifies</span><span class="ar">② Bob يتحقّق</span></div>
+          <div class="sigflow" id="sg-verifylane"></div>
+          <div class="verdict" id="sg-verdict" style="display:none"></div>
+        </div>
+      </div>
+      <div class="caption" id="sg-cap"></div>
+      <div class="controls">
+        <button class="ctrl primary" id="sg-play" onclick="Sign.play()">▶ <span class="en">Play</span><span class="ar">تشغيل</span></button>
+        <button class="ctrl" id="sg-step" onclick="Sign.step()">⏭ <span class="en">Step</span><span class="ar">خطوة</span></button>
+        <button class="ctrl" onclick="Sign.reset()">↻ <span class="en">Reset</span><span class="ar">إعادة</span></button>
+      </div>
+    </div>
+    <div class="watch block">
+      <span class="wh">💡 <span class="en">What to notice</span><span class="ar">ما الذي نلاحظه؟</span></span>
+      <span class="en">Verification succeeds only when <b>two independently-computed digests match</b>: the one Bob gets by <i>hashing the received document</i>, and the one he recovers by <i>decrypting the signature with Alice's public key</i>. Press <b>Tamper</b> and a single changed character makes Bob's fresh hash differ (the <b>avalanche effect</b> of §3.3) — the digests no longer match and verification fails. So a digital signature gives three guarantees at once: <b>authentication</b> (only Alice's private key could produce it), <b>integrity</b> (any change breaks the match), and <b>non-repudiation</b> (Alice cannot deny signing). A <b>Certificate Authority (CA)</b> then vouches that the public key really is Alice's.</span>
+      <span class="ar">لا ينجح التحقّق إلا حين <b>تتطابق بصمتان محسوبتان باستقلال</b>: البصمة التي يحصل عليها Bob بـ<i>تجزئة المستند المستلَم</i>، والبصمة التي يستعيدها بـ<i>فكّ التوقيع بمفتاح Alice العام</i>. اضغط <b>تخريب</b> فيكفي حرفٌ واحد متغيّر ليجعل تجزئة Bob الجديدة مختلفة (<b>أثر الانهيار</b> في §3.3) — فلا تتطابق البصمتان ويفشل التحقّق. فيمنح التوقيع الرقمي ثلاث ضمانات دفعةً واحدة: <b>المصادقة</b> (لا يُنتجه إلا مفتاح Alice الخاص)، و<b>السلامة</b> (أيّ تغيير يكسر التطابق)، و<b>عدم الإنكار</b> (لا تستطيع Alice إنكار التوقيع). ثم تشهد <b>سلطة تصديق (CA)</b> بأن المفتاح العام هو فعلًا مفتاح Alice.</span>
+    </div>
+  </section>
+
+  <!-- §4 authentication -->
+  <section class="chapter">
+    <h2><span class="en">§4 · Authentication &amp; access control</span><span class="ar">§4 · المصادقة والتحكم في الوصول</span></h2>
+    <p class="lead"><span class="en">Authentication asks "are you who you claim?" using one or more factors from different categories.</span><span class="ar">تسأل المصادقة «هل أنت مَن تدّعي؟» باستخدام عاملٍ أو أكثر من فئاتٍ مختلفة.</span></p>
+    <table class="tbl">
+      <thead><tr><th><span class="en">Factor</span><span class="ar">العامل</span></th><th><span class="en">"Something you…"</span><span class="ar">«شيء…»</span></th><th><span class="en">Example</span><span class="ar">مثال</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">Knowledge</span><span class="ar">المعرفة</span></td><td><b><span class="en">know</span><span class="ar">تعرفه</span></b></td><td><span class="en">Password, PIN</span><span class="ar">كلمة مرور، PIN</span></td></tr>
+        <tr><td><span class="en">Possession</span><span class="ar">الحيازة</span></td><td><b><span class="en">have</span><span class="ar">تملكه</span></b></td><td><span class="en">Phone, security token, smart card</span><span class="ar">هاتف، رمز أمان، بطاقة ذكية</span></td></tr>
+        <tr><td><span class="en">Inherence</span><span class="ar">الذات</span></td><td><b><span class="en">are</span><span class="ar">تكونه</span></b></td><td><span class="en">Fingerprint, face, iris</span><span class="ar">بصمة، وجه، قزحية</span></td></tr>
+      </tbody>
+    </table>
+    <div class="note green block"><b>🔐 <span class="en">Two-factor authentication (2FA)</span><span class="ar">المصادقة الثنائية (2FA)</span>:</b>
+      <span class="en"> 2FA/MFA combines factors from <b>different</b> categories (a password <i>and</i> a code from your phone). Even if your password is stolen, the attacker still lacks the second factor. Pair it with <b>strong, unique passwords</b> (use a password manager) and the <b>principle of least privilege</b>: give each user and program only the access it truly needs.</span>
+      <span class="ar"> تجمع 2FA/MFA عوامل من فئات <b>مختلفة</b> (كلمة مرور <i>و</i> رمز من هاتفك). فحتى لو سُرقت كلمة مرورك يظل المهاجم يفتقر إلى العامل الثاني. واقرنها بـ<b>كلمات مرور قوية فريدة</b> (استخدم مدير كلمات مرور) و<b>مبدأ الحدّ الأدنى من الامتيازات</b>: امنح كل مستخدم وبرنامج ما يحتاجه فقط من وصول.</span></div>
+  </section>
+
+  <!-- §5 defences -->
+  <section class="chapter">
+    <h2><span class="en">§5 · Practical defences — defence in depth</span><span class="ar">§5 · الدفاعات العملية — الدفاع في العمق</span></h2>
+    <p class="lead"><span class="en">Security is built in layers. No single control is enough.</span><span class="ar">يُبنى الأمن على طبقات. فلا يكفي عنصر تحكّم واحد.</span></p>
+    <div class="threecol">
+      <div class="card"><span class="k">Firewall</span><h5><span class="en">A controlled gate</span><span class="ar">بوابة محكومة</span></h5><p class="block"><span class="en">Monitors and filters network traffic against rules, between a trusted network and the untrusted internet.</span><span class="ar">يراقب حركة الشبكة ويرشّحها وفق قواعد، بين شبكة موثوقة والإنترنت غير الموثوق.</span></p></div>
+      <div class="card"><span class="k">VPN</span><h5><span class="en">Encrypted tunnel</span><span class="ar">نفق مشفَّر</span></h5><p class="block"><span class="en">Wraps your traffic in an encrypted tunnel across a public network — essential on untrusted Wi-Fi.</span><span class="ar">يغلّف حركتك في نفقٍ مشفَّر عبر شبكة عامة — ضروري على Wi-Fi غير الموثوق.</span></p></div>
+      <div class="card"><span class="k">HTTPS / TLS</span><h5><span class="en">The padlock</span><span class="ar">القفل</span></h5><p class="block"><span class="en">HTTP inside a TLS channel: verifies the site's certificate, agrees a symmetric session key, encrypts everything in transit (the hybrid scheme of §3).</span><span class="ar">HTTP داخل قناة TLS: يتحقّق من شهادة الموقع، يتّفق على مفتاح جلسة متماثل، ويشفّر كلّ شيء أثناء النقل (المخطّط الهجين في §3).</span></p></div>
+    </div>
+    <div class="note amber block"><b>🧹 <span class="en">Everyday hygiene</span><span class="ar">نظافة يومية</span>:</b>
+      <span class="en"> <b>Keep software updated</b> — most attacks exploit a known hole a patch already fixed. <b>Back up</b> by the <b>3-2-1 rule</b> (3 copies · 2 media · 1 off-site) — the only reliable defence against ransomware. Run <b>least privilege</b>, and use anti-malware + spam/phishing filters.</span>
+      <span class="ar"> <b>حدّث البرمجيات</b> — معظم الهجمات تستغلّ ثغرةً معروفة سبق أن أصلحها تحديث. و<b>انسخ احتياطيًّا</b> بقاعدة <b>3-2-1</b> (3 نسخ · نوعان من الوسائط · نسخة خارج الموقع) — الدفاع الوحيد الموثوق ضد الفدية. واعمل بـ<b>أقل امتياز</b>، واستخدم مكافحة البرمجيات الخبيثة ومرشّحات التصيّد.</span></div>
+  </section>
+
+  <!-- §6 physical & organisational -->
+  <section class="chapter">
+    <h2><span class="en">§6 · Physical &amp; organisational security</span><span class="ar">§6 · الأمن المادي والتنظيمي</span></h2>
+    <div class="prose block">
+      <span class="en"><p>Technical controls are undermined if an attacker can simply reach the machine. <b>Physical security</b> — locked server rooms, access cards, surveillance, environmental protection (power, cooling, fire suppression). <b>Organisational security</b> — clear <b>policies</b>, staff <b>awareness training</b>, an <b>incident-response plan</b>, and regular <b>audits</b>. Standards such as <b>ISO/IEC 27001</b> and Russia's <b>ФСТЭК/ГОСТ</b> requirements define how organisations manage information security systematically.</p></span>
+      <span class="ar"><p>تنهار الضوابط التقنية إذا استطاع المهاجم الوصول إلى الجهاز فعليًّا. <b>الأمن المادي</b> — غرف خوادم مقفلة، بطاقات دخول، مراقبة، وحماية بيئية (طاقة، تبريد، إطفاء حريق). و<b>الأمن التنظيمي</b> — <b>سياسات</b> واضحة، و<b>تدريب توعوي</b>، و<b>خطة استجابة للحوادث</b>، و<b>تدقيقات</b> دورية. ومعايير مثل <b>ISO/IEC 27001</b> ومتطلّبات <b>ФСТЭК/ГОСТ</b> الروسية تحدّد كيف تدير المؤسسات أمن المعلومات بشكل منهجي.</p></span>
+    </div>
+  </section>
+
+  <!-- summary -->
+  <section class="chapter">
+    <h2><span class="en">Chapter summary</span><span class="ar">خلاصة الفصل</span></h2>
+    <div class="twocol">
+      <div class="card">
+        <h5>🎬 <span class="en">You just watched</span><span class="ar">ما شاهدتَه للتوّ</span></h5>
+        <p class="block"><span class="en">Security protects confidentiality, integrity and availability (the CIA triad) against malware, social engineering, DoS and web attacks. You stepped a message through <b>symmetric</b> (one shared key) and <b>asymmetric</b> (public + private pair) encryption, and saw why the web combines both. You then signed and verified a document — and watched a single tampered character break the hash match, the core of a digital signature. On top sit authentication (2FA), and layered defences: firewalls, VPNs, HTTPS/TLS, updates and backups.</span><span class="ar">يحمي الأمن السرية والسلامة والتوافر (ثالوث CIA) من البرمجيات الخبيثة والهندسة الاجتماعية وحجب الخدمة وهجمات الويب. سِرتَ برسالةٍ عبر التشفير <b>المتماثل</b> (مفتاح مشترك واحد) و<b>غير المتماثل</b> (زوج عام + خاص)، ورأيتَ لماذا يجمع الويب الاثنين. ثم وقّعتَ مستندًا وتحقّقتَ منه — وشاهدتَ حرفًا واحدًا مخرَّبًا يكسر تطابق البصمة، وهو جوهر التوقيع الرقمي. وفوق ذلك تقوم المصادقة (2FA) والدفاعات المتعدّدة الطبقات: الجدران النارية، وVPN، وHTTPS/TLS، والتحديثات، والنسخ الاحتياطي.</span></p>
+      </div>
+      <div class="card">
+        <h5>📄 <span class="en">Text reference</span><span class="ar">المرجع النصّي</span></h5>
+        <p class="block"><span class="en">The full written handout (same content, no animation, with exercises and key terms) is the printable study copy: <span class="mono">lecture-05-en.md</span> / <span class="mono">lecture-05-ar.md</span>.</span><span class="ar">المذكّرة المكتوبة الكاملة (المحتوى نفسه بلا حركة، مع التمارين والمصطلحات) هي نسخة المذاكرة القابلة للطباعة: <span class="mono">lecture-05-en.md</span> / <span class="mono">lecture-05-ar.md</span>.</span></p>
+      </div>
+    </div>
+
+    <div class="chapnav">
+      <a href="lecture-04.html"><span class="dir"><span class="en">Previous</span><span class="ar">السابق</span></span><div class="lb"><span class="en">L4 · Software Life Cycle</span><span class="ar">م4 · دورة حياة البرمجيات</span></div></a>
+      <a href="index.html"><span class="dir"><span class="en">Contents</span><span class="ar">الفهرس</span></span><div class="lb"><span class="en">All lectures</span><span class="ar">كل المحاضرات</span></div></a>
+      <a class="disabled"><span class="dir"><span class="en">Next</span><span class="ar">التالي</span></span><div class="lb"><span class="en">L6 · Computer Networks (soon)</span><span class="ar">م6 · شبكات الحاسوب (قريبًا)</span></div></a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <span class="en">Fundamentals of Computer Science &amp; AI · Lecture 5 · © 2026 Dr. Ali Mahmoud Mansour</span>
+  <span class="ar">أساسيات علوم الحاسوب والذكاء الاصطناعي · المحاضرة 5 · © 2026 د. علي محمود منصور</span>
+</footer>
+
+<script>
+/* ---------- language ---------- */
+function setLang(l){
+  document.body.setAttribute('data-lang',l);
+  document.documentElement.lang = l==='ar'?'ar':'en';
+  document.documentElement.dir  = l==='ar'?'rtl':'ltr';
+  document.getElementById('btn-en').setAttribute('aria-pressed', l==='en');
+  document.getElementById('btn-ar').setAttribute('aria-pressed', l==='ar');
+  try{localStorage.setItem('csai-lang',l);}catch(e){}
+  Crypto.refresh(); Sign.refresh();
+}
+const T=(en,ar)=> document.body.getAttribute('data-lang')==='ar'?ar:en;
+
+/* ---------- §3 ANIMATION 1: encrypt → decrypt, symmetric vs asymmetric ---------- */
+const Crypto=(()=>{
+  let mode='sym', fi=0, timer=null;
+  const stages=[
+    {icon:'📄', en:'Plaintext',  ar:'نص صريح',     file:'"HELLO"'},
+    {icon:'🔒', en:'Encrypt',    ar:'تشفير',        key:'enc'},
+    {icon:'🔢', en:'Ciphertext', ar:'نص مشفَّر',    file:'8F3A2C7B'},
+    {icon:'🔓', en:'Decrypt',    ar:'فكّ تشفير',    key:'dec'},
+    {icon:'📄', en:'Plaintext',  ar:'نص صريح',     file:'"HELLO"'}
+  ];
+  function keyText(which){
+    if(mode==='sym') return {en:'🔑 key K (shared)', ar:'🔑 المفتاح K (مشترك)'};
+    return which==='enc'
+      ? {en:"🔑 Alice's PUBLIC key", ar:'🔑 مفتاح Alice العام'}
+      : {en:"🗝️ Alice's PRIVATE key", ar:'🗝️ مفتاح Alice الخاص'};
+  }
+  const frames=[
+    {active:0, artEn:'"HELLO"', artAr:'"HELLO"',
+     capEn:'Alice starts with readable plaintext: "HELLO".', capAr:'تبدأ Alice بنصٍّ مقروء: "HELLO".'},
+    {active:1, artEn:'encrypting…', artAr:'جارٍ التشفير…',
+     capEnS:'Encrypt with the shared secret key K.', capArS:'تشفير بالمفتاح السرّي المشترك K.',
+     capEnA:"Anyone can encrypt using Alice's PUBLIC key.", capArA:'يستطيع أيٌّ كان التشفير بمفتاح Alice العام.'},
+    {active:2, artEn:'8F3A2C7B', artAr:'8F3A2C7B',
+     capEn:'Output is unreadable ciphertext — safe to send over an open network.', capAr:'المُخرَج نصٌّ مشفَّر غير مقروء — آمنٌ للإرسال عبر شبكة مفتوحة.'},
+    {active:3, artEn:'decrypting…', artAr:'جارٍ الفكّ…',
+     capEnS:'Decrypt with the SAME key K — symmetric.', capArS:'الفكّ بالمفتاح K نفسه — متماثل.',
+     capEnA:"Only Alice's PRIVATE key can decrypt it.", capArA:'لا يفكّه إلا مفتاح Alice الخاص.'},
+    {active:4, artEn:'"HELLO"', artAr:'"HELLO"',
+     capEn:'Recovered: the original plaintext "HELLO".', capAr:'استُعيد: النصّ الأصلي "HELLO".'}
+  ];
+
+  function render(){
+    const f=frames[fi];
+    let h='';
+    stages.forEach((s,idx)=>{
+      let cls='pstage'+(s.key?' tool':'')+(idx<f.active?' done':'')+(idx===f.active?' active':'');
+      h+='<div class="'+cls+'"><span class="picon">'+s.icon+'</span><span class="ptt">'+T(s.en,s.ar)+'</span>';
+      if(s.file) h+='<span class="pfile">'+s.file+'</span>';
+      if(s.key){ const k=keyText(s.key); h+='<span class="pkey">'+T(k.en,k.ar)+'</span>'; }
+      h+='</div>';
+      if(idx<stages.length-1) h+='<span class="parr">▶</span>';
+    });
+    document.getElementById('cr-stages').innerHTML=h;
+    document.getElementById('cr-art').textContent=T(f.artEn,f.artAr);
+    let cap;
+    if(f.capEnS){ cap = mode==='sym' ? T(f.capEnS,f.capArS) : T(f.capEnA,f.capArA); }
+    else { cap = T(f.capEn,f.capAr); }
+    document.getElementById('cr-cap').textContent=cap;
+  }
+  function refresh(){ render(); }
+  function setMode(m){
+    mode=m;
+    document.getElementById('cr-sym').setAttribute('aria-pressed', m==='sym');
+    document.getElementById('cr-asym').setAttribute('aria-pressed', m==='asym');
+    reset();
+  }
+  function reset(){ clearInterval(timer);timer=null; fi=0; render();
+    document.getElementById('cr-play').disabled=false; document.getElementById('cr-step').disabled=false; }
+  function step(){
+    if(fi<frames.length-1){ fi++; render(); }
+    if(fi>=frames.length-1){ clearInterval(timer);timer=null;
+      document.getElementById('cr-play').disabled=false; document.getElementById('cr-step').disabled=true; }
+  }
+  function play(){ reset(); document.getElementById('cr-play').disabled=true; timer=setInterval(step,1100); }
+  reset();
+  return {play:play,step:step,reset:reset,refresh:refresh,setMode:setMode};
+})();
+
+/* ---------- §3.4 ANIMATION 2: sign → send → verify a document ---------- */
+const Sign=(()=>{
+  let tamper=false, fi=0, timer=null;
+  const DIGEST='A1B2C3', SIG='9F7E21', BAD='E0F5D8';
+  // lane: 0 = sign lane (steps 0..2), 1 = verify lane (steps 3..5), compare at step 6
+  const steps=[
+    {lane:0, si:'📄', en:'Document — "Transfer $100 to Bob"', ar:'المستند — «حوّل 100$ إلى Bob»', val:()=>''},
+    {lane:0, si:'#️⃣', en:'hash(document) → digest', ar:'hash(المستند) ← البصمة', val:()=>DIGEST},
+    {lane:0, si:'🗝️', en:"Encrypt digest with Alice's PRIVATE key → signature", ar:'تشفير البصمة بمفتاح Alice الخاص ← التوقيع', val:()=>SIG},
+    {lane:1, si:'📥', en:'Bob receives { document + signature }', ar:'يستلم Bob { المستند + التوقيع }', val:()=>tamper?'⚠ altered':'ok'},
+    {lane:1, si:'#️⃣', en:'Bob: hash(received document) → digest B', ar:'Bob: hash(المستند المستلَم) ← البصمة B', val:()=>tamper?BAD:DIGEST},
+    {lane:1, si:'🔑', en:"Bob: decrypt signature with Alice's PUBLIC key → digest A", ar:'Bob: فكّ التوقيع بمفتاح Alice العام ← البصمة A', val:()=>DIGEST}
+  ];
+  const caps=[
+    {en:'Alice has a document she wants to sign.', ar:'لدى Alice مستندٌ تريد توقيعه.'},
+    {en:'She hashes it to a fixed-size digest: '+DIGEST+'.', ar:'تحسب تجزئته إلى بصمةٍ ثابتة الطول: '+DIGEST+'.'},
+    {en:'She encrypts that digest with her PRIVATE key — that is the signature.', ar:'تشفّر تلك البصمة بمفتاحها الخاص — وهذا هو التوقيع.'},
+    {enN:'Bob receives the document and signature, untouched.', arN:'يستلم Bob المستند والتوقيع دون تغيير.',
+     enT:'The document was ALTERED in transit — Bob does not know yet.', arT:'عُبِث بالمستند أثناء النقل — وBob لا يعلم بعد.'},
+    {enN:'Bob hashes the received document → '+DIGEST+'.', arN:'يحسب Bob تجزئة المستند المستلَم ← '+DIGEST+'.',
+     enT:'Bob hashes the altered document → '+BAD+' (avalanche effect).', arT:'يحسب Bob تجزئة المستند المعدَّل ← '+BAD+' (أثر الانهيار).'},
+    {en:"Bob decrypts the signature with Alice's PUBLIC key → "+DIGEST+'.', ar:'يفكّ Bob التوقيع بمفتاح Alice العام ← '+DIGEST+'.'},
+    {enN:'The two digests match → authentic and unaltered. ✓', arN:'البصمتان متطابقتان ← أصيل وغير مُعدَّل. ✓',
+     enT:'The two digests differ → verification FAILS. ✗', arT:'البصمتان مختلفتان ← يفشل التحقّق. ✗'}
+  ];
+
+  function renderLane(elId, laneNo){
+    let h='';
+    steps.forEach((s,idx)=>{
+      if(s.lane!==laneNo) return;
+      let cls='sigstep'+(idx<=fi?' on':'')+(idx===fi?' active':'');
+      let v=s.val();
+      h+='<div class="'+cls+'"><span class="si">'+s.si+'</span><span class="st">'+T(s.en,s.ar)+'</span>'+
+         (v?'<span class="sv">'+v+'</span>':'')+'</div>';
+    });
+    document.getElementById(elId).innerHTML=h;
+  }
+  function render(){
+    renderLane('sg-signlane',0);
+    renderLane('sg-verifylane',1);
+    const vd=document.getElementById('sg-verdict');
+    if(fi>=6){
+      vd.style.display='block';
+      vd.className='verdict '+(tamper?'bad':'ok');
+      vd.textContent = tamper
+        ? T('✗ '+DIGEST+' ≠ '+BAD+' — signature INVALID: the document was changed.',
+            '✗ '+DIGEST+' ≠ '+BAD+' — توقيع غير صالح: المستند تغيّر.')
+        : T('✓ '+DIGEST+' = '+DIGEST+' — signature VALID: authentic, unaltered, non-repudiable.',
+            '✓ '+DIGEST+' = '+DIGEST+' — توقيع صالح: أصيل، غير مُعدَّل، غير قابل للإنكار.');
+    } else { vd.style.display='none'; }
+    const c=caps[fi];
+    let cap;
+    if(c.enN){ cap = tamper ? T(c.enT,c.arT) : T(c.enN,c.arN); }
+    else { cap = T(c.en,c.ar); }
+    document.getElementById('sg-cap').textContent=cap;
+  }
+  function refresh(){ render(); }
+  function toggleTamper(){
+    tamper=!tamper;
+    const b=document.getElementById('sg-tamper');
+    b.setAttribute('aria-pressed', tamper);
+    b.innerHTML = tamper
+      ? '<span class="en">🔧 Tamper: ON</span><span class="ar">🔧 تخريب: مُفعَّل</span>'
+      : '<span class="en">🔧 Tamper: OFF</span><span class="ar">🔧 تخريب: مُطفأ</span>';
+    reset();
+  }
+  function reset(){ clearInterval(timer);timer=null; fi=0; render();
+    document.getElementById('sg-play').disabled=false; document.getElementById('sg-step').disabled=false; }
+  function step(){
+    if(fi<6){ fi++; render(); }
+    if(fi>=6){ clearInterval(timer);timer=null;
+      document.getElementById('sg-play').disabled=false; document.getElementById('sg-step').disabled=true; }
+  }
+  function play(){ reset(); document.getElementById('sg-play').disabled=true; timer=setInterval(step,1100); }
+  reset();
+  return {play:play,step:step,reset:reset,refresh:refresh,toggleTamper:toggleTamper};
+})();
+
+/* restore saved language */
+try{var _l=localStorage.getItem('csai-lang'); if(_l)setLang(_l);}catch(e){}
+</script>
+</body>
+</html>
